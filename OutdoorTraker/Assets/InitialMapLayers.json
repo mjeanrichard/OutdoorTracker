@@ -1,0 +1,12 @@
+﻿[
+	{
+		"name": "Open Street Maps",
+		"projection": "WebMercator",
+		"layers": [
+			{
+				"name": "OSM",
+				"config": "Default"
+			}
+		]
+	}
+]

@@ -1,0 +1,65 @@
+﻿<LocationInfo:LocationInfoPageBase
+	x:Class="OutdoorTraker.Views.LocationInfo.LocationInfoPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:LocationInfo="using:OutdoorTraker.Views.LocationInfo"
+    xmlns:controls="using:OutdoorTraker.Controls"
+    xmlns:converters="using:OutdoorTraker.Converters"
+    d:DataContext="{d:DesignInstance Type=LocationInfo:LocationInfoViewModel, IsDesignTimeCreatable=True}"
+	mc:Ignorable="d">
+
+	<Page.Resources>
+		<converters:LocationToStringConverter x:Key="locToString" />
+		<converters:StringFormatConverter x:Key="stringFormat" />
+		<converters:BooleanToVisibilityConverter x:Key="boolToVis" />
+	</Page.Resources>
+
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="*" />
+		</Grid.RowDefinitions>
+
+		<TextBlock Grid.Row="0" FontSize="24">Location Info</TextBlock>
+		
+		<StackPanel Grid.Row="1" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+			<controls:HeaderControl Header="Location Service State">
+				<StackPanel Orientation="Horizontal">
+					<TextBlock Text="{x:Bind ViewModel.Location.State, Mode=OneWay}" />
+					<TextBlock Margin="10,0,0,0"
+							   Visibility="{x:Bind ViewModel.Location.IsLocationValid, Converter={StaticResource boolToVis}}"
+							   Text="{x:Bind ViewModel.Location.PositionSource, Mode=OneWay, Converter={StaticResource stringFormat}, ConverterParameter='(\{0\})'}" />
+				</StackPanel>
+			</controls:HeaderControl>
+			<controls:HeaderControl Header="Location WGS84">
+				<StackPanel Orientation="Horizontal">
+					<TextBlock Text="{x:Bind ViewModel.Location.Location, Mode=OneWay, Converter={StaticResource locToString}}" />
+					<TextBlock Margin="10,0,0,0" Text="{x:Bind ViewModel.Location.Accuracy, Mode=OneWay, Converter={StaticResource stringFormat}, ConverterParameter='±\{0:0.0\}m'}" />
+				</StackPanel>
+			</controls:HeaderControl>
+			<controls:HeaderControl Header="Altitude">
+				<StackPanel Orientation="Horizontal">
+					<TextBlock Text="Not available" Visibility="{x:Bind ViewModel.Location.IsAltitudeValid, Mode=OneWay, Converter={StaticResource boolToVis}, ConverterParameter=true}" />
+					<TextBlock Text="{x:Bind ViewModel.Location.Altitude, Mode=OneWay, Converter={StaticResource stringFormat}, ConverterParameter='\{0:0}m'}" 
+							   Visibility="{x:Bind ViewModel.Location.IsAltitudeValid, Mode=OneWay, Converter={StaticResource boolToVis}}" />
+					<TextBlock Margin="10,0,0,0" 
+							   Text="{x:Bind ViewModel.Location.AltitudeAccuracy, Mode=OneWay, Converter={StaticResource stringFormat}, ConverterParameter='±\{0:0\}m'}"
+							   Visibility="{x:Bind ViewModel.Location.IsAltitudeValid, Mode=OneWay, Converter={StaticResource boolToVis}}" />
+				</StackPanel>
+			</controls:HeaderControl>
+			<StackPanel Orientation="Horizontal">
+				<controls:HeaderControl Header="Speed" Visibility="{x:Bind ViewModel.Location.Speed.HasValue, Converter={StaticResource boolToVis}, Mode=OneWay }">
+					<TextBlock Text="{x:Bind ViewModel.Location.Speed, Mode=OneWay}" />
+				</controls:HeaderControl>
+				<controls:HeaderControl Header="Heading" Visibility="{x:Bind ViewModel.Location.Heading.HasValue, Converter={StaticResource boolToVis}, Mode=OneWay }">
+					<TextBlock Text="{x:Bind ViewModel.Location.Heading, Mode=OneWay}" />
+				</controls:HeaderControl>
+			</StackPanel>
+			<controls:HeaderControl Header="Last Update">
+				<TextBlock Text="{x:Bind ViewModel.Location.LastUpdate, Mode=OneWay}" />
+			</controls:HeaderControl>
+		</StackPanel>
+	</Grid>
+</LocationInfo:LocationInfoPageBase>

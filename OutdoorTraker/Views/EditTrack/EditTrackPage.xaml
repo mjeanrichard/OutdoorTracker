@@ -1,0 +1,38 @@
+﻿<editTrack:EditTrackPageBase
+	x:Class="OutdoorTraker.Views.EditTrack.EditTrackPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:tracksData="using:OutdoorTraker.Tracks"
+    xmlns:editTrack="using:OutdoorTraker.Views.EditTrack"
+    xmlns:controls="using:OutdoorTraker.Controls"
+    xmlns:converters="using:OutdoorTraker.Converters"
+
+    mc:Ignorable="d">
+
+	<Page.Resources>
+		<converters:BooleanToVisibilityConverter x:Key="boolToVis" />
+	</Page.Resources>
+
+	<Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto" />
+			<RowDefinition />
+		</Grid.RowDefinitions>
+
+		<TextBlock Grid.Row="0" FontSize="24">Edit Track</TextBlock>
+
+		<StackPanel Grid.Row="1" Orientation="Vertical">
+			<TextBox Header="Track Name:" Text="{x:Bind ViewModel.Track.Name, Mode=TwoWay}" />
+		</StackPanel>
+	</Grid>
+
+	<Page.BottomAppBar>
+		<CommandBar>
+			<AppBarButton Label="Create" Command="{x:Bind ViewModel.CreateCommand, Mode=OneTime}" Icon="Save" Visibility="{x:Bind ViewModel.IsNew, Converter={StaticResource boolToVis}, Mode=OneTime}"/>
+			<AppBarButton Label="Save" Command="{x:Bind ViewModel.SaveCommand, Mode=OneTime}" Icon="Save" Visibility="{x:Bind ViewModel.IsNew, Converter={StaticResource boolToVis}, ConverterParameter=true, Mode=OneTime}" />
+			<AppBarButton Label="Cancel" Command="{x:Bind ViewModel.CancelCommand, Mode=OneTime}" Icon="Cancel" />
+		</CommandBar>
+	</Page.BottomAppBar>
+</editTrack:EditTrackPageBase>

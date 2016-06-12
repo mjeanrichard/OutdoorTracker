@@ -1,0 +1,23 @@
+﻿<settings:SettingsPageBase
+	x:Class="OutdoorTraker.Views.Settings.SettingsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:settings="using:OutdoorTraker.Views.Settings"
+    d:DataContext="{d:DesignInstance Type=settings:SettingsViewModel, IsDesignTimeCreatable=True}"
+	mc:Ignorable="d">
+
+	<Page.Resources>
+	</Page.Resources>
+
+	<Pivot>
+		<PivotItem Header="General">
+			<StackPanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+				<ToggleSwitch Header="Show the current location on the Map" IsOn="{Binding ShowLocation, Mode=TwoWay}" />
+				<ToggleSwitch Header="Show the accuracy of the current position on the map" IsOn="{Binding ShowAccuracy, Mode=TwoWay}" />
+				<ToggleSwitch Header="Allow the rotating the Map with your fingers" IsOn="{Binding RotationEnabled, Mode=TwoWay}" />
+			</StackPanel>
+		</PivotItem>
+	</Pivot>
+</settings:SettingsPageBase>
