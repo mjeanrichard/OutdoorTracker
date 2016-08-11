@@ -12,7 +12,7 @@
 	<Properties>
 		<DisplayName>Outdoor Tracker</DisplayName>
 		<PublisherDisplayName>Meinrad Jean-Richard</PublisherDisplayName>
-		<Logo>Assets\StoreLogo.png</Logo>
+		<Logo>Assets\NewStoreLogo.png</Logo>
 	</Properties>
 
 	<Dependencies>
@@ -26,9 +26,14 @@
 	<Applications>
 		<Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="OutdoorTraker.App">
 			<uap:VisualElements DisplayName="Outdoor Tracker" Square150x150Logo="Assets\Square150x150Logo.png" Square44x44Logo="Assets\Square44x44Logo.png" Description="OutdoorTraker" BackgroundColor="transparent">
-				<uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png">
+				<uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png" Square310x310Logo="Assets\Square310x310Logo.png" Square71x71Logo="Assets\Square71x71Logo.png" ShortName="Outdoor Tracker">
+					<uap:ShowNameOnTiles>
+						<uap:ShowOn Tile="square150x150Logo" />
+						<uap:ShowOn Tile="wide310x150Logo" />
+						<uap:ShowOn Tile="square310x310Logo" />
+					</uap:ShowNameOnTiles>
 				</uap:DefaultTile>
-				<uap:SplashScreen Image="Assets\SplashScreen.png" />
+				<uap:SplashScreen Image="Assets\SplashScreen.png" BackgroundColor="#8ec735" />
 			</uap:VisualElements>
 			<Extensions>
 				<uap:Extension Category="windows.fileOpenPicker">

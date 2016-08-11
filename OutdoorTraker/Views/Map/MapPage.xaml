@@ -57,7 +57,7 @@
 			</controls:CanvasItemsLayer>
 			
 			<!-- Current Postition Info -->
-			<Grid Margin="10,20,0,0" Background="YellowGreen" 
+			<Grid Margin="10,20,0,0" Background="{StaticResource OutdoorTrackerColor}" 
 				  Visibility="{x:Bind ViewModel.ShowCurrentPosition, Converter={StaticResource boolToVis}, Mode=OneWay}">
 				<Grid.RowDefinitions>
 					<RowDefinition Height="Auto" />

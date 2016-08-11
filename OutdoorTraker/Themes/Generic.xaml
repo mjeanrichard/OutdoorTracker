@@ -15,4 +15,7 @@
             </Setter.Value>
         </Setter>
     </Style>
+
+	<SolidColorBrush x:Key="OutdoorTrackerColor" Color="#8ec735" />
+	
 </ResourceDictionary>
