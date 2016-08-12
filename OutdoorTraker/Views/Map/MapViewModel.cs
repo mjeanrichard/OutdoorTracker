@@ -224,12 +224,20 @@ namespace OutdoorTraker.Views.Map
 
 			await _geoLocationService.Initialize();
 
-			Tracks = new ObservableCollection<Track>(await _readonlyUnitOfWork.Tracks.Where(t => t.ShowOnMap).Include(t => t.Points).ToListAsync());
-			TrackRecorderUpdated();
-			OnPropertyChanged(nameof(Tracks));
-
 			IsMapInitialized = true;
 			OnPropertyChanged(nameof(IsMapInitialized));
+
+			LoadTracks();
+		}
+
+		private async Task LoadTracks()
+		{
+			using (MarkBusy())
+			{
+				Tracks = new ObservableCollection<Track>(await _readonlyUnitOfWork.Tracks.Where(t => t.ShowOnMap).Include(t => t.Points).ToListAsync());
+				TrackRecorderUpdated();
+				OnPropertyChanged(nameof(Tracks));
+			}
 		}
 
 		private async Task ConfigureMap()

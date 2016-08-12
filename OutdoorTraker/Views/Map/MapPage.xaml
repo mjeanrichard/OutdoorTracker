@@ -44,9 +44,9 @@
 			</interactivity:Interaction.Behaviors>
 
 			<tiles:TileLayer x:Name="tileLayer" />
-			<controls:TracksLayer Tracks="{x:Bind ViewModel.Tracks, Mode=OneWay}" />
 			<controls:CanvasItemsLayer>
 				<controls:CanvasItemsLayer.Items>
+					<controls:TracksLayer Tracks="{x:Bind ViewModel.Tracks, Mode=OneWay}" />
 					<controls:CurrentLocation AccuracyMeter="{x:Bind ViewModel.LocationModel.Accuracy, Mode=OneWay}"
 											  Location="{x:Bind ViewModel.LocationModel.Location, Mode=OneWay}"
 											  AccuracyType="{x:Bind ViewModel.LocationModel.LocationAccuracy, Mode=OneWay}"

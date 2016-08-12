@@ -1,6 +1,7 @@
 using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace OutdoorTraker.Common
@@ -54,17 +55,24 @@ namespace OutdoorTraker.Common
 
 		private class BusyState : IDisposable
 		{
+			private static int _busyCounter = 0;
+
 			private readonly BaseViewModel _baseViewModel;
 
 			public BusyState(BaseViewModel baseViewModel)
 			{
+				Interlocked.Increment(ref _busyCounter);
 				_baseViewModel = baseViewModel;
 				baseViewModel.IsBusy = true;
 			}
 
 			public void Dispose()
 			{
-				_baseViewModel.IsBusy = false;
+				int value = Interlocked.Decrement(ref _busyCounter);
+				if (value == 0)
+				{
+					_baseViewModel.IsBusy = false;
+				}
 			}
 		}
 	}

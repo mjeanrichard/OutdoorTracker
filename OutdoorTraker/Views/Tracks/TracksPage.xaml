@@ -76,7 +76,7 @@
 
 		<TextBlock Grid.Row="0" FontSize="24">Tracks</TextBlock>
 		
-		<GridView x:Name="tracksView" Grid.Row="1" VerticalAlignment="Top" SelectionMode="Single"
+		<GridView x:Name="tracksView" Grid.Row="1" VerticalAlignment="Top" SelectionMode="Multiple"
 				  ItemsSource="{x:Bind ViewModel.Tracks}"
 				  SelectionChanged="TracksView_OnSelectionChanged"
 				  >

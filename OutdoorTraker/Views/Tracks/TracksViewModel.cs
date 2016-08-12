@@ -14,12 +14,14 @@ using Microsoft.EntityFrameworkCore;
 
 using OutdoorTraker.Common;
 using OutdoorTraker.Database;
+using OutdoorTraker.Services;
 using OutdoorTraker.Tracks;
 
 namespace OutdoorTraker.Views.Tracks
 {
 	public class TracksViewModel : BaseViewModel
 	{
+		private readonly TrackRecorder _trackRecorder;
 		private readonly TrackImporter _trackImporter;
 		private readonly IUnitOfWork _unitOfWork;
 		private readonly NavigationService _navigationService;
@@ -31,9 +33,21 @@ namespace OutdoorTraker.Views.Tracks
 			ImportGpxTrackCommand = new RelayCommand(async () => await ImportGpxTrack());
 			EditTrackCommand = new RelayCommand(EditTrack, () => SelectedTracks != null && SelectedTracks.Count == 1);
 			DeleteTrackCommand = new RelayCommand(async () => await DeleteTrack(), () => SelectedTracks != null && SelectedTracks.Count > 0);
-			StartTrackingCommand = new RelayCommand(() => _navigationService.NavigateToNewTrack());
+			StartTrackingCommand = new RelayCommand(async () => await StartTracking());
 			ToggleTrackVisibilityCommand = new ParameterCommand<Track>(async t => await ToggleTrackVisibility(t));
 			_selectedTracks = new List<Track>();
+		}
+
+		private async Task StartTracking()
+		{
+			if (_trackRecorder.IsTracking)
+			{
+				if (!await AskStopTracking())
+				{
+					return;
+				}
+			}
+			_navigationService.NavigateToNewTrack();
 		}
 
 
@@ -48,9 +62,10 @@ namespace OutdoorTraker.Views.Tracks
 
 		public ParameterCommand<Track> ToggleTrackVisibilityCommand { get; set; }
 
-		public TracksViewModel(TrackImporter trackImporter, IUnitOfWork unitOfWork, NavigationService navigationService)
+		public TracksViewModel(TrackImporter trackImporter, IUnitOfWork unitOfWork, NavigationService navigationService, TrackRecorder trackRecorder)
 			: this()
 		{
+			_trackRecorder = trackRecorder;
 			_trackImporter = trackImporter;
 			_unitOfWork = unitOfWork;
 			_navigationService = navigationService;
@@ -117,6 +132,20 @@ namespace OutdoorTraker.Views.Tracks
 			var dialog = new MessageDialog(message);
 
 			dialog.Commands.Add(new UICommand("Delete") { Id = true });
+			dialog.Commands.Add(new UICommand("Cancel") { Id = false });
+
+			dialog.DefaultCommandIndex = 0;
+			dialog.CancelCommandIndex = 1;
+
+			IUICommand result = await dialog.ShowAsync();
+			return (bool)result.Id;
+		}
+
+		private async Task<bool> AskStopTracking()
+		{
+			var dialog = new MessageDialog("You are already recoring a track. Do you want to stop recording and create a new track?");
+
+			dialog.Commands.Add(new UICommand("Yes") { Id = true });
 			dialog.Commands.Add(new UICommand("Cancel") { Id = false });
 
 			dialog.DefaultCommandIndex = 0;

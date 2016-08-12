@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
+using System.Numerics;
 using System.Windows.Input;
 
 using Windows.UI;
@@ -19,7 +20,7 @@ using UniversalMapControl.Interfaces;
 
 namespace OutdoorTraker.Controls
 {
-	public class TracksLayer : CanvasMapLayer
+	public class TracksLayer : BaseCanvasItem
 	{
 		public static readonly DependencyProperty TracksProperty = DependencyProperty.Register("Tracks", typeof(object), typeof(TracksLayer), new PropertyMetadata(default(object), TracksChanged));
 
@@ -82,10 +83,10 @@ namespace OutdoorTraker.Controls
 		public void InvalidateTrack()
 		{
 			_isPathValid = false;
-			DispatcherHelper.InvokeOnUI(Invalidate);
+			OnLayoutChanged();
 		}
 
-		private void BuildPathGeometry(CanvasDevice device)
+		private void BuildPathGeometry(CanvasDevice device, CanvasItemsLayer canvasItemsLayer)
 		{
 			List<CanvasGeometry> oldList = _trackPaths;
 			_trackPaths = new List<CanvasGeometry>();
@@ -97,30 +98,31 @@ namespace OutdoorTraker.Controls
 				}
 			}
 			
-			IProjection projection = ParentMap.ViewPortProjection;
+			IProjection projection = canvasItemsLayer.ParentMap.ViewPortProjection;
 
 			foreach (Track track in Tracks)
 			{
 				if (track.Points.Any())
 				{
-					CanvasGeometry trackPath = BuildPathFromTrack(projection, track, device);
+					CanvasGeometry trackPath = BuildPathFromTrack(projection, track, device, canvasItemsLayer);
 					_trackPaths.Add(trackPath);
 				}
 			}
 			_isPathValid = true;
 		}
 
-		private CanvasGeometry BuildPathFromTrack(IProjection projection, Track first, CanvasDevice device)
+		private CanvasGeometry BuildPathFromTrack(IProjection projection, Track first, CanvasDevice device, CanvasItemsLayer canvasItemsLayer)
 		{
 			CanvasPathBuilder pathBuilder = new CanvasPathBuilder(device);
 			TrackPoint[] trackPoints = first.Points.OrderBy(p => p.Number).ToArray();
-			CartesianPoint point = projection.ToCartesian(trackPoints[0].Location);
-			pathBuilder.BeginFigure(point.ToVector());
+
+			Vector2 vector = canvasItemsLayer.Scale(projection.ToCartesian(trackPoints[0].Location));
+			pathBuilder.BeginFigure(vector);
 			for (int i = 1; i < trackPoints.Length; i++)
 			{
 				TrackPoint trackPoint = trackPoints[i];
-				point = projection.ToCartesian(trackPoint.Location);
-				pathBuilder.AddLine(point.ToVector());
+				vector = canvasItemsLayer.Scale(projection.ToCartesian(trackPoint.Location));
+				pathBuilder.AddLine(vector);
 			}
 			pathBuilder.EndFigure(CanvasFigureLoop.Open);
 			return CanvasGeometry.CreatePath(pathBuilder);
@@ -134,7 +136,7 @@ namespace OutdoorTraker.Controls
 			set { SetValue(TracksProperty, value); }
 		}
 
-		protected override void DrawInternal(CanvasDrawingSession drawingSession, Map parentMap)
+		public override void Draw(CanvasDrawingSession drawingSession, CanvasItemsLayer canvasItemsLayer)
 		{
 			if (Tracks == null)
 			{
@@ -142,13 +144,18 @@ namespace OutdoorTraker.Controls
 			}
 			if (!_isPathValid)
 			{
-				BuildPathGeometry(drawingSession.Device);
+				BuildPathGeometry(drawingSession.Device, canvasItemsLayer);
 			}
-			float scale = (float)(2 / parentMap.ViewPortProjection.GetZoomFactor(parentMap.ZoomLevel));
+			//float scale = (float)(2 / parentMap.ViewPortProjection.GetZoomFactor(parentMap.ZoomLevel));
 			foreach (CanvasGeometry trackPath in _trackPaths)
 			{
-				drawingSession.DrawGeometry(trackPath, Colors.Red, scale);
+				drawingSession.DrawGeometry(trackPath, Colors.Red);
 			}
+		}
+
+		public override void InvalidateInternal()
+		{
+			_isPathValid = false;
 		}
 	}
 }

@@ -1,10 +1,10 @@
 using System;
+using System.Numerics;
 
 using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls.Maps;
 
 using Microsoft.Graphics.Canvas;
-
-using UniversalMapControl;
 
 namespace OutdoorTraker.Controls
 {
@@ -12,7 +12,7 @@ namespace OutdoorTraker.Controls
 	{
 		public event EventHandler LayoutChanged;
 
-		public abstract void Draw(CanvasDrawingSession drawingSession, Map parentMap, float scale);
+		public abstract void Draw(CanvasDrawingSession drawingSession, CanvasItemsLayer canvasItemsLayer);
 
 		public void ParentInvalidated()
 		{

@@ -56,6 +56,10 @@ namespace OutdoorTraker.Views.EditTrack
 
 		private async Task CreateNewTrack()
 		{
+			if (_trackRecorder.IsTracking)
+			{
+				_trackRecorder.StopTracking();
+			}
 			_unitOfWork.Tracks.Add(Track);
 			await _unitOfWork.SaveChangesAsync();
 			await _trackRecorder.StartTracking(Track);

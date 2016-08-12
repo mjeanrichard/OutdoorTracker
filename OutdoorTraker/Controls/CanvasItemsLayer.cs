@@ -36,24 +36,21 @@ namespace OutdoorTraker.Controls
 
 		private void ItemLayoutChanged(object sender, EventArgs e)
 		{
-			base.Invalidate();
+			Invalidate();
 		}
 
 		public ObservableCollection<ICanvasItem> Items { get; set; }
 
 		protected override void DrawInternal(CanvasDrawingSession drawingSession, Map parentMap)
 		{
-			float scale = (float)(2 / parentMap.ViewPortProjection.GetZoomFactor(parentMap.ZoomLevel));
-
 			foreach (ICanvasItem canvasItem in Items)
 			{
-				canvasItem.Draw(drawingSession, parentMap, scale);
+				canvasItem.Draw(drawingSession, this);
 			}
 		}
 
-		public override void Invalidate()
+		protected override void InvalidateScaledValues()
 		{
-			base.Invalidate();
 			foreach (ICanvasItem canvasItem in Items)
 			{
 				canvasItem.ParentInvalidated();

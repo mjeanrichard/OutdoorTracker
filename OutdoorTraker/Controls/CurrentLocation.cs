@@ -8,7 +8,6 @@ using Microsoft.Graphics.Canvas;
 
 using OutdoorTraker.Views.Map;
 
-using UniversalMapControl;
 using UniversalMapControl.Interfaces;
 
 namespace OutdoorTraker.Controls
@@ -39,9 +38,6 @@ namespace OutdoorTraker.Controls
 		private bool _isGeometryValid;
 		private Vector2 _locationVector;
 		private float _accuracyRadius;
-		private float _innerCircleWidth;
-		private float _outerCircleWidth;
-		private float _circleRadius;
 		private Color _innerCircleColor;
 		private Color _accuracyCircleColor;
 		private Color _outerCircleColor;
@@ -53,9 +49,9 @@ namespace OutdoorTraker.Controls
 			HighAccuracyColor = Colors.ForestGreen;
 			LowAccuracyColor = Colors.Orange;
 			NoneAccuracyColor = Colors.Red;
-			InnerCircleWidth = 1.5f;
-			OuterCircleWidth = 2.5f;
-			CircleRadius = 6;
+			InnerCircleWidth = 3f;
+			OuterCircleWidth = 5f;
+			CircleRadius = 12;
 			LocationCircleAlpha = 170;
 			AccuracyCircleAlpha = 125;
 		}
@@ -108,7 +104,7 @@ namespace OutdoorTraker.Controls
 			_isGeometryValid = false;
 		}
 
-		public override void Draw(CanvasDrawingSession drawingSession, Map parentMap, float scale)
+		public override void Draw(CanvasDrawingSession drawingSession, CanvasItemsLayer canvasItemsLayer)
 		{
 			if (!_isGeometryValid)
 			{
@@ -117,20 +113,20 @@ namespace OutdoorTraker.Controls
 				{
 					return;
 				}
-				Recalculate(parentMap, scale, location);
+				Recalculate(canvasItemsLayer, location);
 			}
 			if (ShowAccuracy)
 			{
-				drawingSession.FillCircle(_locationVector, _accuracyRadius, _accuracyCircleColor);
+				drawingSession.FillCircle(_locationVector, canvasItemsLayer.Scale(_accuracyRadius), _accuracyCircleColor);
 			}
 			if (ShowCurrentPosition)
 			{
-				drawingSession.DrawCircle(_locationVector, _circleRadius, _outerCircleColor, _outerCircleWidth);
-				drawingSession.DrawCircle(_locationVector, _circleRadius, _innerCircleColor, _innerCircleWidth);
+				drawingSession.DrawCircle(_locationVector, CircleRadius, _outerCircleColor, OuterCircleWidth);
+				drawingSession.DrawCircle(_locationVector, CircleRadius, _innerCircleColor, InnerCircleWidth);
 			}
 		}
 
-		private void Recalculate(Map parentMap, float scale, ILocation location)
+		private void Recalculate(CanvasItemsLayer canvasItemsLayer, ILocation location)
 		{
 			_accuracyCircleColor = CreateAlphaColor(AccuracyCircleColor, AccuracyCircleAlpha);
 			_outerCircleColor = CreateAlphaColor(OuterCircleColor, LocationCircleAlpha);
@@ -150,12 +146,11 @@ namespace OutdoorTraker.Controls
 					throw new ArgumentOutOfRangeException();
 			}
 
-			_locationVector = parentMap.ViewPortProjection.ToCartesian(location).ToVector();
-			double accuracyScale = parentMap.ViewPortProjection.CartesianScaleFactor(location);
-			_accuracyRadius = (float)(AccuracyMeter * accuracyScale);
-			_innerCircleWidth = InnerCircleWidth * scale;
-			_outerCircleWidth = OuterCircleWidth * scale;
-			_circleRadius = CircleRadius * scale;
+			IProjection viewPortProjection = canvasItemsLayer.ParentMap.ViewPortProjection;
+			_locationVector = canvasItemsLayer.Scale(viewPortProjection.ToCartesian(location));
+
+			double accuracyScale = viewPortProjection.CartesianScaleFactor(location);
+			_accuracyRadius = canvasItemsLayer.Scale(AccuracyMeter * accuracyScale);
 			_isGeometryValid = true;
 		}
 	}
