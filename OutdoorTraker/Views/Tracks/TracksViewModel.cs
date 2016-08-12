@@ -14,6 +14,7 @@ using Microsoft.EntityFrameworkCore;
 
 using OutdoorTraker.Common;
 using OutdoorTraker.Database;
+using OutdoorTraker.Helpers;
 using OutdoorTraker.Services;
 using OutdoorTraker.Tracks;
 
@@ -169,28 +170,35 @@ namespace OutdoorTraker.Views.Tracks
 		{
 			using (MarkBusy())
 			{
-				FileOpenPicker openPicker = new FileOpenPicker();
-				openPicker.ViewMode = PickerViewMode.List;
-				openPicker.SuggestedStartLocation = PickerLocationId.Desktop;
-				openPicker.FileTypeFilter.Add(".gpx");
-				openPicker.FileTypeFilter.Add(".kml");
-				StorageFile file = await openPicker.PickSingleFileAsync();
-				if (file != null)
+				try
 				{
-					IRandomAccessStreamWithContentType xmlStream = await file.OpenReadAsync();
-					IEnumerable<Track> tracks;
-					if (Path.GetExtension(file.Name).Equals(".kml", StringComparison.OrdinalIgnoreCase))
+					FileOpenPicker openPicker = new FileOpenPicker();
+					openPicker.ViewMode = PickerViewMode.List;
+					openPicker.SuggestedStartLocation = PickerLocationId.Desktop;
+					openPicker.FileTypeFilter.Add(".gpx");
+					openPicker.FileTypeFilter.Add(".kml");
+					StorageFile file = await openPicker.PickSingleFileAsync();
+					if (file != null)
 					{
-						tracks = await _trackImporter.ImportKml(xmlStream.AsStreamForRead(), file.Name);
+						IRandomAccessStreamWithContentType xmlStream = await file.OpenReadAsync();
+						IEnumerable<Track> tracks;
+						if (Path.GetExtension(file.Name).Equals(".kml", StringComparison.OrdinalIgnoreCase))
+						{
+							tracks = await _trackImporter.ImportKml(xmlStream.AsStreamForRead(), file.Name);
+						}
+						else
+						{
+							tracks = await _trackImporter.ImportGpx(xmlStream.AsStreamForRead(), file.Name);
+						}
+						foreach (Track track in tracks)
+						{
+							Tracks.Add(track);
+						}
 					}
-					else
-					{
-						tracks = await _trackImporter.ImportGpx(xmlStream.AsStreamForRead(), file.Name);
-					}
-					foreach (Track track in tracks)
-					{
-						Tracks.Add(track);
-					}
+				}
+				catch (Exception ex)
+				{
+					await DialogHelper.ShowErrorAndReport("Could not import the selected tracks.", "Error importing tracks", ex);
 				}
 			}
 		}

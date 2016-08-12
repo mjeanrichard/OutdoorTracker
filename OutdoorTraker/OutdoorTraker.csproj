@@ -132,6 +132,7 @@
     <Compile Include="Database\IUnitOfWork.cs" />
     <Compile Include="Database\OutdoorTrakerContext.cs" />
     <Compile Include="Database\SqlBasedScript.cs" />
+    <Compile Include="Helpers\DialogHelper.cs" />
     <Compile Include="Layers\LayerDefinition.cs" />
     <Compile Include="Layers\MapDefinition.cs" />
     <Compile Include="Migrations\002_AddMapDefinitions.cs" />
@@ -155,8 +156,6 @@
     <Compile Include="Tracks\Track.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\GeoLocationService.cs" />
-    <Compile Include="Common\UserMessageEventArgs.cs" />
-    <Compile Include="Common\UserMessageType.cs" />
     <Compile Include="Services\TrackRecorder.cs" />
     <Compile Include="Tracks\TrackPoint.cs" />
     <Compile Include="Services\MapDefinitionManager.cs" />

@@ -75,7 +75,7 @@
 	
 	<Page.BottomAppBar>
 		<CommandBar>
-			<AppBarButton Label="Position" Command="{Binding AddMapCommand}" Icon="Add" />
+			<AppBarButton Label="Import Layers" Command="{Binding AddMapCommand}" Icon="Add" />
 		</CommandBar>
 	</Page.BottomAppBar>
 </layers:LayersPageBase>

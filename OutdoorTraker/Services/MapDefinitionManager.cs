@@ -1,16 +1,19 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.ServiceModel;
 using System.Threading.Tasks;
 
 using Windows.UI.Popups;
 
 using Microsoft.EntityFrameworkCore;
+using Microsoft.HockeyApp;
 
 using Newtonsoft.Json;
 
 using OutdoorTraker.Common;
 using OutdoorTraker.Database;
+using OutdoorTraker.Helpers;
 using OutdoorTraker.Layers;
 
 using UniversalMapControl.Interfaces;
@@ -115,14 +118,26 @@ namespace OutdoorTraker.Services
 		{
 			using (IUnitOfWork unitOfWork = _unitOfWorkFactory.Create())
 			{
-				await Import(json, unitOfWork, forceOverwrite);
-				await unitOfWork.SaveChangesAsync();
+				try
+				{
+					await Import(json, unitOfWork, forceOverwrite);
+					await unitOfWork.SaveChangesAsync();
+				}
+				catch (JsonReaderException)
+				{
+					await DialogHelper.ShowError($"The selected layer definition could not be imported, it is not valid.", $"Cannot import map definition");
+				}
+				catch (Exception ex)
+				{
+					await DialogHelper.ShowErrorAndReport($"The selected layer definition could not be imported.", $"Cannot import map definition", ex, new Dictionary<string, string> { { "Json", json } });
+				}
 			}
 		}
 
 		public async Task Import(string json, IUnitOfWork unitOfWork, bool forceOverwrite = false)
 		{
 			MapDefinition[] maps = JsonConvert.DeserializeObject<MapDefinition[]>(json);
+
 			List<MapConfiguration> allConfigs = await unitOfWork.MapConfigurations.ToListAsync();
 
 			foreach (MapDefinition map in maps)

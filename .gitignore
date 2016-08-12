@@ -31,3 +31,5 @@ _ReSharper*/
 .vs/
 OutdoorTraker/AppPackages/
 OutdoorTraker/BundleArtifacts/
+OutdoorTraker/*.appx
+OutdoorTraker/_pkginfo.txt
