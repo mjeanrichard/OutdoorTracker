@@ -67,7 +67,7 @@ namespace OutdoorTraker.Services
 				IsLocationValid = false;
 				LocationAccuracy = LocationAccuracy.None;
 			}
-			DispatcherHelper.InvokeOnUI(() => OnPropertyChanged(nameof(State)));
+			DispatcherHelper.InvokeOnUI(SendPropertyChangeNotifications);
 		}
 
 		public void UpdatePosition(Geoposition positionData)

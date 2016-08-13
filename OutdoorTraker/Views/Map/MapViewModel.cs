@@ -51,7 +51,7 @@ namespace OutdoorTraker.Views.Map
 			_readonlyUnitOfWork = readonlyUnitOfWork;
 			_trackRecorder.TrackUpdated += (s, e) => TrackRecorderUpdated();
 
-			GotoGpsCommand = new RelayCommand(GotoCurrentLocation);
+			GotoGpsCommand = new RelayCommand(GotoCurrentLocation, () => LocationModel.LocationAccuracy != LocationAccuracy.None);
 			StopTrackingCommand = new RelayCommand(StopTracking);
 			ShowTracksCommand = new RelayCommand(() => _navigationService.NavigateToTracks());
 			ShowSettingsCommand = new RelayCommand(() => _navigationService.NavigateToSettings());
@@ -186,6 +186,7 @@ namespace OutdoorTraker.Views.Map
 		{
 			if (e.PropertyName == nameof(LocationData.LocationAccuracy) || e.PropertyName == nameof(LocationData.Accuracy))
 			{
+				GotoGpsCommand.RaiseCanExecuteChanged();
 				OnPropertyChanged(nameof(ShowAccuracyCircle));
 			}
 			else if (e.PropertyName == nameof(LocationData.IsLocationValid))

@@ -1,6 +1,8 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Threading.Tasks;
 
+using Windows.Devices.Geolocation;
 using Windows.UI.Xaml;
 
 using OutdoorTraker.Common;
@@ -11,7 +13,6 @@ namespace OutdoorTraker.Views.LocationInfo
 	public class LocationInfoViewModel : BaseViewModel
 	{
 		private readonly GeoLocationService _geoLocationService;
-		private DispatcherTimer _timer;
 
 		public LocationInfoViewModel()
 		{
@@ -23,21 +24,24 @@ namespace OutdoorTraker.Views.LocationInfo
 			_geoLocationService = geoLocationService;
 			Location = _geoLocationService.CurrentLocation;
 
-			_timer = new DispatcherTimer();
-			_timer.Interval = TimeSpan.FromSeconds(1);
-			_timer.Tick += OnTimerTick;
+			Location.PropertyChanged += LocationOnPropertyChanged;
+		}
+
+		private void LocationOnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
+		{
+			OnPropertyChanged(nameof(ShowLocationSettingsInfo));
+		}
+
+		public bool ShowLocationSettingsInfo
+		{
+			get { return _geoLocationService.CurrentLocation.State == PositionStatus.NotAvailable; }
 		}
 
 		public LocationData Location { get; set; }
 
-		private void OnTimerTick(object sender, object e)
-		{
-		}
-
 		protected override async Task InitializeInternal()
 		{
 			await _geoLocationService.Initialize();
-			_timer.Start();
 		}
 	}
 }

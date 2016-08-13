@@ -25,6 +25,13 @@
 		<TextBlock Grid.Row="0" FontSize="24">Location Info</TextBlock>
 		
 		<StackPanel Grid.Row="1" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+			<TextBlock Visibility="{x:Bind ViewModel.ShowLocationSettingsInfo, Converter={StaticResource boolToVis}}">
+				<Run Text="This app is not able to access the location. Go to " />
+				<Hyperlink NavigateUri="ms-settings:privacy-location">
+					<Run Text="Settings" />
+				</Hyperlink>
+				<Run Text=" to check the location privacy settings." />
+			</TextBlock>
 			<controls:HeaderControl Header="Location Service State">
 				<StackPanel Orientation="Horizontal">
 					<TextBlock Text="{x:Bind ViewModel.Location.State, Mode=OneWay}" />

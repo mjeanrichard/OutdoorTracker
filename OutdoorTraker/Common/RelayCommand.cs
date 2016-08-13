@@ -1,5 +1,7 @@
 ﻿using System;
 
+using Windows.UI.Xaml;
+
 namespace OutdoorTraker.Common
 {
 	/// <summary>
@@ -50,6 +52,11 @@ namespace OutdoorTraker.Common
 			return _canExecute == null ? true : _canExecute();
 		}
 
+		public Visibility Visibility
+		{
+			get { return CanExecute() ? Visibility.Visible : Visibility.Collapsed; }
+		}
+
 		/// <summary>
 		///     Executes the <see cref="RelayCommand" /> on the current command target.
 		/// </summary>
@@ -59,6 +66,12 @@ namespace OutdoorTraker.Common
 		public override void Execute(object parameter = null)
 		{
 			_execute();
+		}
+
+		public override void RaiseCanExecuteChanged()
+		{
+			base.RaiseCanExecuteChanged();
+			OnPropertyChanged(nameof(Visibility));
 		}
 	}
 }

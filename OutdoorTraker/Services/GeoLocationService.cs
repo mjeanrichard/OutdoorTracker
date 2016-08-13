@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using Windows.Devices.Geolocation;
 using Windows.Devices.Sensors;
+
+using Microsoft.HockeyApp;
 
 namespace OutdoorTraker.Services
 {
@@ -10,7 +13,7 @@ namespace OutdoorTraker.Services
 	{
 		private Geolocator _geolocator;
 		private Compass _compass;
-		
+
 		public event EventHandler PositionChanged;
 
 		public GeoLocationService()
@@ -24,12 +27,27 @@ namespace OutdoorTraker.Services
 
 		public async Task Initialize()
 		{
-			_compass = Compass.GetDefault();
-			if (_compass != null)
+			if (!HasCompass)
 			{
-				_compass.ReportInterval = _compass.MinimumReportInterval > 16 ? _compass.MinimumReportInterval : 16;
-				_compass.ReadingChanged += CompassReadinChanged;
-				HasCompass = true;
+				_compass = Compass.GetDefault();
+				if (_compass != null)
+				{
+					try
+					{
+						_compass.ReportInterval = _compass.MinimumReportInterval > 16 ? _compass.MinimumReportInterval : 16;
+						_compass.ReadingChanged += CompassReadinChanged;
+						HasCompass = true;
+					}
+					catch (Exception ex)
+					{
+						HockeyClient.Current.TrackException(ex, new Dictionary<string, string> { { "Event", "CompassDisabled" } });
+						HasCompass = false;
+					}
+				}
+				else
+				{
+					HockeyClient.Current.TrackEvent("No Compass");
+				}
 			}
 
 			if (CurrentLocation.State == PositionStatus.Ready || CurrentLocation.State == PositionStatus.Initializing)
@@ -51,7 +69,11 @@ namespace OutdoorTraker.Services
 					break;
 
 				case GeolocationAccessStatus.Denied:
+					HockeyClient.Current.TrackEvent("Geo Location Denied.");
+					CurrentLocation.UpdateState(PositionStatus.NotAvailable);
+					break;
 				case GeolocationAccessStatus.Unspecified:
+					HockeyClient.Current.TrackEvent("Geo Location state unspecified.");
 					CurrentLocation.UpdateState(PositionStatus.NotAvailable);
 					break;
 			}
