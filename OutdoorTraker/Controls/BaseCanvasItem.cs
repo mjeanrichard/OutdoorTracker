@@ -6,6 +6,8 @@ using Windows.UI.Xaml.Controls.Maps;
 
 using Microsoft.Graphics.Canvas;
 
+using OutdoorTraker.Common;
+
 namespace OutdoorTraker.Controls
 {
 	public abstract class BaseCanvasItem : DependencyObject, ICanvasItem
@@ -31,7 +33,7 @@ namespace OutdoorTraker.Controls
 		protected virtual void OnLayoutChanged()
 		{
 			InvalidateInternal();
-			LayoutChanged?.Invoke(this, EventArgs.Empty);
+			DispatcherHelper.InvokeOnUI(() => LayoutChanged?.Invoke(this, EventArgs.Empty));
 		}
 	}
 }

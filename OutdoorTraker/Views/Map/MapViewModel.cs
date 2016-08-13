@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
@@ -235,9 +236,13 @@ namespace OutdoorTraker.Views.Map
 		{
 			using (MarkBusy())
 			{
-				Tracks = new ObservableCollection<Track>(await _readonlyUnitOfWork.Tracks.Where(t => t.ShowOnMap).Include(t => t.Points).ToListAsync());
-				TrackRecorderUpdated();
-				OnPropertyChanged(nameof(Tracks));
+				List<Track> collection = await _readonlyUnitOfWork.Tracks.Where(t => t.ShowOnMap).Include(t => t.Points).ToListAsync().ConfigureAwait(false);
+				DispatcherHelper.InvokeOnUI(() =>
+				{
+					Tracks = new ObservableCollection<Track>(collection);
+					TrackRecorderUpdated();
+					OnPropertyChanged(nameof(Tracks));
+				});
 			}
 		}
 
