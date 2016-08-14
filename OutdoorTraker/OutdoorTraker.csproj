@@ -16,8 +16,8 @@
     <MinimumVisualStudioVersion>14</MinimumVisualStudioVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <PackageCertificateKeyFile>OutdoorTraker_StoreKey.pfx</PackageCertificateKeyFile>
-    <PackageCertificateThumbprint>3C5E0FFFA9B4A329183DA777FA2EC9B228A2A01F</PackageCertificateThumbprint>
+    <PackageCertificateKeyFile>Assets\TempKey.pfx</PackageCertificateKeyFile>
+    <PackageCertificateThumbprint>5421384958344F63CC464515924E924CCFC327F3</PackageCertificateThumbprint>
     <AppxAutoIncrementPackageRevision>False</AppxAutoIncrementPackageRevision>
     <AppxBundle>Always</AppxBundle>
     <AppxBundlePlatforms>x86|x64|arm</AppxBundlePlatforms>
@@ -99,7 +99,6 @@
     <None Include="Layers\LayerDefinition.json">
       <SubType>Designer</SubType>
     </None>
-    <None Include="OutdoorTraker_StoreKey.pfx" />
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
@@ -192,7 +191,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\InitialMapLayers.json" />
-    <None Include="Package.StoreAssociation.xml" />
     <Content Include="Assets\NewStoreLogo.scale-100.png" />
     <Content Include="Assets\NewStoreLogo.scale-125.png" />
     <Content Include="Assets\NewStoreLogo.scale-150.png" />
