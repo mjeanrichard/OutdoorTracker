@@ -29,7 +29,11 @@ _ReSharper*/
 [Tt]est[Rr]esult*
 *.lock.json
 .vs/
-OutdoorTraker/AppPackages/
-OutdoorTraker/BundleArtifacts/
-OutdoorTraker/*.appx
-OutdoorTraker/_pkginfo.txt
+OutdoorTracker/AppPackages/
+OutdoorTracker/BundleArtifacts/
+OutdoorTracker/*.appx
+OutdoorTracker/_pkginfo.txt
+OutdoorTracker/*_StoreKey.pfx
+Build/StoreBuild.properties
+Build/MSBuildTasks*
+OutdoorTracker/Package.StoreAssociation.xml

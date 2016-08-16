@@ -1,0 +1,127 @@
+﻿<tracks:TracksPageBase
+	x:Class="OutdoorTracker.Views.Tracks.TracksPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:tracks="using:OutdoorTracker.Views.Tracks"
+    xmlns:tracksData="using:OutdoorTracker.Tracks"
+    xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
+    xmlns:core="using:Microsoft.Xaml.Interactions.Core"
+    mc:Ignorable="d">
+
+	<Page.Resources>
+		<!-- Narrow Layout -->
+		<ItemsPanelTemplate x:Key="NarrowPanel">
+			<ItemsStackPanel Orientation="Vertical" HorizontalAlignment="Stretch" />
+		</ItemsPanelTemplate>
+		<Style TargetType="GridViewItem" x:Key="NarrowItem">
+			<Setter Property="HorizontalContentAlignment" Value="Stretch" />
+			<Setter Property="Width" Value="Auto" />
+		</Style>
+		<Style TargetType="GridView" x:Key="NarrowGridView">
+			<Setter Property="ScrollViewer.HorizontalScrollMode" Value="Disabled" />
+			<Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Hidden" />
+			<Setter Property="ScrollViewer.VerticalScrollMode" Value="Enabled" />
+			<Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />
+		</Style>
+
+		<!-- Wide Layout -->
+		<ItemsPanelTemplate x:Key="WidePanel">
+			<ItemsWrapGrid Orientation="Vertical" HorizontalAlignment="Stretch" />
+		</ItemsPanelTemplate>
+		<Style TargetType="GridViewItem" x:Key="WideItem">
+			<Setter Property="HorizontalContentAlignment" Value="Stretch" />
+			<Setter Property="Width" Value="720" />
+		</Style>
+		<Style TargetType="GridView" x:Key="WideGridView">
+			<Setter Property="ScrollViewer.HorizontalScrollMode" Value="Enabled" />
+			<Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto" />
+			<Setter Property="ScrollViewer.VerticalScrollMode" Value="Disabled" />
+			<Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Hidden" />
+		</Style>
+	</Page.Resources>
+
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto" />
+			<RowDefinition />
+		</Grid.RowDefinitions>
+
+		<VisualStateManager.VisualStateGroups>
+			<VisualStateGroup>
+				<VisualState x:Name="Wide">
+					<VisualState.StateTriggers>
+						<AdaptiveTrigger MinWindowWidth="720" />
+					</VisualState.StateTriggers>
+					<VisualState.Setters>
+						<Setter Target="tracksView.ItemsPanel" Value="{StaticResource WidePanel}" />
+						<Setter Target="tracksView.ItemContainerStyle" Value="{StaticResource WideItem}" />
+						<Setter Target="tracksView.Style" Value="{StaticResource WideGridView}" />
+					</VisualState.Setters>
+				</VisualState>
+				<VisualState x:Name="Narrow">
+					<VisualState.StateTriggers>
+						<AdaptiveTrigger MinWindowWidth="0" />
+					</VisualState.StateTriggers>
+					<VisualState.Setters>
+						<Setter Target="tracksView.ItemsPanel" Value="{StaticResource NarrowPanel}" />
+						<Setter Target="tracksView.ItemContainerStyle" Value="{StaticResource NarrowItem}" />
+						<Setter Target="tracksView.Style" Value="{StaticResource NarrowGridView}" />
+					</VisualState.Setters>
+				</VisualState>
+			</VisualStateGroup>
+		</VisualStateManager.VisualStateGroups>
+
+
+		<TextBlock Grid.Row="0" FontSize="24">Tracks</TextBlock>
+		
+		<GridView x:Name="tracksView" Grid.Row="1" VerticalAlignment="Top" SelectionMode="Multiple"
+				  ItemsSource="{x:Bind ViewModel.Tracks}"
+				  SelectionChanged="TracksView_OnSelectionChanged"
+				  >
+			<GridView.ItemContainerStyle>
+				<Style TargetType="GridViewItem">
+					<Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+					<Setter Property="HorizontalAlignment" Value="Stretch"/>
+				</Style>
+			</GridView.ItemContainerStyle>
+			<GridView.ItemTemplate>
+				<DataTemplate x:DataType="tracksData:Track">
+					<Grid Margin="5,5,10,5">
+						<Grid.ColumnDefinitions>
+							<ColumnDefinition Width="*"/>
+							<ColumnDefinition Width="Auto"/>
+						</Grid.ColumnDefinitions>
+						<!--<FlyoutBase.AttachedFlyout>
+							<MenuFlyout x:Name="tracksMenuFlyout">
+								<MenuFlyout.Items>
+									<MenuFlyoutItem x:Name="Edit" Text="Edit"/>
+									<MenuFlyoutItem x:Name="Remove" Text="Delete" Command="{Binding DataContext.DeleteTrackCommand, ElementName=tracksView}" />
+								</MenuFlyout.Items>
+							</MenuFlyout>
+						</FlyoutBase.AttachedFlyout>-->
+						<TextBlock Grid.Column="0" Text="{x:Bind Name, Mode=OneTime}" />
+						<ToggleSwitch Grid.Column="1" IsOn="{x:Bind ShowOnMap, Mode=TwoWay}" OnContent="Visible" OffContent="Hidden" Margin="0,0,-40,0">
+							<interactivity:Interaction.Behaviors>
+								<core:EventTriggerBehavior EventName="Toggled">
+									<core:InvokeCommandAction Command="{Binding DataContext.ToggleTrackVisibilityCommand, ElementName=tracksView}" CommandParameter="{x:Bind Mode=OneTime}" />
+								</core:EventTriggerBehavior>
+							</interactivity:Interaction.Behaviors>
+						</ToggleSwitch>
+					</Grid>
+				</DataTemplate>
+			</GridView.ItemTemplate>
+		</GridView>
+
+	</Grid>
+
+	<Page.BottomAppBar>
+		<CommandBar>
+			<AppBarButton Label="Start Tracking" Command="{x:Bind ViewModel.StartTrackingCommand, Mode=OneTime}" Icon="Add" />
+			<AppBarButton Label="Import GPX" Command="{x:Bind ViewModel.ImportGpxTrackCommand, Mode=OneTime}" Icon="OpenLocal" />
+			<AppBarButton Label="Edit" Command="{x:Bind ViewModel.EditTrackCommand, Mode=OneTime}" Icon="Edit" />
+			<AppBarButton Label="Delete" Command="{x:Bind ViewModel.DeleteTrackCommand, Mode=OneTime}" Icon="Delete" />
+		</CommandBar>
+	</Page.BottomAppBar>
+</tracks:TracksPageBase>
