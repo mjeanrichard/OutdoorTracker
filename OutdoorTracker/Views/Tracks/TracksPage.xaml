@@ -1,14 +1,14 @@
 ﻿<tracks:TracksPageBase
 	x:Class="OutdoorTracker.Views.Tracks.TracksPage"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:tracks="using:OutdoorTracker.Views.Tracks"
-    xmlns:tracksData="using:OutdoorTracker.Tracks"
-    xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
-    xmlns:core="using:Microsoft.Xaml.Interactions.Core"
-    mc:Ignorable="d">
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:tracks="using:OutdoorTracker.Views.Tracks"
+	xmlns:tracksData="using:OutdoorTracker.Tracks"
+	xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
+	xmlns:core="using:Microsoft.Xaml.Interactions.Core"
+	mc:Ignorable="d">
 
 	<Page.Resources>
 		<!-- Narrow Layout -->
@@ -75,23 +75,22 @@
 
 
 		<TextBlock Grid.Row="0" FontSize="24">Tracks</TextBlock>
-		
+
 		<GridView x:Name="tracksView" Grid.Row="1" VerticalAlignment="Top" SelectionMode="Multiple"
-				  ItemsSource="{x:Bind ViewModel.Tracks}"
-				  SelectionChanged="TracksView_OnSelectionChanged"
-				  >
+		          ItemsSource="{x:Bind ViewModel.Tracks}"
+		          SelectionChanged="TracksView_OnSelectionChanged">
 			<GridView.ItemContainerStyle>
 				<Style TargetType="GridViewItem">
-					<Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-					<Setter Property="HorizontalAlignment" Value="Stretch"/>
+					<Setter Property="HorizontalContentAlignment" Value="Stretch" />
+					<Setter Property="HorizontalAlignment" Value="Stretch" />
 				</Style>
 			</GridView.ItemContainerStyle>
 			<GridView.ItemTemplate>
 				<DataTemplate x:DataType="tracksData:Track">
 					<Grid Margin="5,5,10,5">
 						<Grid.ColumnDefinitions>
-							<ColumnDefinition Width="*"/>
-							<ColumnDefinition Width="Auto"/>
+							<ColumnDefinition Width="*" />
+							<ColumnDefinition Width="Auto" />
 						</Grid.ColumnDefinitions>
 						<!--<FlyoutBase.AttachedFlyout>
 							<MenuFlyout x:Name="tracksMenuFlyout">

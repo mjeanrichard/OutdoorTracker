@@ -1,4 +1,20 @@
-﻿using System;
+﻿// 
+// Outdoor Tracker - Copyright(C) 2016 Meinard Jean-Richard
+//  
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//  
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//  
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
@@ -39,30 +55,6 @@ namespace OutdoorTracker.Views.Tracks
 			_selectedTracks = new List<Track>();
 		}
 
-		private async Task StartTracking()
-		{
-			if (_trackRecorder.IsTracking)
-			{
-				if (!await AskStopTracking())
-				{
-					return;
-				}
-			}
-			_navigationService.NavigateToNewTrack();
-		}
-
-
-		private async Task ToggleTrackVisibility(Track track)
-		{
-			if (track != null)
-			{
-				track.ShowOnMap = !track.ShowOnMap;
-				await _unitOfWork.SaveChangesAsync();
-			}
-		}
-
-		public ParameterCommand<Track> ToggleTrackVisibilityCommand { get; set; }
-
 		public TracksViewModel(TrackImporter trackImporter, IUnitOfWork unitOfWork, NavigationService navigationService, TrackRecorder trackRecorder)
 			: this()
 		{
@@ -71,6 +63,8 @@ namespace OutdoorTracker.Views.Tracks
 			_unitOfWork = unitOfWork;
 			_navigationService = navigationService;
 		}
+
+		public ParameterCommand<Track> ToggleTrackVisibilityCommand { get; set; }
 
 		public ObservableCollection<Track> Tracks
 		{
@@ -99,6 +93,28 @@ namespace OutdoorTracker.Views.Tracks
 		}
 
 		public Track SelectedTrack { get; set; }
+
+		private async Task StartTracking()
+		{
+			if (_trackRecorder.IsTracking)
+			{
+				if (!await AskStopTracking())
+				{
+					return;
+				}
+			}
+			_navigationService.NavigateToNewTrack();
+		}
+
+
+		private async Task ToggleTrackVisibility(Track track)
+		{
+			if (track != null)
+			{
+				track.ShowOnMap = !track.ShowOnMap;
+				await _unitOfWork.SaveChangesAsync();
+			}
+		}
 
 		private async Task DeleteTrack()
 		{

@@ -1,10 +1,24 @@
-﻿using System;
+﻿// 
+// Outdoor Tracker - Copyright(C) 2016 Meinard Jean-Richard
+//  
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//  
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//  
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Numerics;
-using System.Windows.Input;
 
 using Windows.UI;
 using Windows.UI.Xaml;
@@ -12,20 +26,14 @@ using Windows.UI.Xaml;
 using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.Geometry;
 
-using OutdoorTracker.Common;
 using OutdoorTracker.Tracks;
 
-using UniversalMapControl;
 using UniversalMapControl.Interfaces;
 
 namespace OutdoorTracker.Controls
 {
 	public class TracksLayer : BaseCanvasItem
 	{
-		public static readonly DependencyProperty TracksProperty = DependencyProperty.Register("Tracks", typeof(object), typeof(TracksLayer), new PropertyMetadata(default(object), TracksChanged));
-
-		private volatile bool _isPathValid = false;
-
 		private static void TracksChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
 		{
 			TracksLayer tracksLayer = d as TracksLayer;
@@ -33,6 +41,18 @@ namespace OutdoorTracker.Controls
 			{
 				tracksLayer.OnTracksChanged((ObservableCollection<Track>)e.OldValue, (ObservableCollection<Track>)e.NewValue);
 			}
+		}
+
+		public static readonly DependencyProperty TracksProperty = DependencyProperty.Register("Tracks", typeof(object), typeof(TracksLayer), new PropertyMetadata(default(object), TracksChanged));
+
+		private volatile bool _isPathValid = false;
+
+		private List<CanvasGeometry> _trackPaths;
+
+		public ObservableCollection<Track> Tracks
+		{
+			get { return (ObservableCollection<Track>)GetValue(TracksProperty); }
+			set { SetValue(TracksProperty, value); }
 		}
 
 		private void OnTracksChanged(ObservableCollection<Track> oldValue, ObservableCollection<Track> newValue)
@@ -97,7 +117,7 @@ namespace OutdoorTracker.Controls
 					trackPath.Dispose();
 				}
 			}
-			
+
 			IProjection projection = canvasItemsLayer.ParentMap.ViewPortProjection;
 
 			foreach (Track track in Tracks)
@@ -126,14 +146,6 @@ namespace OutdoorTracker.Controls
 			}
 			pathBuilder.EndFigure(CanvasFigureLoop.Open);
 			return CanvasGeometry.CreatePath(pathBuilder);
-		}
-
-		private List<CanvasGeometry> _trackPaths;
-
-		public ObservableCollection<Track> Tracks
-		{
-			get { return (ObservableCollection<Track>)GetValue(TracksProperty); }
-			set { SetValue(TracksProperty, value); }
 		}
 
 		public override void Draw(CanvasDrawingSession drawingSession, CanvasItemsLayer canvasItemsLayer)

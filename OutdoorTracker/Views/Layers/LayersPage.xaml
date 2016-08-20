@@ -1,11 +1,11 @@
 ﻿<layers:LayersPageBase
 	x:Class="OutdoorTracker.Views.Layers.LayersPage"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:layers="using:OutdoorTracker.Views.Layers"
-    
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:layers="using:OutdoorTracker.Views.Layers"
+
 	mc:Ignorable="d">
 
 	<Page.Resources>
@@ -33,13 +33,12 @@
 			<RowDefinition Height="Auto" />
 			<RowDefinition />
 		</Grid.RowDefinitions>
-		
+
 		<TextBlock Grid.Row="0" FontSize="24">Layers</TextBlock>
 
-		<GridView x:Name="layersView" Grid.Row="1" VerticalAlignment="Top" SelectionMode="Single" 
-				  ItemClick="LayersGridView_OnItemClick" IsItemClickEnabled="True"
-				  ItemsSource="{x:Bind ViewModel.Layers}"
-				  >
+		<GridView x:Name="layersView" Grid.Row="1" VerticalAlignment="Top" SelectionMode="Single"
+		          ItemClick="LayersGridView_OnItemClick" IsItemClickEnabled="True"
+		          ItemsSource="{x:Bind ViewModel.Layers}">
 			<GridView.ItemTemplate>
 				<DataTemplate x:DataType="layers:MapLayerModel">
 					<Grid>
@@ -48,7 +47,7 @@
 				</DataTemplate>
 			</GridView.ItemTemplate>
 		</GridView>
-		
+
 		<VisualStateManager.VisualStateGroups>
 			<VisualStateGroup>
 				<VisualState x:Name="Wide">
@@ -72,7 +71,7 @@
 			</VisualStateGroup>
 		</VisualStateManager.VisualStateGroups>
 	</Grid>
-	
+
 	<Page.BottomAppBar>
 		<CommandBar>
 			<AppBarButton Label="Import Layers" Command="{Binding AddMapCommand}" Icon="Add" />
