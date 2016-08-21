@@ -1,5 +1,5 @@
 param(
-    [string]$Version = '99.1.1.0',
+    [string]$Version = '1.1.1.5',
     [string]$PublisherName = 'CN=OutdoorTrackerTemporaryKey',
     [string]$PublisherDisplayName = 'Meinrad Jean-Richard',
     [string]$ProductDisplayName = 'Outdoor Tracker Beta',

@@ -12,11 +12,47 @@
     </Page.Resources>
 
     <Pivot>
-        <PivotItem Header="General">
+        <PivotItem Header="Map">
             <StackPanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
                 <ToggleSwitch Header="Show the current location on the Map" IsOn="{Binding ShowLocation, Mode=TwoWay}" />
                 <ToggleSwitch Header="Show the accuracy of the current position on the map" IsOn="{Binding ShowAccuracy, Mode=TwoWay}" />
                 <ToggleSwitch Header="Allow the rotating the Map with your fingers" IsOn="{Binding RotationEnabled, Mode=TwoWay}" />
+            </StackPanel>
+        </PivotItem>
+        <PivotItem Header="About">
+            <StackPanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+                <TextBlock Style="{StaticResource FlowTextHeader}">Outdoor Tracker</TextBlock>
+                <TextBlock Style="{StaticResource FlowText}">
+                    <Run Text="Version: " />
+                    <Run Text="{x:Bind ViewModel.Version, Mode=OneTime}" />
+                </TextBlock>
+                <TextBlock Style="{StaticResource FlowText}">
+                    <Run Text="For Questions and Feedback please visit " />
+                    <Hyperlink NavigateUri="https://github.com/mjeanrichard/OutdoorTracker">
+                        <Run Text="Outdoor Tracker on GitHub" />
+                    </Hyperlink>
+                    <Run Text="." />
+                </TextBlock>
+
+                <TextBlock Style="{StaticResource FlowTextHeader}">License</TextBlock>
+                <TextBlock Style="{StaticResource FlowText}">Copyright (C) 2016  Meinrad Jean-Richard</TextBlock>
+                <TextBlock Style="{StaticResource FlowText}">
+                    This program is free software: you can redistribute it and/or modify
+                    it under the terms of the GNU General Public License as published by
+                    the Free Software Foundation, either version 3 of the License, or
+                    (at your option) any later version.
+                </TextBlock>
+                <TextBlock Style="{StaticResource FlowText}">
+                    This program is distributed in the hope that it will be useful,
+                    but WITHOUT ANY WARRANTY; without even the implied warranty of
+                    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+                    GNU General Public License for more details.
+                </TextBlock>
+                <TextBlock Style="{StaticResource FlowText}">
+                    <Hyperlink NavigateUri="http://www.gnu.org/licenses">
+                        <Run Text="GNU General Public License" />
+                    </Hyperlink>
+                </TextBlock>
             </StackPanel>
         </PivotItem>
     </Pivot>

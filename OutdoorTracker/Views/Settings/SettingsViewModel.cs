@@ -16,6 +16,8 @@
 
 using System.Threading.Tasks;
 
+using Windows.ApplicationModel;
+
 using OutdoorTracker.Common;
 using OutdoorTracker.Services;
 
@@ -27,6 +29,9 @@ namespace OutdoorTracker.Views.Settings
 
         public SettingsViewModel()
         {
+            Package package = Package.Current;
+            PackageVersion packageVersion = package.Id.Version;
+            Version = string.Format("{0}.{1}.{2}.{3}", packageVersion.Major, packageVersion.Minor, packageVersion.Build, packageVersion.Revision);
         }
 
         public SettingsViewModel(SettingsManager settingsManager)
@@ -34,6 +39,8 @@ namespace OutdoorTracker.Views.Settings
         {
             _settingsManager = settingsManager;
         }
+
+        public string Version { get; set; }
 
         public bool ShowLocation
         {
