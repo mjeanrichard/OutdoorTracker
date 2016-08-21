@@ -21,20 +21,20 @@ using Windows.UI.Xaml.Controls;
 
 namespace OutdoorTracker.Controls
 {
-	public sealed class HeaderControl : ContentControl
-	{
-		public static readonly DependencyProperty HeaderProperty = DependencyProperty.Register(
-			"Header", typeof(object), typeof(HeaderControl), new PropertyMetadata(default(object)));
+    public sealed class HeaderControl : ContentControl
+    {
+        public static readonly DependencyProperty HeaderProperty = DependencyProperty.Register(
+            "Header", typeof(object), typeof(HeaderControl), new PropertyMetadata(default(object)));
 
-		public HeaderControl()
-		{
-			DefaultStyleKey = typeof(HeaderControl);
-		}
+        public object Header
+        {
+            get { return (object)GetValue(HeaderProperty); }
+            set { SetValue(HeaderProperty, value); }
+        }
 
-		public object Header
-		{
-			get { return (object)GetValue(HeaderProperty); }
-			set { SetValue(HeaderProperty, value); }
-		}
-	}
+        public HeaderControl()
+        {
+            DefaultStyleKey = typeof(HeaderControl);
+        }
+    }
 }

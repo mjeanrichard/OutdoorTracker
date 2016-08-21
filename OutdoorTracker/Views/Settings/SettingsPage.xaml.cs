@@ -18,15 +18,15 @@ using OutdoorTracker.Common;
 
 namespace OutdoorTracker.Views.Settings
 {
-	public class SettingsPageBase : AppPage<SettingsViewModel>
-	{
-	}
+    public class SettingsPageBase : AppPage<SettingsViewModel>
+    {
+    }
 
-	public sealed partial class SettingsPage : SettingsPageBase
-	{
-		public SettingsPage()
-		{
-			InitializeComponent();
-		}
-	}
+    public sealed partial class SettingsPage : SettingsPageBase
+    {
+        public SettingsPage()
+        {
+            InitializeComponent();
+        }
+    }
 }

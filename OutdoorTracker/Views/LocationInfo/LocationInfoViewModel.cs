@@ -24,38 +24,38 @@ using OutdoorTracker.Services;
 
 namespace OutdoorTracker.Views.LocationInfo
 {
-	public class LocationInfoViewModel : BaseViewModel
-	{
-		private readonly GeoLocationService _geoLocationService;
+    public class LocationInfoViewModel : BaseViewModel
+    {
+        private readonly GeoLocationService _geoLocationService;
 
-		public LocationInfoViewModel()
-		{
-		}
+        public LocationInfoViewModel()
+        {
+        }
 
-		public LocationInfoViewModel(GeoLocationService geoLocationService)
-			: this()
-		{
-			_geoLocationService = geoLocationService;
-			Location = _geoLocationService.CurrentLocation;
+        public LocationInfoViewModel(GeoLocationService geoLocationService)
+            : this()
+        {
+            _geoLocationService = geoLocationService;
+            Location = _geoLocationService.CurrentLocation;
 
-			Location.PropertyChanged += LocationOnPropertyChanged;
-		}
+            Location.PropertyChanged += LocationOnPropertyChanged;
+        }
 
-		public bool ShowLocationSettingsInfo
-		{
-			get { return _geoLocationService.CurrentLocation.State == PositionStatus.NotAvailable; }
-		}
+        public bool ShowLocationSettingsInfo
+        {
+            get { return _geoLocationService.CurrentLocation.State == PositionStatus.NotAvailable; }
+        }
 
-		public LocationData Location { get; set; }
+        public LocationData Location { get; set; }
 
-		private void LocationOnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
-		{
-			OnPropertyChanged(nameof(ShowLocationSettingsInfo));
-		}
+        private void LocationOnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
+        {
+            OnPropertyChanged(nameof(ShowLocationSettingsInfo));
+        }
 
-		protected override async Task InitializeInternal()
-		{
-			await _geoLocationService.Initialize();
-		}
-	}
+        protected override async Task InitializeInternal()
+        {
+            await _geoLocationService.Initialize();
+        }
+    }
 }

@@ -18,8 +18,8 @@ using System.Threading.Tasks;
 
 namespace OutdoorTracker.Database
 {
-	public interface IDbScript
-	{
-		Task Execute(OutdoorTrackerContext context);
-	}
+    public interface IDbScript
+    {
+        Task Execute(OutdoorTrackerContext context);
+    }
 }

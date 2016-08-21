@@ -20,19 +20,19 @@ using Newtonsoft.Json;
 
 namespace OutdoorTracker.Layers
 {
-	public class LayerDefinition
-	{
-		public LayerDefinition()
-		{
-			Parameters = new Dictionary<string, string>();
-		}
+    public class LayerDefinition
+    {
+        public LayerDefinition()
+        {
+            Parameters = new Dictionary<string, string>();
+        }
 
-		[JsonProperty(Required = Required.Always)]
-		public string Name { get; set; }
+        [JsonProperty(Required = Required.Always)]
+        public string Name { get; set; }
 
-		[JsonProperty(Required = Required.Always)]
-		public string Config { get; set; }
+        [JsonProperty(Required = Required.Always)]
+        public string Config { get; set; }
 
-		public Dictionary<string, string> Parameters { get; set; }
-	}
+        public Dictionary<string, string> Parameters { get; set; }
+    }
 }

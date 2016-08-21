@@ -18,11 +18,11 @@ using System.Xml.Serialization;
 
 namespace OutdoorTracker.Tracks.Kml
 {
-	[XmlType(Namespace = "http://www.opengis.net/kml/2.2")]
-	[XmlRoot("kml", Namespace = "http://www.opengis.net/kml/2.2", IsNullable = false)]
-	public class KmlType
-	{
-		[XmlElement("Document")]
-		public KmlDocument Document { get; set; }
-	}
+    [XmlType(Namespace = "http://www.opengis.net/kml/2.2")]
+    [XmlRoot("kml", Namespace = "http://www.opengis.net/kml/2.2", IsNullable = false)]
+    public class KmlType
+    {
+        [XmlElement("Document")]
+        public KmlDocument Document { get; set; }
+    }
 }

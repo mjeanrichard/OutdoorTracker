@@ -1,106 +1,106 @@
 ﻿<map:MapPageBase
-	x:Class="OutdoorTracker.Views.Map.MapPage"
-	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-	xmlns:umc="using:UniversalMapControl"
-	xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
-	xmlns:behaviors="using:UniversalMapControl.Behaviors"
-	xmlns:tiles="using:UniversalMapControl.Tiles"
-	xmlns:map="using:OutdoorTracker.Views.Map"
-	xmlns:converters="using:OutdoorTracker.Converters"
-	xmlns:controls="using:OutdoorTracker.Controls"
-	d:DataContext="{d:DesignInstance Type=map:MapViewModel, IsDesignTimeCreatable=True}"
-	mc:Ignorable="d">
+    x:Class="OutdoorTracker.Views.Map.MapPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:umc="using:UniversalMapControl"
+    xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
+    xmlns:behaviors="using:UniversalMapControl.Behaviors"
+    xmlns:tiles="using:UniversalMapControl.Tiles"
+    xmlns:map="using:OutdoorTracker.Views.Map"
+    xmlns:converters="using:OutdoorTracker.Converters"
+    xmlns:controls="using:OutdoorTracker.Controls"
+    d:DataContext="{d:DesignInstance Type=map:MapViewModel, IsDesignTimeCreatable=True}"
+    mc:Ignorable="d">
 
-	<Page.Resources>
-		<converters:BooleanToVisibilityConverter x:Name="boolToVis" />
-		<converters:LocationToStringConverter x:Name="locToString" />
-		<converters:StringFormatConverter x:Name="stringFormat" />
-	</Page.Resources>
+    <Page.Resources>
+        <converters:BooleanToVisibilityConverter x:Name="boolToVis" />
+        <converters:LocationToStringConverter x:Name="locToString" />
+        <converters:StringFormatConverter x:Name="stringFormat" />
+    </Page.Resources>
 
-	<Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-		<Grid.RowDefinitions>
-			<RowDefinition Height="Auto" />
-			<RowDefinition Height="Auto" />
-			<RowDefinition Height="*" />
-		</Grid.RowDefinitions>
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
 
-		<ProgressBar Visibility="{x:Bind ViewModel.IsBusy, Converter={StaticResource boolToVis}, Mode=OneWay}" Height="5" IsIndeterminate="True" />
+        <ProgressBar Visibility="{x:Bind ViewModel.IsBusy, Converter={StaticResource boolToVis}, Mode=OneWay}" Height="5" IsIndeterminate="True" />
 
-		<umc:Map x:Name="map" Grid.Row="2"
-		         Visibility="{x:Bind ViewModel.IsMapInitialized, Converter={StaticResource boolToVis}, Mode=OneWay}"
-		         ZoomLevel="{x:Bind ViewModel.ZoomLevel, Mode=TwoWay}"
-		         MapCenter="{x:Bind ViewModel.MapCenter, Mode=TwoWay}"
-		         Heading="{x:Bind ViewModel.Heading, Mode=TwoWay}">
+        <umc:Map x:Name="map" Grid.Row="2"
+                 Visibility="{x:Bind ViewModel.IsMapInitialized, Converter={StaticResource boolToVis}, Mode=OneWay}"
+                 ZoomLevel="{x:Bind ViewModel.ZoomLevel, Mode=TwoWay}"
+                 MapCenter="{x:Bind ViewModel.MapCenter, Mode=TwoWay}"
+                 Heading="{x:Bind ViewModel.Heading, Mode=TwoWay}">
 
-			<interactivity:Interaction.Behaviors>
-				<behaviors:TouchMapBehavior AutoUpdateMap="False"
-				                            RotationEnabled="{x:Bind ViewModel.RotationEnabled, Mode=OneTime}"
-				                            Update="TouchMapBehavior_OnUpdate" />
-			</interactivity:Interaction.Behaviors>
+            <interactivity:Interaction.Behaviors>
+                <behaviors:TouchMapBehavior AutoUpdateMap="False"
+                                            RotationEnabled="{x:Bind ViewModel.RotationEnabled, Mode=OneTime}"
+                                            Update="TouchMapBehavior_OnUpdate" />
+            </interactivity:Interaction.Behaviors>
 
-			<tiles:TileLayer x:Name="tileLayer" />
-			<controls:CanvasItemsLayer>
-				<controls:CanvasItemsLayer.Items>
-					<controls:TracksLayer Tracks="{x:Bind ViewModel.Tracks, Mode=OneWay}" />
-					<controls:CurrentLocation AccuracyMeter="{x:Bind ViewModel.LocationModel.Accuracy, Mode=OneWay}"
-					                          Location="{x:Bind ViewModel.LocationModel.Location, Mode=OneWay}"
-					                          AccuracyType="{x:Bind ViewModel.LocationModel.LocationAccuracy, Mode=OneWay}"
-					                          ShowAccuracy="{x:Bind ViewModel.ShowAccuracyCircle, Mode=OneWay}"
-					                          ShowCurrentPosition="{x:Bind ViewModel.ShowCurrentPosition, Mode=OneWay}" />
-				</controls:CanvasItemsLayer.Items>
-			</controls:CanvasItemsLayer>
+            <tiles:TileLayer x:Name="tileLayer" />
+            <controls:CanvasItemsLayer>
+                <controls:CanvasItemsLayer.Items>
+                    <controls:TracksLayer Tracks="{x:Bind ViewModel.Tracks, Mode=OneWay}" />
+                    <controls:CurrentLocation AccuracyMeter="{x:Bind ViewModel.LocationModel.Accuracy, Mode=OneWay}"
+                                              Location="{x:Bind ViewModel.LocationModel.Location, Mode=OneWay}"
+                                              AccuracyType="{x:Bind ViewModel.LocationModel.LocationAccuracy, Mode=OneWay}"
+                                              ShowAccuracy="{x:Bind ViewModel.ShowAccuracyCircle, Mode=OneWay}"
+                                              ShowCurrentPosition="{x:Bind ViewModel.ShowCurrentPosition, Mode=OneWay}" />
+                </controls:CanvasItemsLayer.Items>
+            </controls:CanvasItemsLayer>
 
-			<!-- Current Postition Info -->
-			<Grid Margin="10,20,0,0" Background="{StaticResource OutdoorTrackerColor}"
-			      Visibility="{x:Bind ViewModel.ShowCurrentPosition, Converter={StaticResource boolToVis}, Mode=OneWay}">
-				<Grid.RowDefinitions>
-					<RowDefinition Height="Auto" />
-					<RowDefinition Height="Auto" />
-				</Grid.RowDefinitions>
+            <!-- Current Postition Info -->
+            <Grid Margin="10,20,0,0" Background="{StaticResource OutdoorTrackerColor}"
+                  Visibility="{x:Bind ViewModel.ShowCurrentPosition, Converter={StaticResource boolToVis}, Mode=OneWay}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
 
-				<TextBlock Grid.Row="0" Margin="5,2,5,2" Text="{x:Bind ViewModel.LocationModel.Location, Converter={StaticResource locToString}, Mode=OneWay}" />
-				<StackPanel Grid.Row="1" Orientation="Horizontal" Visibility="{x:Bind ViewModel.LocationModel.IsAltitudeValid, Converter={StaticResource boolToVis}, Mode=OneWay}">
-					<TextBlock Margin="5,2,2,2" Text="{x:Bind ViewModel.LocationModel.Altitude, Converter={StaticResource stringFormat}, ConverterParameter='\{0:0.0\} m', Mode=OneWay}" />
-					<TextBlock Margin="2,2,5,2" Text="{x:Bind ViewModel.LocationModel.AltitudeAccuracy, Converter={StaticResource stringFormat}, ConverterParameter='±\{0:0\} m', Mode=OneWay}" />
-				</StackPanel>
-			</Grid>
-		</umc:Map>
-	</Grid>
-	<Page.BottomAppBar>
-		<CommandBar>
-			<AppBarButton Label="Stop Tracking" Command="{x:Bind ViewModel.StopTrackingCommand, Mode=OneTime}" Visibility="{x:Bind ViewModel.IsRecording, Converter={StaticResource boolToVis}, Mode=OneWay}">
-				<AppBarButton.Icon>
-					<PathIcon HorizontalAlignment="Center" VerticalAlignment="Center" Data="F0 M0,10 A10,10 360 1 1 0,10.001 M1.5,10 A8.5,8.5 360 1 1 1.5,10.001 M6.5,6.5 L13.5,6.5 13.5,13.5 6.5,13.5z" />
-				</AppBarButton.Icon>
-			</AppBarButton>
-			<AppBarButton Label="North Up" Command="{x:Bind ViewModel.NorthUpCommand, Mode=OneTime}" Visibility="{x:Bind ViewModel.ShowNorthUpCommand, Mode=OneWay, Converter={StaticResource boolToVis}}">
-				<AppBarButton.Icon>
-					<PathIcon HorizontalAlignment="Center" VerticalAlignment="Center" Data="M0,10 A10,10 360 1 1 0,10.001 M1.5,10 A8.5,8.5 360 1 1 1.5,10.001 M5.5,15 L5.5,6 L6.5,6 L9.25,8.95 L9.25,5 L10.75,5 L10.75,10.6 L13.5,13.5 L13.5,6 L14.5,6 L14.5,15 L13.5,15 L10.75,12.1 L10.75,17 L9.25,17 L9.25,10.4 L6.5,7.5 L6.5,15 M7,5 L13,5 L10,3  Z" />
-				</AppBarButton.Icon>
-			</AppBarButton>
-			<AppBarButton Label="Compass" Command="{x:Bind ViewModel.CompassCommand, Mode=OneTime}" Visibility="{x:Bind ViewModel.ShowCompassCommand, Mode=OneWay, Converter={StaticResource boolToVis}}">
-				<AppBarButton.Icon>
-					<PathIcon HorizontalAlignment="Center" VerticalAlignment="Center" Data="F0 M0,10 A10,10 360 1 1 0,10.001 M1.5,10 A8.5,8.5 360 1 1 1.5,10.001 M5,15 L8.2,8.2 L15,5 L11.8,11.8 L5,15 M9.1,9.9 A1,1 360 1 1 9.1,9.901Z" />
-				</AppBarButton.Icon>
-			</AppBarButton>
-			<AppBarButton Label="Goto Position" Command="{x:Bind ViewModel.GotoGpsCommand, Mode=OneTime}" Visibility="{x:Bind ViewModel.GotoGpsCommand.Visibility, Mode=OneWay}">
-				<AppBarButton.Icon>
-					<PathIcon HorizontalAlignment="Center" VerticalAlignment="Center" Data="M10,6.66666650772095L11.2974834442139,6.92861652374268 12.3570222854614,7.64297723770142 13.0713834762573,8.70251655578613 13.3333330154419,10 13.0713834762573,11.2974834442139 12.3570222854614,12.3570222854614 11.2974834442139,13.0713834762573 10,13.3333330154419 8.70251655578613,13.0713834762573 7.64297723770142,12.3570222854614 6.92861652374268,11.2974834442139 6.66666650772095,10 6.92861652374268,8.70251655578613 7.64297723770142,7.64297723770142 8.70251655578613,6.92861652374268 10,6.66666650772095 M2.54166650772095,10.8333330154419L0.833333313465118,10.8333330154419 0.833333313465118,9.16666603088379 2.54166650772095,9.16666603088379 3.24635410308838,6.71822881698608 4.69166660308838,4.69166660308838 6.71822881698608,3.24635410308838 9.16666603088379,2.54166650772095 9.16666603088379,0.833333313465118 10.8333330154419,0.833333313465118 10.8333330154419,2.54166650772095 13.2817707061768,3.24635410308838 15.3083324432373,4.69166660308838 16.7536449432373,6.71822881698608 17.4583339691162,9.16666603088379 19.1666660308838,9.16666603088379 19.1666660308838,10.8333330154419 17.4583339691162,10.8333330154419 16.7536449432373,13.2817707061768 15.3083324432373,15.3083324432373 13.2817707061768,16.7536449432373 10.8333330154419,17.4583339691162 10.8333330154419,19.1666660308838 9.16666603088379,19.1666660308838 9.16666603088379,17.4583339691162 6.71822881698608,16.7536449432373 4.69166660308838,15.3083324432373 3.24635410308838,13.2817707061768 2.54166650772095,10.8333330154419 M10,4.16666650772095L7.72940301895142,4.6250786781311 5.87521028518677,5.87521028518677 4.6250786781311,7.72940301895142 4.16666650772095,10 4.6250786781311,12.2705965042114 5.87521028518677,14.1247892379761 7.72940301895142,15.3749208450317 10,15.8333330154419 12.2705965042114,15.3749208450317 14.1247892379761,14.1247892379761 15.3749208450317,12.2705965042114 15.8333330154419,10 15.3749208450317,7.72940301895142 14.1247892379761,5.87521028518677 12.2705965042114,4.6250786781311 10,4.16666650772095z" />
-				</AppBarButton.Icon>
-			</AppBarButton>
-			<AppBarButton Label="Layers" Command="{x:Bind ViewModel.ShowLayersCommand, Mode=OneTime}">
-				<AppBarButton.Icon>
-					<PathIcon HorizontalAlignment="Center" VerticalAlignment="Center" Data="M3.37423539161682,12.3204793930054L2.20507788658142,13.1241989135742 9.99814224243164,18.4828910827637 17.7912044525146,13.1241989135742 16.6220436096191,12.3204956054688 9.99815273284912,16.8757820129395 3.37423539161682,12.3204793930054z M3.37455987930298,9.19604396820068L2.20508003234863,10 9.99815273284912,15.358660697937 17.7912273406982,10 16.6223449707031,9.19648551940918 9.99877548217773,13.7515439987183 3.37455987930298,9.19604396820068z M9.99877548217773,1.51711821556091L2.20570158958435,6.87577199935913 9.99877548217773,12.2344255447388 17.791223526001,6.87577199935913 9.99877548217773,1.51711821556091z M9.99877548217773,0L19.9969272613525,6.87577199935913 17.7249774932861,8.43820190429688 19.9963054656982,10 17.7246780395508,11.5622091293335 19.9962787628174,13.1241989135742 9.99814224243164,20 3.57627845914976E-06,13.1241989135742 2.27160215377808,11.5621919631958 0,10 2.27192831039429,8.43775939941406 0.000621676386799663,6.87577199935913 9.99877548217773,0z" />
-				</AppBarButton.Icon>
-			</AppBarButton>
-			<CommandBar.SecondaryCommands>
-				<AppBarButton Label="Settings" Command="{x:Bind ViewModel.ShowSettingsCommand, Mode=OneTime}" Icon="Setting" />
-				<AppBarButton Label="Location Info" Command="{x:Bind ViewModel.ShowLocationInfoCommand, Mode=OneTime}" />
-				<AppBarButton Label="Tracks" Command="{x:Bind ViewModel.ShowTracksCommand, Mode=OneTime}" />
-			</CommandBar.SecondaryCommands>
-		</CommandBar>
-	</Page.BottomAppBar>
+                <TextBlock Grid.Row="0" Margin="5,2,5,2" Text="{x:Bind ViewModel.LocationModel.Location, Converter={StaticResource locToString}, Mode=OneWay}" />
+                <StackPanel Grid.Row="1" Orientation="Horizontal" Visibility="{x:Bind ViewModel.LocationModel.IsAltitudeValid, Converter={StaticResource boolToVis}, Mode=OneWay}">
+                    <TextBlock Margin="5,2,2,2" Text="{x:Bind ViewModel.LocationModel.Altitude, Converter={StaticResource stringFormat}, ConverterParameter='\{0:0.0\} m', Mode=OneWay}" />
+                    <TextBlock Margin="2,2,5,2" Text="{x:Bind ViewModel.LocationModel.AltitudeAccuracy, Converter={StaticResource stringFormat}, ConverterParameter='±\{0:0\} m', Mode=OneWay}" />
+                </StackPanel>
+            </Grid>
+        </umc:Map>
+    </Grid>
+    <Page.BottomAppBar>
+        <CommandBar>
+            <AppBarButton Label="Stop Tracking" Command="{x:Bind ViewModel.StopTrackingCommand, Mode=OneTime}" Visibility="{x:Bind ViewModel.IsRecording, Converter={StaticResource boolToVis}, Mode=OneWay}">
+                <AppBarButton.Icon>
+                    <PathIcon HorizontalAlignment="Center" VerticalAlignment="Center" Data="F0 M0,10 A10,10 360 1 1 0,10.001 M1.5,10 A8.5,8.5 360 1 1 1.5,10.001 M6.5,6.5 L13.5,6.5 13.5,13.5 6.5,13.5z" />
+                </AppBarButton.Icon>
+            </AppBarButton>
+            <AppBarButton Label="North Up" Command="{x:Bind ViewModel.NorthUpCommand, Mode=OneTime}" Visibility="{x:Bind ViewModel.ShowNorthUpCommand, Mode=OneWay, Converter={StaticResource boolToVis}}">
+                <AppBarButton.Icon>
+                    <PathIcon HorizontalAlignment="Center" VerticalAlignment="Center" Data="M0,10 A10,10 360 1 1 0,10.001 M1.5,10 A8.5,8.5 360 1 1 1.5,10.001 M5.5,15 L5.5,6 L6.5,6 L9.25,8.95 L9.25,5 L10.75,5 L10.75,10.6 L13.5,13.5 L13.5,6 L14.5,6 L14.5,15 L13.5,15 L10.75,12.1 L10.75,17 L9.25,17 L9.25,10.4 L6.5,7.5 L6.5,15 M7,5 L13,5 L10,3  Z" />
+                </AppBarButton.Icon>
+            </AppBarButton>
+            <AppBarButton Label="Compass" Command="{x:Bind ViewModel.CompassCommand, Mode=OneTime}" Visibility="{x:Bind ViewModel.ShowCompassCommand, Mode=OneWay, Converter={StaticResource boolToVis}}">
+                <AppBarButton.Icon>
+                    <PathIcon HorizontalAlignment="Center" VerticalAlignment="Center" Data="F0 M0,10 A10,10 360 1 1 0,10.001 M1.5,10 A8.5,8.5 360 1 1 1.5,10.001 M5,15 L8.2,8.2 L15,5 L11.8,11.8 L5,15 M9.1,9.9 A1,1 360 1 1 9.1,9.901Z" />
+                </AppBarButton.Icon>
+            </AppBarButton>
+            <AppBarButton Label="Goto Position" Command="{x:Bind ViewModel.GotoGpsCommand, Mode=OneTime}" Visibility="{x:Bind ViewModel.GotoGpsCommand.Visibility, Mode=OneWay}">
+                <AppBarButton.Icon>
+                    <PathIcon HorizontalAlignment="Center" VerticalAlignment="Center" Data="M10,6.66666650772095L11.2974834442139,6.92861652374268 12.3570222854614,7.64297723770142 13.0713834762573,8.70251655578613 13.3333330154419,10 13.0713834762573,11.2974834442139 12.3570222854614,12.3570222854614 11.2974834442139,13.0713834762573 10,13.3333330154419 8.70251655578613,13.0713834762573 7.64297723770142,12.3570222854614 6.92861652374268,11.2974834442139 6.66666650772095,10 6.92861652374268,8.70251655578613 7.64297723770142,7.64297723770142 8.70251655578613,6.92861652374268 10,6.66666650772095 M2.54166650772095,10.8333330154419L0.833333313465118,10.8333330154419 0.833333313465118,9.16666603088379 2.54166650772095,9.16666603088379 3.24635410308838,6.71822881698608 4.69166660308838,4.69166660308838 6.71822881698608,3.24635410308838 9.16666603088379,2.54166650772095 9.16666603088379,0.833333313465118 10.8333330154419,0.833333313465118 10.8333330154419,2.54166650772095 13.2817707061768,3.24635410308838 15.3083324432373,4.69166660308838 16.7536449432373,6.71822881698608 17.4583339691162,9.16666603088379 19.1666660308838,9.16666603088379 19.1666660308838,10.8333330154419 17.4583339691162,10.8333330154419 16.7536449432373,13.2817707061768 15.3083324432373,15.3083324432373 13.2817707061768,16.7536449432373 10.8333330154419,17.4583339691162 10.8333330154419,19.1666660308838 9.16666603088379,19.1666660308838 9.16666603088379,17.4583339691162 6.71822881698608,16.7536449432373 4.69166660308838,15.3083324432373 3.24635410308838,13.2817707061768 2.54166650772095,10.8333330154419 M10,4.16666650772095L7.72940301895142,4.6250786781311 5.87521028518677,5.87521028518677 4.6250786781311,7.72940301895142 4.16666650772095,10 4.6250786781311,12.2705965042114 5.87521028518677,14.1247892379761 7.72940301895142,15.3749208450317 10,15.8333330154419 12.2705965042114,15.3749208450317 14.1247892379761,14.1247892379761 15.3749208450317,12.2705965042114 15.8333330154419,10 15.3749208450317,7.72940301895142 14.1247892379761,5.87521028518677 12.2705965042114,4.6250786781311 10,4.16666650772095z" />
+                </AppBarButton.Icon>
+            </AppBarButton>
+            <AppBarButton Label="Layers" Command="{x:Bind ViewModel.ShowLayersCommand, Mode=OneTime}">
+                <AppBarButton.Icon>
+                    <PathIcon HorizontalAlignment="Center" VerticalAlignment="Center" Data="M3.37423539161682,12.3204793930054L2.20507788658142,13.1241989135742 9.99814224243164,18.4828910827637 17.7912044525146,13.1241989135742 16.6220436096191,12.3204956054688 9.99815273284912,16.8757820129395 3.37423539161682,12.3204793930054z M3.37455987930298,9.19604396820068L2.20508003234863,10 9.99815273284912,15.358660697937 17.7912273406982,10 16.6223449707031,9.19648551940918 9.99877548217773,13.7515439987183 3.37455987930298,9.19604396820068z M9.99877548217773,1.51711821556091L2.20570158958435,6.87577199935913 9.99877548217773,12.2344255447388 17.791223526001,6.87577199935913 9.99877548217773,1.51711821556091z M9.99877548217773,0L19.9969272613525,6.87577199935913 17.7249774932861,8.43820190429688 19.9963054656982,10 17.7246780395508,11.5622091293335 19.9962787628174,13.1241989135742 9.99814224243164,20 3.57627845914976E-06,13.1241989135742 2.27160215377808,11.5621919631958 0,10 2.27192831039429,8.43775939941406 0.000621676386799663,6.87577199935913 9.99877548217773,0z" />
+                </AppBarButton.Icon>
+            </AppBarButton>
+            <CommandBar.SecondaryCommands>
+                <AppBarButton Label="Settings" Command="{x:Bind ViewModel.ShowSettingsCommand, Mode=OneTime}" Icon="Setting" />
+                <AppBarButton Label="Location Info" Command="{x:Bind ViewModel.ShowLocationInfoCommand, Mode=OneTime}" />
+                <AppBarButton Label="Tracks" Command="{x:Bind ViewModel.ShowTracksCommand, Mode=OneTime}" />
+            </CommandBar.SecondaryCommands>
+        </CommandBar>
+    </Page.BottomAppBar>
 </map:MapPageBase>

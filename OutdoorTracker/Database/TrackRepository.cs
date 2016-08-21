@@ -24,18 +24,18 @@ using OutdoorTracker.Tracks;
 
 namespace OutdoorTracker.Database
 {
-	public class TrackRepository
-	{
-		private readonly OutdoorTrackerContext _OutdoorTrackerContext;
+    public class TrackRepository
+    {
+        private readonly OutdoorTrackerContext _OutdoorTrackerContext;
 
-		public TrackRepository(OutdoorTrackerContext OutdoorTrackerContext)
-		{
-			_OutdoorTrackerContext = OutdoorTrackerContext;
-		}
+        public TrackRepository(OutdoorTrackerContext OutdoorTrackerContext)
+        {
+            _OutdoorTrackerContext = OutdoorTrackerContext;
+        }
 
-		public async Task<IEnumerable<TrackPoint>> GetTrackPoints(int trackId)
-		{
-			return await _OutdoorTrackerContext.TrackPoints.AsNoTracking().Where(tp => tp.Track.Id == trackId).ToArrayAsync();
-		}
-	}
+        public async Task<IEnumerable<TrackPoint>> GetTrackPoints(int trackId)
+        {
+            return await _OutdoorTrackerContext.TrackPoints.AsNoTracking().Where(tp => tp.Track.Id == trackId).ToArrayAsync();
+        }
+    }
 }

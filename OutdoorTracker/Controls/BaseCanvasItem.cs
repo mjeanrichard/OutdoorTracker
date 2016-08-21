@@ -24,30 +24,30 @@ using OutdoorTracker.Common;
 
 namespace OutdoorTracker.Controls
 {
-	public abstract class BaseCanvasItem : DependencyObject, ICanvasItem
-	{
-		public event EventHandler LayoutChanged;
+    public abstract class BaseCanvasItem : DependencyObject, ICanvasItem
+    {
+        public event EventHandler LayoutChanged;
 
-		public abstract void Draw(CanvasDrawingSession drawingSession, CanvasItemsLayer canvasItemsLayer);
+        public abstract void Draw(CanvasDrawingSession drawingSession, CanvasItemsLayer canvasItemsLayer);
 
-		public void ParentInvalidated()
-		{
-			InvalidateInternal();
-		}
+        public void ParentInvalidated()
+        {
+            InvalidateInternal();
+        }
 
 
-		public abstract void InvalidateInternal();
+        public abstract void InvalidateInternal();
 
-		public void Invalidate()
-		{
-			InvalidateInternal();
-			OnLayoutChanged();
-		}
+        public void Invalidate()
+        {
+            InvalidateInternal();
+            OnLayoutChanged();
+        }
 
-		protected virtual void OnLayoutChanged()
-		{
-			InvalidateInternal();
-			DispatcherHelper.InvokeOnUI(() => LayoutChanged?.Invoke(this, EventArgs.Empty));
-		}
-	}
+        protected virtual void OnLayoutChanged()
+        {
+            InvalidateInternal();
+            DispatcherHelper.InvokeOnUI(() => LayoutChanged?.Invoke(this, EventArgs.Empty));
+        }
+    }
 }

@@ -20,12 +20,12 @@ using OutdoorTracker.Database;
 
 namespace OutdoorTracker.Migrations
 {
-	[DbScript("002_AddMapDefinitions")]
-	public class AddMapDefinitions : SqlBasedScript
-	{
-		protected override IEnumerable<string> GetSql()
-		{
-			yield return @"CREATE TABLE [MapConfigurations] (
+    [DbScript("002_AddMapDefinitions")]
+    public class AddMapDefinitions : SqlBasedScript
+    {
+        protected override IEnumerable<string> GetSql()
+        {
+            yield return @"CREATE TABLE [MapConfigurations] (
 [Id] INTEGER PRIMARY KEY AUTOINCREMENT,
 [Name] TEXT NOT NULL,
 [Json] TEXT NOT NULL,
@@ -33,6 +33,6 @@ namespace OutdoorTracker.Migrations
 
 CREATE UNIQUE INDEX [UQ_Name] ON [MapConfigurations] ([Name] ASC);
 ";
-		}
-	}
+        }
+    }
 }

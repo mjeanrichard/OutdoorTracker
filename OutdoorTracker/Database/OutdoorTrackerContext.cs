@@ -24,60 +24,60 @@ using OutdoorTracker.Tracks;
 
 namespace OutdoorTracker.Database
 {
-	public class OutdoorTrackerContext : DbContext, IUnitOfWork, IReadonlyUnitOfWork
-	{
-		public DbSet<Track> Tracks { get; protected set; }
+    public class OutdoorTrackerContext : DbContext, IUnitOfWork, IReadonlyUnitOfWork
+    {
+        public DbSet<Track> Tracks { get; protected set; }
 
-		IQueryable<TrackPoint> IReadonlyUnitOfWork.TrackPoints
-		{
-			get { return TrackPoints.AsNoTracking(); }
-		}
+        IQueryable<TrackPoint> IReadonlyUnitOfWork.TrackPoints
+        {
+            get { return TrackPoints.AsNoTracking(); }
+        }
 
-		IQueryable<MapConfiguration> IReadonlyUnitOfWork.MapConfigurations
-		{
-			get { return MapConfigurations.AsNoTracking(); }
-		}
+        IQueryable<MapConfiguration> IReadonlyUnitOfWork.MapConfigurations
+        {
+            get { return MapConfigurations.AsNoTracking(); }
+        }
 
-		IQueryable<Track> IReadonlyUnitOfWork.Tracks
-		{
-			get { return Tracks.AsNoTracking(); }
-		}
+        IQueryable<Track> IReadonlyUnitOfWork.Tracks
+        {
+            get { return Tracks.AsNoTracking(); }
+        }
 
-		public DbSet<TrackPoint> TrackPoints { get; protected set; }
+        public DbSet<TrackPoint> TrackPoints { get; protected set; }
 
-		public DbSet<MapConfiguration> MapConfigurations { get; protected set; }
+        public DbSet<MapConfiguration> MapConfigurations { get; protected set; }
 
-		public async Task SaveChangesAsync()
-		{
-			await base.SaveChangesAsync();
-		}
+        public async Task SaveChangesAsync()
+        {
+            await base.SaveChangesAsync();
+        }
 
-		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-		{
-			optionsBuilder.UseSqlite("Filename=data.sqlite");
-		}
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseSqlite("Filename=data.sqlite");
+        }
 
-		protected override void OnModelCreating(ModelBuilder modelBuilder)
-		{
-			modelBuilder.Entity<DbVersion>().ToTable("Version");
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<DbVersion>().ToTable("Version");
 
-			modelBuilder.Entity<Track>().ToTable("Tracks");
-			modelBuilder.Entity<TrackPoint>().ToTable("TrackPoints");
+            modelBuilder.Entity<Track>().ToTable("Tracks");
+            modelBuilder.Entity<TrackPoint>().ToTable("TrackPoints");
 
-			modelBuilder.Entity<MapConfiguration>().ToTable("MapConfigurations");
-			modelBuilder.Entity<MapConfiguration>().Ignore(m => m.Projection).Ignore(m => m.LayerConfig);
-		}
-	}
+            modelBuilder.Entity<MapConfiguration>().ToTable("MapConfigurations");
+            modelBuilder.Entity<MapConfiguration>().Ignore(m => m.Projection).Ignore(m => m.LayerConfig);
+        }
+    }
 
-	public class ReadOnlyOutdoorTrackerContext : OutdoorTrackerContext
-	{
-		public ReadOnlyOutdoorTrackerContext()
-		{
-		}
+    public class ReadOnlyOutdoorTrackerContext : OutdoorTrackerContext
+    {
+        public ReadOnlyOutdoorTrackerContext()
+        {
+        }
 
-		protected override void OnModelCreating(ModelBuilder modelBuilder)
-		{
-			base.OnModelCreating(modelBuilder);
-		}
-	}
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+        }
+    }
 }

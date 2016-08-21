@@ -20,24 +20,24 @@ using OutdoorTracker.Common;
 
 namespace OutdoorTracker.Views.Layers
 {
-	public class LayersPageBase : AppPage<LayersViewModel>
-	{
-	}
+    public class LayersPageBase : AppPage<LayersViewModel>
+    {
+    }
 
-	public sealed partial class LayersPage : LayersPageBase
-	{
-		public LayersPage()
-		{
-			InitializeComponent();
-		}
+    public sealed partial class LayersPage : LayersPageBase
+    {
+        public LayersPage()
+        {
+            InitializeComponent();
+        }
 
-		private void LayersGridView_OnItemClick(object sender, ItemClickEventArgs e)
-		{
-			if (e.ClickedItem != null)
-			{
-				ViewModel.SelectedLayer = (MapLayerModel)e.ClickedItem;
-				Frame.GoBack();
-			}
-		}
-	}
+        private void LayersGridView_OnItemClick(object sender, ItemClickEventArgs e)
+        {
+            if (e.ClickedItem != null)
+            {
+                ViewModel.SelectedLayer = (MapLayerModel)e.ClickedItem;
+                Frame.GoBack();
+            }
+        }
+    }
 }
