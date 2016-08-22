@@ -1,8 +1,10 @@
 # OutdoorTracker
+[![Build status](https://ci.appveyor.com/api/projects/status/303xd3yswefv1ik5?svg=true)](https://ci.appveyor.com/project/MJeanRichard/outdoortracker)
 
 ## Beta Builds
 For the latest Beta Builds see here (*NOTE:* To install these builds, you need to enable developer mode on your device):  
-[Outdoor Tracker Beta on Appveyor](https://ci.appveyor.com/project/MJeanRichard/outdoortracker/build/artifacts) : [![Build status](https://ci.appveyor.com/api/projects/status/303xd3yswefv1ik5?svg=true)](https://ci.appveyor.com/project/MJeanRichard/outdoortracker)
+[Outdoor Tracker Beta on Appveyor](https://ci.appveyor.com/project/MJeanRichard/outdoortracker/build/artifacts) 
+
 
 You can install the Beta Version side by side with the Store Version, since they have a different ProductId and Name.
 
