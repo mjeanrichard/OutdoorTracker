@@ -34,6 +34,8 @@ namespace OutdoorTracker.Services
 
     public class SettingsManager
     {
+        private const string TrackMinDistanceMetersSettingName = "TrackMinDistanceMeters";
+        private const string EnableTrackSmoothingSettingName = "EnableTrackSmoothing";
         private const string LastMapCenterSettingName = "LastMapCenter";
         private const string ShowLocationSettingName = "ShowLocation";
         private const string ShowAccuracySettingName = "ShowAccuracy";
@@ -43,7 +45,6 @@ namespace OutdoorTracker.Services
         private const string CenterOnPositionSettingName = "CenterOnPosition";
         private const string CurrentTrackingIdSettingName = "CurrentTrackingId";
         private const string HeadingModeSettingName = "HeadingMode";
-        private const string ShowCompassSettingName = "ShowCompass";
         private const string LastHeadingSettingName = "LastHeading";
 
         private IPropertySet Values
@@ -112,6 +113,18 @@ namespace OutdoorTracker.Services
         {
             get { return GetValue<int?>(CurrentTrackingIdSettingName); }
             set { Values[CurrentTrackingIdSettingName] = value; }
+        }
+
+        public int TrackMinDistanceMeters
+        {
+            get { return GetValue<int?>(TrackMinDistanceMetersSettingName) ?? 5; }
+            set { Values[TrackMinDistanceMetersSettingName] = value; }
+        }
+
+        public bool EnableTrackSmoothing
+        {
+            get { return GetValue<bool?>(EnableTrackSmoothingSettingName) ?? true; }
+            set { Values[EnableTrackSmoothingSettingName] = value; }
         }
 
         public ILocation GetLastMapCenter()

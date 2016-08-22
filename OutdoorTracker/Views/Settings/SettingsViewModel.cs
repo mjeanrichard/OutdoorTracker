@@ -14,6 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+using System.Globalization;
 using System.Threading.Tasks;
 
 using Windows.ApplicationModel;
@@ -48,6 +49,16 @@ namespace OutdoorTracker.Views.Settings
             set { _settingsManager.ShowLocation = value; }
         }
 
+        public bool EnableTrackSmoothing
+        {
+            get { return _settingsManager.EnableTrackSmoothing; }
+            set
+            {
+                _settingsManager.EnableTrackSmoothing = value;
+                OnPropertyChanged();
+            }
+        }
+
         public bool ShowAccuracy
         {
             get { return _settingsManager.ShowAccuracy; }
@@ -58,6 +69,21 @@ namespace OutdoorTracker.Views.Settings
         {
             get { return _settingsManager.RotationEnabled; }
             set { _settingsManager.RotationEnabled = value; }
+        }
+
+
+        public string TrackMinDistanceMeters
+        {
+            get { return _settingsManager.TrackMinDistanceMeters.ToString(); }
+            set
+            {
+                int intValue;
+                if (int.TryParse(value, NumberStyles.AllowTrailingWhite | NumberStyles.AllowTrailingWhite, CultureInfo.CurrentCulture, out intValue))
+                {
+                    _settingsManager.TrackMinDistanceMeters = intValue;
+                }
+                OnPropertyChanged();
+            }
         }
 
         protected override Task InitializeInternal()

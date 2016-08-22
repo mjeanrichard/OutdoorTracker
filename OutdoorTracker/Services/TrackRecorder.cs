@@ -83,7 +83,7 @@ namespace OutdoorTracker.Services
 
                     Wgs84Location avgLocation = new Wgs84Location(lat, lng);
                     double distance = _lastLocation.DistanceTo(avgLocation);
-                    if (distance > 10)
+                    if (!_settingsManager.EnableTrackSmoothing || distance > _settingsManager.TrackMinDistanceMeters)
                     {
                         _sumLongitude = 0;
                         _sumLatitude = 0;

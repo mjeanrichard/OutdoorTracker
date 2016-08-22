@@ -5,6 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:settings="using:OutdoorTracker.Views.Settings"
+    xmlns:controls="using:OutdoorTracker.Controls"
     d:DataContext="{d:DesignInstance Type=settings:SettingsViewModel, IsDesignTimeCreatable=True}"
     mc:Ignorable="d">
 
@@ -14,9 +15,32 @@
     <Pivot>
         <PivotItem Header="Map">
             <StackPanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-                <ToggleSwitch Header="Show the current location on the Map" IsOn="{Binding ShowLocation, Mode=TwoWay}" />
-                <ToggleSwitch Header="Show the accuracy of the current position on the map" IsOn="{Binding ShowAccuracy, Mode=TwoWay}" />
-                <ToggleSwitch Header="Allow the rotating the Map with your fingers" IsOn="{Binding RotationEnabled, Mode=TwoWay}" />
+                <controls:HeaderControl Header="Navigation">
+                    <StackPanel Orientation="Vertical">
+                        <ToggleSwitch Header="Show the current location on the Map" IsOn="{Binding ShowLocation, Mode=TwoWay}" />
+                        <ToggleSwitch Header="Show the accuracy of the current position on the map" IsOn="{Binding ShowAccuracy, Mode=TwoWay}" />
+                        <ToggleSwitch Header="Allow the rotating the Map with your fingers" IsOn="{Binding RotationEnabled, Mode=TwoWay}" />
+                    </StackPanel>
+                </controls:HeaderControl>
+            </StackPanel>
+        </PivotItem>
+        <PivotItem Header="Tracking">
+            <StackPanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+                <controls:HeaderControl Header="Track smoothing">
+                    <StackPanel Orientation="Vertical">
+                        <ToggleSwitch Margin="0,0,0,0" 
+                                      Header="Average recorded points to create a smoother track." 
+                                      IsOn="{x:Bind ViewModel.EnableTrackSmoothing, Mode=TwoWay}"
+                                      OnContent="Enabled" 
+                                      OffContent="Disabled" />
+                        <TextBox Header="Minimum distance in meters to the last recorded point before a new point is recorded." 
+                                 MaxLength="10"
+                                 HorizontalAlignment="Left"
+                                 InputScope="Number" 
+                                 Text="{x:Bind ViewModel.TrackMinDistanceMeters, Mode=TwoWay}"
+                                 IsEnabled="{x:Bind ViewModel.EnableTrackSmoothing, Mode=OneWay}"/>
+                    </StackPanel>
+                </controls:HeaderControl>
             </StackPanel>
         </PivotItem>
         <PivotItem Header="About">
