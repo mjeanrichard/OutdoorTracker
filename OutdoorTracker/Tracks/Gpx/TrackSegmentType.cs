@@ -22,6 +22,11 @@ namespace OutdoorTracker.Tracks.Gpx
     [XmlType("trksegType", Namespace = "http://www.topografix.com/GPX/1/1")]
     public class TrackSegmentType
     {
+        public TrackSegmentType()
+        {
+            Points = new List<WaypointType>();
+        }
+
         [XmlElement("trkpt")]
         public List<WaypointType> Points { get; set; }
     }

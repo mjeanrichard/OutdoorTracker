@@ -23,8 +23,14 @@ namespace OutdoorTracker.Tracks.Gpx
     [XmlRoot("gpx", Namespace = "http://www.topografix.com/GPX/1/1", IsNullable = false)]
     public class GpxType
     {
+        public GpxType()
+        {
+            Tracks = new List<GpxTrackType>();
+            Waypoints = new List<WaypointType>();
+        }
+
         [XmlElement("trk")]
-        public List<TrackType> Tracks { get; set; }
+        public List<GpxTrackType> Tracks { get; set; }
 
         [XmlElement("wpt")]
         public List<WaypointType> Waypoints { get; set; }

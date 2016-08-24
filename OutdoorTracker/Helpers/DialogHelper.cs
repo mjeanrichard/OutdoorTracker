@@ -37,6 +37,17 @@ namespace OutdoorTracker.Helpers
             await dialog.ShowAsync();
         }
 
+        public static async Task ShowMessage(string message, string title)
+        {
+            var dialog = new MessageDialog(message, title);
+
+            dialog.Commands.Add(new UICommand("Ok") { Id = 0 });
+
+            dialog.DefaultCommandIndex = 0;
+            dialog.CancelCommandIndex = 0;
+            await dialog.ShowAsync();
+        }
+
         public static async Task ShowErrorAndReport(string errorMessage, string title, Exception ex, Dictionary<string, string> properties = null)
         {
             var dialog = new MessageDialog(errorMessage + Environment.NewLine + "Would you like to report this Error?", title);

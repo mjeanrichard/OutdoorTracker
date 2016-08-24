@@ -63,18 +63,27 @@ namespace OutdoorTracker.Services
 
         public async Task<MapConfiguration> GetCurrentConfiguration()
         {
-            string mapLayerName = _settingsManager.MapLayerName;
-            if ((_currentConfiguration == null) || !_currentConfiguration.Name.Equals(mapLayerName))
+            string mapLayerName = "";
+            try
             {
-                MapConfiguration mapConfiguration = await _readonlyUnitOfWork.MapConfigurations.FirstOrDefaultAsync(c => c.Name.Equals(mapLayerName, StringComparison.OrdinalIgnoreCase));
-                if (mapConfiguration == null)
+                mapLayerName = _settingsManager.MapLayerName;
+                if ((_currentConfiguration == null) || !_currentConfiguration.Name.Equals(mapLayerName))
                 {
-                    return Default;
+                    MapConfiguration mapConfiguration = await _readonlyUnitOfWork.MapConfigurations.FirstOrDefaultAsync(c => c.Name.Equals(mapLayerName, StringComparison.OrdinalIgnoreCase));
+                    if (mapConfiguration == null)
+                    {
+                        return Default;
+                    }
+                    Deserialize(mapConfiguration);
+                    _currentConfiguration = mapConfiguration;
                 }
-                Deserialize(mapConfiguration);
-                _currentConfiguration = mapConfiguration;
+                return _currentConfiguration;
             }
-            return _currentConfiguration;
+            catch (Exception ex)
+            {
+                await DialogHelper.ShowErrorAndReport("Could not load the current map layer.", "Failed to load layer", ex, new Dictionary<string, string> { { "LayerName", mapLayerName } });
+                return Default;
+            }
         }
 
         private void Deserialize(MapConfiguration mapConfiguration)

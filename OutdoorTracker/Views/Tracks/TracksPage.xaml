@@ -118,7 +118,8 @@
     <Page.BottomAppBar>
         <CommandBar>
             <AppBarButton Label="Start Tracking" Command="{x:Bind ViewModel.StartTrackingCommand, Mode=OneTime}" Icon="Add" />
-            <AppBarButton Label="Import GPX" Command="{x:Bind ViewModel.ImportGpxTrackCommand, Mode=OneTime}" Icon="OpenLocal" />
+            <AppBarButton Label="Import" Command="{x:Bind ViewModel.ImportGpxTrackCommand, Mode=OneTime}" Icon="OpenLocal" />
+            <AppBarButton Label="Export" Command="{x:Bind ViewModel.ExportTracksCommand, Mode=OneTime}" Icon="SaveLocal" />
             <AppBarButton Label="Edit" Command="{x:Bind ViewModel.EditTrackCommand, Mode=OneTime}" Icon="Edit" />
             <AppBarButton Label="Delete" Command="{x:Bind ViewModel.DeleteTrackCommand, Mode=OneTime}" Icon="Delete" />
         </CommandBar>
