@@ -29,6 +29,7 @@ using OutdoorTracker.Common;
 using OutdoorTracker.Database;
 using OutdoorTracker.Helpers;
 using OutdoorTracker.Layers;
+using OutdoorTracker.Logging;
 
 using UniversalMapControl.Interfaces;
 using UniversalMapControl.Projections;
@@ -81,7 +82,8 @@ namespace OutdoorTracker.Services
             }
             catch (Exception ex)
             {
-                await DialogHelper.ShowErrorAndReport("Could not load the current map layer.", "Failed to load layer", ex, new Dictionary<string, string> { { "LayerName", mapLayerName } });
+                OutdoorTrackerEvents.Log.MapDefinitionGetCurrentFailed(mapLayerName, ex);
+                DialogHelper.ReportException(ex, new Dictionary<string, string> { { "LayerName", mapLayerName } });
                 return Default;
             }
         }
@@ -146,12 +148,14 @@ namespace OutdoorTracker.Services
                     await Import(json, unitOfWork, forceOverwrite);
                     await unitOfWork.SaveChangesAsync();
                 }
-                catch (JsonReaderException)
+                catch (JsonReaderException ex)
                 {
+                    OutdoorTrackerEvents.Log.MapDefinitionImportFailedInvalidJson(json, ex);
                     await DialogHelper.ShowError($"The selected layer definition could not be imported, it is not valid.", $"Cannot import map definition");
                 }
                 catch (Exception ex)
                 {
+                    OutdoorTrackerEvents.Log.MapDefinitionImportFailed(json, ex);
                     await DialogHelper.ShowErrorAndReport($"The selected layer definition could not be imported.", $"Cannot import map definition", ex, new Dictionary<string, string> { { "Json", json } });
                 }
             }

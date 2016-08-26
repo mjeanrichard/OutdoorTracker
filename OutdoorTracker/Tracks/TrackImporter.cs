@@ -29,6 +29,7 @@ using Microsoft.EntityFrameworkCore;
 using OutdoorTracker.Common;
 using OutdoorTracker.Database;
 using OutdoorTracker.Helpers;
+using OutdoorTracker.Logging;
 using OutdoorTracker.Tracks.Gpx;
 using OutdoorTracker.Tracks.Kml;
 
@@ -83,6 +84,7 @@ namespace OutdoorTracker.Tracks
             }
             catch (Exception ex)
             {
+                OutdoorTrackerEvents.Log.TrackImportError(fileExtension, ex);
                 await DialogHelper.ShowErrorAndReport($"Could not import any tracks from the selected file. Are you sure that this is a valid file?", "Failed to import tracks", ex, new Dictionary<string, string> { { "FileExtension", fileExtension } });
                 return Enumerable.Empty<Track>();
             }
@@ -117,6 +119,7 @@ namespace OutdoorTracker.Tracks
             }
             catch (Exception ex)
             {
+                OutdoorTrackerEvents.Log.TrackExportError(fileExtension, ex);
                 await DialogHelper.ShowErrorAndReport($"", "Failed to export tracks", ex, new Dictionary<string, string> { { "FileExtension", fileExtension } });
             }
         }

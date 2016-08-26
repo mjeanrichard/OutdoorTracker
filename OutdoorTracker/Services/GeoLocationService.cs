@@ -24,6 +24,7 @@ using Windows.Devices.Sensors;
 using Microsoft.HockeyApp;
 
 using OutdoorTracker.Helpers;
+using OutdoorTracker.Logging;
 
 namespace OutdoorTracker.Services
 {
@@ -55,16 +56,19 @@ namespace OutdoorTracker.Services
                         _compass.ReportInterval = _compass.MinimumReportInterval > 16 ? _compass.MinimumReportInterval : 16;
                         _compass.ReadingChanged += CompassReadinChanged;
                         HasCompass = true;
+                        OutdoorTrackerEvents.Log.CompassFound();
                     }
                     catch (Exception ex)
                     {
                         DialogHelper.ReportException(ex, new Dictionary<string, string> { { "Event", "CompassDisabled" } });
+                        OutdoorTrackerEvents.Log.CompassAccessException(ex);
                         HasCompass = false;
                     }
                 }
                 else
                 {
                     DialogHelper.TrackEvent(TrackEvents.NoCompass);
+                    OutdoorTrackerEvents.Log.CompassNotFound();
                 }
             }
 
@@ -73,7 +77,9 @@ namespace OutdoorTracker.Services
                 return;
             }
 
+            OutdoorTrackerEvents.Log.LocationInitializing();
             GeolocationAccessStatus accessStatus = await Geolocator.RequestAccessAsync();
+            OutdoorTrackerEvents.Log.LocationAccessState(accessStatus.ToString("G"));
             switch (accessStatus)
             {
                 case GeolocationAccessStatus.Allowed:

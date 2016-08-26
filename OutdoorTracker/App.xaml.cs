@@ -30,6 +30,7 @@ using Microsoft.Practices.Unity;
 
 using OutdoorTracker.Common;
 using OutdoorTracker.Database;
+using OutdoorTracker.Logging;
 using OutdoorTracker.Services;
 using OutdoorTracker.Views.Map;
 
@@ -50,11 +51,17 @@ namespace OutdoorTracker
             InitializeComponent();
             Suspending += OnSuspending;
             Resuming += OnResuming;
+            UnhandledException += OnUnhandledException;
 
             HockeyClient.Current.Configure("b2c844d2de1245bf8e2495ed20350fd8");
         }
 
         public Frame RootFrame { get; set; }
+
+        private void OnUnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            OutdoorTrackerEvents.Log.UnhandledException(e.Message, e.Exception);
+        }
 
         /// <summary>
         /// Invoked when the application is launched normally by the end user.  Other entry points

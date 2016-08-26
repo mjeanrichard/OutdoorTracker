@@ -113,15 +113,7 @@
     <Compile Include="Common\IAppPage.cs" />
     <Compile Include="Common\NavigationService.cs" />
     <Compile Include="Helpers\TrackEvents.cs" />
-    <Compile Include="Logging\OutdoorTrackerEvents.cs">
-      <Generator>EventSourceGenerator</Generator>
-      <LastGenOutput>OutdoorTrackerEvents.g.cs</LastGenOutput>
-    </Compile>
-    <Compile Include="Logging\OutdoorTrackerEvents.g.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>OutdoorTrackerEvents.cs</DependentUpon>
-    </Compile>
+    <Compile Include="Logging\OutdoorTrackerEvents.cs" />
     <Compile Include="Common\ParameterCommand.cs" />
     <Compile Include="Common\RelayCommand.cs" />
     <Compile Include="Common\TypedParameterOverride.cs" />
@@ -146,8 +138,6 @@
     <Compile Include="Helpers\DialogHelper.cs" />
     <Compile Include="Layers\LayerDefinition.cs" />
     <Compile Include="Layers\MapDefinition.cs" />
-    <Compile Include="Logging\TemplateEventSourceAttribute.cs" />
-    <Compile Include="Logging\TemplateEventAttribute.cs" />
     <Compile Include="Migrations\002_AddMapDefinitions.cs" />
     <Compile Include="Database\DbScriptAttribute.cs" />
     <Compile Include="Migrations\003_AddOpenStreetMap.cs" />

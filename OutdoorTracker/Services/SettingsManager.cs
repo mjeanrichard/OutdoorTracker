@@ -22,6 +22,7 @@ using Windows.Foundation.Collections;
 using Windows.Storage;
 
 using OutdoorTracker.Helpers;
+using OutdoorTracker.Logging;
 
 using UniversalMapControl.Interfaces;
 using UniversalMapControl.Projections;
@@ -172,6 +173,7 @@ namespace OutdoorTracker.Services
             }
             catch (Exception ex)
             {
+                OutdoorTrackerEvents.Log.SettingsGetValueFailure(name, ex);
                 DialogHelper.ReportException(ex, new Dictionary<string, string> { {"ValueName", name} });
                 return default(TValue);
             }
