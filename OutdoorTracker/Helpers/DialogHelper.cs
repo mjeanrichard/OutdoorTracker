@@ -26,17 +26,6 @@ namespace OutdoorTracker.Helpers
 {
     public static class DialogHelper
     {
-        public static async Task ShowError(string errorMessage, string title)
-        {
-            var dialog = new MessageDialog(errorMessage, title);
-
-            dialog.Commands.Add(new UICommand("Ok") { Id = 0 });
-
-            dialog.DefaultCommandIndex = 0;
-            dialog.CancelCommandIndex = 0;
-            await dialog.ShowAsync();
-        }
-
         public static async Task ShowErrorAndReport(string errorMessage, string title, Exception ex, Dictionary<string, string> properties = null)
         {
             var dialog = new MessageDialog(errorMessage + Environment.NewLine + "Would you like to report this Error?", title);
@@ -50,8 +39,40 @@ namespace OutdoorTracker.Helpers
             IUICommand result = await dialog.ShowAsync();
             if ((int)result.Id == 1)
             {
-                HockeyClient.Current.TrackException(ex, properties);
+                ReportException(ex, properties);
             }
+        }
+
+        public static void ReportException(Exception exception, Dictionary<string, string> properties)
+        {
+            HockeyClient.Current.TrackException(exception, properties);
+        }
+
+        public static void TrackEvent(TrackEvents trackEvent, Dictionary<string, string> properties = null, IDictionary<string, double> metrics = null)
+        {
+            HockeyClient.Current.TrackEvent(trackEvent.ToString("G"), properties, metrics);
+        }
+
+        public static async Task ShowError(string errorMessage, string title)
+        {
+            var dialog = new MessageDialog(errorMessage, title);
+
+            dialog.Commands.Add(new UICommand("Ok") { Id = 0 });
+
+            dialog.DefaultCommandIndex = 0;
+            dialog.CancelCommandIndex = 0;
+            await dialog.ShowAsync();
+        }
+
+        public static async Task ShowMessage(string message, string title)
+        {
+            var dialog = new MessageDialog(message, title);
+
+            dialog.Commands.Add(new UICommand("Ok") { Id = 0 });
+
+            dialog.DefaultCommandIndex = 0;
+            dialog.CancelCommandIndex = 0;
+            await dialog.ShowAsync();
         }
     }
 }

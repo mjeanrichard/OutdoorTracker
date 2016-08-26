@@ -14,6 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+using System.Collections.Generic;
 using System.Xml.Serialization;
 
 namespace OutdoorTracker.Tracks.Kml
@@ -21,10 +22,15 @@ namespace OutdoorTracker.Tracks.Kml
     [XmlType("Document", Namespace = "http://www.opengis.net/kml/2.2")]
     public class KmlDocument
     {
+        public KmlDocument()
+        {
+            Placemarks = new List<KmlPlacemark>();
+        }
+
         [XmlElement("name")]
         public string Name { get; set; }
 
         [XmlElement("Placemark")]
-        public KmlPlacemark Placemark { get; set; }
+        public List<KmlPlacemark> Placemarks { get; set; }
     }
 }

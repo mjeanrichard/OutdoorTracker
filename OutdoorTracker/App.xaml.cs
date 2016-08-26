@@ -30,6 +30,7 @@ using Microsoft.Practices.Unity;
 
 using OutdoorTracker.Common;
 using OutdoorTracker.Database;
+using OutdoorTracker.Logging;
 using OutdoorTracker.Services;
 using OutdoorTracker.Views.Map;
 
@@ -49,11 +50,18 @@ namespace OutdoorTracker
             DependencyContainer.InitializeContainer(this);
             InitializeComponent();
             Suspending += OnSuspending;
+            Resuming += OnResuming;
+            UnhandledException += OnUnhandledException;
 
             HockeyClient.Current.Configure("b2c844d2de1245bf8e2495ed20350fd8");
         }
 
         public Frame RootFrame { get; set; }
+
+        private void OnUnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            OutdoorTrackerEvents.Log.UnhandledException(e.Message, e.Exception);
+        }
 
         /// <summary>
         /// Invoked when the application is launched normally by the end user.  Other entry points
@@ -130,14 +138,26 @@ namespace OutdoorTracker
         /// </summary>
         /// <param name="sender">The source of the suspend request.</param>
         /// <param name="e">Details about the suspend request.</param>
-        private void OnSuspending(object sender, SuspendingEventArgs e)
+        private async void OnSuspending(object sender, SuspendingEventArgs e)
         {
             var deferral = e.SuspendingOperation.GetDeferral();
 
-            // This causes the OnNavigatedFrom Event.
-            string navigationState = ((Frame)Window.Current.Content).GetNavigationState();
+            BaseViewModel baseViewModel = (((Frame)Window.Current.Content)?.Content as IAppPage)?.ViewModel;
+            if (baseViewModel != null)
+            {
+                await baseViewModel.Suspending();
+            }
 
             deferral.Complete();
+        }
+
+        private async void OnResuming(object sender, object e)
+        {
+            BaseViewModel baseViewModel = (((Frame)Window.Current.Content)?.Content as IAppPage)?.ViewModel;
+            if (baseViewModel != null)
+            {
+                await baseViewModel.Resuming();
+            }
         }
 
         private void App_BackRequested(object sender, BackRequestedEventArgs e)

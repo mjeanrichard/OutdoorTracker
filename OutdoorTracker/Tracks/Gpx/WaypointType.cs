@@ -47,6 +47,9 @@ namespace OutdoorTracker.Tracks.Gpx
         [XmlAttribute("lon")]
         public double Longitude { get; set; }
 
+        [XmlAttribute("ele")]
+        public double Elevation { get; set; }
+
         public Point ToPoint()
         {
             return new Point(Latitude, Longitude);

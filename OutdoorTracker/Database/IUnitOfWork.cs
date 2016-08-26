@@ -15,7 +15,6 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 
 using Microsoft.EntityFrameworkCore;
@@ -32,12 +31,5 @@ namespace OutdoorTracker.Database
         DbSet<MapConfiguration> MapConfigurations { get; }
 
         Task SaveChangesAsync();
-    }
-
-    public interface IReadonlyUnitOfWork : IDisposable
-    {
-        IQueryable<Track> Tracks { get; }
-        IQueryable<TrackPoint> TrackPoints { get; }
-        IQueryable<MapConfiguration> MapConfigurations { get; }
     }
 }

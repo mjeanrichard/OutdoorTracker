@@ -66,6 +66,7 @@ namespace OutdoorTracker.Views.Layers
         {
             IEnumerable<MapConfiguration> mapConfigurations = await _mapDefinitionManager.GetMapConfigurations();
             Layers = new ObservableCollection<MapLayerModel>(mapConfigurations.Select(c => new MapLayerModel(c)));
+            OnPropertyChanged(nameof(Layers));
         }
 
         public async Task ImportMapDefinition()

@@ -23,7 +23,7 @@ using Microsoft.Practices.Unity;
 
 namespace OutdoorTracker.Common
 {
-    public abstract class AppPage<TModel> : Page where TModel : BaseViewModel
+    public abstract class AppPage<TModel> : Page, IAppPage where TModel : BaseViewModel
     {
         private TModel _viewModel;
         private IUnityContainer _pageContainer;
@@ -37,6 +37,8 @@ namespace OutdoorTracker.Common
                 DataContext = value;
             }
         }
+
+        BaseViewModel IAppPage.ViewModel => ViewModel;
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {

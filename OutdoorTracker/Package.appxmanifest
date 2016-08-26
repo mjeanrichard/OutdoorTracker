@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest" xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" IgnorableNamespaces="uap mp">
-  <Identity Name="OutdoorTrackerBeta" Publisher="CN=OutdoorTrackerTemporaryKey" Version="99.1.1.0" />
+  <Identity Name="OutdoorTrackerBeta" Publisher="CN=OutdoorTrackerTemporaryKey" Version="1.1.1.5" />
   <mp:PhoneIdentity PhoneProductId="54D782E1-A8AC-41AB-BE55-188CB58957A6" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
     <DisplayName>Outdoor Tracker Beta</DisplayName>
@@ -26,14 +26,15 @@
         <uap:SplashScreen Image="Assets\SplashScreen.png" BackgroundColor="#8ec735" />
       </uap:VisualElements>
       <Extensions>
-        <uap:Extension Category="windows.fileOpenPicker">
-          <uap:FileOpenPicker>
+        <uap:Extension Category="windows.fileTypeAssociation">
+          <uap:FileTypeAssociation Name="outdoortracker">
+            <uap:DisplayName>Outdoor Tracker</uap:DisplayName>
+            <uap:EditFlags OpenIsSafe="true" />
             <uap:SupportedFileTypes>
-              <uap:FileType>.json</uap:FileType>
-              <uap:FileType>.gpx</uap:FileType>
-              <uap:FileType>.kml</uap:FileType>
+              <uap:FileType ContentType="application/gpx+xml">.gpx</uap:FileType>
+              <uap:FileType ContentType="application/kml+xml">.kml</uap:FileType>
             </uap:SupportedFileTypes>
-          </uap:FileOpenPicker>
+          </uap:FileTypeAssociation>
         </uap:Extension>
       </Extensions>
     </Application>

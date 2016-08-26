@@ -15,10 +15,14 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 
 using Windows.Foundation.Collections;
 using Windows.Storage;
+
+using OutdoorTracker.Helpers;
+using OutdoorTracker.Logging;
 
 using UniversalMapControl.Interfaces;
 using UniversalMapControl.Projections;
@@ -167,9 +171,10 @@ namespace OutdoorTracker.Services
                 object value = Values[name];
                 return (TValue)value;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                // TODO: LOG ERROR!
+                OutdoorTrackerEvents.Log.SettingsGetValueFailure(name, ex);
+                DialogHelper.ReportException(ex, new Dictionary<string, string> { {"ValueName", name} });
                 return default(TValue);
             }
         }

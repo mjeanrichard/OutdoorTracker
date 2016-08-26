@@ -20,8 +20,13 @@ using System.Xml.Serialization;
 namespace OutdoorTracker.Tracks.Gpx
 {
     [XmlType("trkType", Namespace = "http://www.topografix.com/GPX/1/1")]
-    public class TrackType
+    public class GpxTrackType
     {
+        public GpxTrackType()
+        {
+            Segments = new List<TrackSegmentType>();
+        }
+
         [XmlElement("name")]
         public string Name { get; set; }
 

@@ -42,8 +42,8 @@ namespace OutdoorTracker.Common
             unityContainer.RegisterType<IReadonlyUnitOfWork, ReadOnlyOutdoorTrackerContext>(new ContainerControlledLifetimeManager());
 
             // UnitOfWork
-            unityContainer.RegisterType<IUnitOfWork, OutdoorTrackerContext>("TransientUnitOfWork", new TransientLifetimeManager());
-            unityContainer.RegisterType<IUnitOfWork, OutdoorTrackerContext>(new HierarchicalLifetimeManager());
+            unityContainer.RegisterType<IUnitOfWork, OutdoorTrackerContext>("TransientUnitOfWork", new TransientLifetimeManager(), new InjectionFactory(c => new OutdoorTrackerContext(false, true)));
+            unityContainer.RegisterType<IUnitOfWork, OutdoorTrackerContext>(new HierarchicalLifetimeManager(), new InjectionFactory(c => new OutdoorTrackerContext(false, false)));
             unityContainer.RegisterInstance(new UnitOfWorkFactoy(unityContainer));
 
             _unityContainer = unityContainer;

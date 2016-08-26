@@ -110,7 +110,10 @@
     <Compile Include="Common\BaseViewModel.cs" />
     <Compile Include="Common\DependencyContainer.cs" />
     <Compile Include="Common\DispatcherHelper.cs" />
+    <Compile Include="Common\IAppPage.cs" />
     <Compile Include="Common\NavigationService.cs" />
+    <Compile Include="Helpers\TrackEvents.cs" />
+    <Compile Include="Logging\OutdoorTrackerEvents.cs" />
     <Compile Include="Common\ParameterCommand.cs" />
     <Compile Include="Common\RelayCommand.cs" />
     <Compile Include="Common\TypedParameterOverride.cs" />
@@ -128,6 +131,7 @@
     <Compile Include="Converters\StringFormatConverter.cs" />
     <Compile Include="Database\DbInitializer.cs" />
     <Compile Include="Database\DbVersion.cs" />
+    <Compile Include="Database\IReadonlyUnitOfWork.cs" />
     <Compile Include="Database\IUnitOfWork.cs" />
     <Compile Include="Database\OutdoorTrackerContext.cs" />
     <Compile Include="Database\SqlBasedScript.cs" />
@@ -143,14 +147,17 @@
     <Compile Include="Services\SettingsManager.cs" />
     <Compile Include="Database\TrackRepository.cs" />
     <Compile Include="Migrations\001_AddTracks.cs" />
+    <Compile Include="Tracks\Gpx\GpxTrackBuilder.cs" />
     <Compile Include="Tracks\Gpx\GpxType.cs" />
+    <Compile Include="Tracks\Kml\KmlTrackBuilder.cs" />
     <Compile Include="Tracks\Kml\KmlDocument.cs" />
     <Compile Include="Tracks\Kml\KmlLineString.cs" />
     <Compile Include="Tracks\Kml\KmlPlacemark.cs" />
     <Compile Include="Tracks\Kml\KmlType.cs" />
+    <Compile Include="Tracks\TrackBuilder.cs" />
     <Compile Include="Tracks\TrackImporter.cs" />
     <Compile Include="Tracks\Gpx\TrackSegmentType.cs" />
-    <Compile Include="Tracks\Gpx\TrackType.cs" />
+    <Compile Include="Tracks\Gpx\GpxTrackType.cs" />
     <Compile Include="Tracks\Gpx\WaypointType.cs" />
     <Compile Include="Tracks\Track.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

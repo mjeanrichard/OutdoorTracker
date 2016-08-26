@@ -15,17 +15,29 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 using Microsoft.EntityFrameworkCore;
 
 using OutdoorTracker.Layers;
+using OutdoorTracker.Logging;
 using OutdoorTracker.Tracks;
 
 namespace OutdoorTracker.Database
 {
     public class OutdoorTrackerContext : DbContext, IUnitOfWork, IReadonlyUnitOfWork
     {
+        private static int _lastId = 0;
+
+        public OutdoorTrackerContext(bool isReadonly, bool isTransient)
+        {
+            Id = Interlocked.Increment(ref _lastId);
+            OutdoorTrackerEvents.Log.UnitOfWorkCreated(Id, isReadonly, isTransient);
+        }
+
+        protected int Id { get; }
+
         public DbSet<Track> Tracks { get; protected set; }
 
         IQueryable<TrackPoint> IReadonlyUnitOfWork.TrackPoints
@@ -46,6 +58,12 @@ namespace OutdoorTracker.Database
         public DbSet<TrackPoint> TrackPoints { get; protected set; }
 
         public DbSet<MapConfiguration> MapConfigurations { get; protected set; }
+
+        public override void Dispose()
+        {
+            base.Dispose();
+            OutdoorTrackerEvents.Log.UnitOfWorkDisposed(Id);
+        }
 
         public async Task SaveChangesAsync()
         {
@@ -71,7 +89,7 @@ namespace OutdoorTracker.Database
 
     public class ReadOnlyOutdoorTrackerContext : OutdoorTrackerContext
     {
-        public ReadOnlyOutdoorTrackerContext()
+        public ReadOnlyOutdoorTrackerContext() : base(true, false)
         {
         }
 

@@ -23,6 +23,9 @@ using Windows.Devices.Sensors;
 
 using Microsoft.HockeyApp;
 
+using OutdoorTracker.Helpers;
+using OutdoorTracker.Logging;
+
 namespace OutdoorTracker.Services
 {
     public class GeoLocationService
@@ -53,16 +56,19 @@ namespace OutdoorTracker.Services
                         _compass.ReportInterval = _compass.MinimumReportInterval > 16 ? _compass.MinimumReportInterval : 16;
                         _compass.ReadingChanged += CompassReadinChanged;
                         HasCompass = true;
+                        OutdoorTrackerEvents.Log.CompassFound();
                     }
                     catch (Exception ex)
                     {
-                        HockeyClient.Current.TrackException(ex, new Dictionary<string, string> { { "Event", "CompassDisabled" } });
+                        DialogHelper.ReportException(ex, new Dictionary<string, string> { { "Event", "CompassDisabled" } });
+                        OutdoorTrackerEvents.Log.CompassAccessException(ex);
                         HasCompass = false;
                     }
                 }
                 else
                 {
-                    HockeyClient.Current.TrackEvent("No Compass");
+                    DialogHelper.TrackEvent(TrackEvents.NoCompass);
+                    OutdoorTrackerEvents.Log.CompassNotFound();
                 }
             }
 
@@ -71,7 +77,9 @@ namespace OutdoorTracker.Services
                 return;
             }
 
+            OutdoorTrackerEvents.Log.LocationInitializing();
             GeolocationAccessStatus accessStatus = await Geolocator.RequestAccessAsync();
+            OutdoorTrackerEvents.Log.LocationAccessState(accessStatus.ToString("G"));
             switch (accessStatus)
             {
                 case GeolocationAccessStatus.Allowed:
@@ -85,11 +93,11 @@ namespace OutdoorTracker.Services
                     break;
 
                 case GeolocationAccessStatus.Denied:
-                    HockeyClient.Current.TrackEvent("Geo Location Denied.");
+                    DialogHelper.TrackEvent(TrackEvents.GeoLocationDenied);
                     CurrentLocation.UpdateState(PositionStatus.NotAvailable);
                     break;
                 case GeolocationAccessStatus.Unspecified:
-                    HockeyClient.Current.TrackEvent("Geo Location state unspecified.");
+                    DialogHelper.TrackEvent(TrackEvents.LocationStateUnspecified);
                     CurrentLocation.UpdateState(PositionStatus.NotAvailable);
                     break;
             }

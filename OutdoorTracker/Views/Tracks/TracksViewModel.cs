@@ -17,20 +17,15 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
-using Windows.Storage;
-using Windows.Storage.Pickers;
-using Windows.Storage.Streams;
 using Windows.UI.Popups;
 
 using Microsoft.EntityFrameworkCore;
 
 using OutdoorTracker.Common;
 using OutdoorTracker.Database;
-using OutdoorTracker.Helpers;
 using OutdoorTracker.Services;
 using OutdoorTracker.Tracks;
 
@@ -51,6 +46,7 @@ namespace OutdoorTracker.Views.Tracks
             EditTrackCommand = new RelayCommand(EditTrack, () => (SelectedTracks != null) && (SelectedTracks.Count == 1));
             DeleteTrackCommand = new RelayCommand(async () => await DeleteTrack(), () => (SelectedTracks != null) && (SelectedTracks.Count > 0));
             StartTrackingCommand = new RelayCommand(async () => await StartTracking());
+            ExportTracksCommand = new RelayCommand(async () => await ExportTracks(), () => (SelectedTracks != null) && (SelectedTracks.Count > 0));
             ToggleTrackVisibilityCommand = new ParameterCommand<Track>(async t => await ToggleTrackVisibility(t));
             _selectedTracks = new List<Track>();
         }
@@ -64,6 +60,7 @@ namespace OutdoorTracker.Views.Tracks
             _navigationService = navigationService;
         }
 
+
         public ParameterCommand<Track> ToggleTrackVisibilityCommand { get; set; }
 
         public ObservableCollection<Track> Tracks
@@ -76,6 +73,7 @@ namespace OutdoorTracker.Views.Tracks
             }
         }
 
+        public RelayCommand ExportTracksCommand { get; set; }
         public RelayCommand StartTrackingCommand { get; }
         public RelayCommand ImportGpxTrackCommand { get; }
         public RelayCommand EditTrackCommand { get; }
@@ -89,10 +87,17 @@ namespace OutdoorTracker.Views.Tracks
                 _selectedTracks = value;
                 EditTrackCommand.RaiseCanExecuteChanged();
                 DeleteTrackCommand.RaiseCanExecuteChanged();
+                ExportTracksCommand.RaiseCanExecuteChanged();
             }
         }
 
-        public Track SelectedTrack { get; set; }
+        private async Task ExportTracks()
+        {
+            if (SelectedTracks.Any())
+            {
+                await _trackImporter.ExportTracks(SelectedTracks.Select(t => t.Id).ToArray());
+            }
+        }
 
         private async Task StartTracking()
         {
@@ -186,35 +191,10 @@ namespace OutdoorTracker.Views.Tracks
         {
             using (MarkBusy())
             {
-                try
+                IEnumerable<Track> importedTracks = await _trackImporter.ImportTracks();
+                foreach (Track importedTrack in importedTracks)
                 {
-                    FileOpenPicker openPicker = new FileOpenPicker();
-                    openPicker.ViewMode = PickerViewMode.List;
-                    openPicker.SuggestedStartLocation = PickerLocationId.Desktop;
-                    openPicker.FileTypeFilter.Add(".gpx");
-                    openPicker.FileTypeFilter.Add(".kml");
-                    StorageFile file = await openPicker.PickSingleFileAsync();
-                    if (file != null)
-                    {
-                        IRandomAccessStreamWithContentType xmlStream = await file.OpenReadAsync();
-                        IEnumerable<Track> tracks;
-                        if (Path.GetExtension(file.Name).Equals(".kml", StringComparison.OrdinalIgnoreCase))
-                        {
-                            tracks = await _trackImporter.ImportKml(xmlStream.AsStreamForRead(), file.Name);
-                        }
-                        else
-                        {
-                            tracks = await _trackImporter.ImportGpx(xmlStream.AsStreamForRead(), file.Name);
-                        }
-                        foreach (Track track in tracks)
-                        {
-                            Tracks.Add(track);
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    await DialogHelper.ShowErrorAndReport("Could not import the selected tracks.", "Error importing tracks", ex);
+                    Tracks.Add(importedTrack);
                 }
             }
         }

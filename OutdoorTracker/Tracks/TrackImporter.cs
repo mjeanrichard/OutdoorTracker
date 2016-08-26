@@ -19,13 +19,17 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Xml.Serialization;
 
-using Windows.Foundation;
-using Windows.UI.Popups;
+using Windows.Storage;
+using Windows.Storage.Pickers;
+using Windows.Storage.Streams;
+
+using Microsoft.EntityFrameworkCore;
 
 using OutdoorTracker.Common;
 using OutdoorTracker.Database;
+using OutdoorTracker.Helpers;
+using OutdoorTracker.Logging;
 using OutdoorTracker.Tracks.Gpx;
 using OutdoorTracker.Tracks.Kml;
 
@@ -33,109 +37,91 @@ namespace OutdoorTracker.Tracks
 {
     public class TrackImporter
     {
-        private readonly UnitOfWorkFactoy _unitOfWorkFactory;
+        private readonly GpxTrackBuilder _gpxTrackBuilder;
+        private readonly KmlTrackBuilder _kmlTrackBuilder;
+        private readonly UnitOfWorkFactoy _unitOfWorkFactoy;
 
-        public TrackImporter(UnitOfWorkFactoy unitOfWorkFactory)
+        public TrackImporter(GpxTrackBuilder gpxTrackBuilder, KmlTrackBuilder kmlTrackBuilder, UnitOfWorkFactoy unitOfWorkFactoy)
         {
-            _unitOfWorkFactory = unitOfWorkFactory;
+            _gpxTrackBuilder = gpxTrackBuilder;
+            _kmlTrackBuilder = kmlTrackBuilder;
+            _unitOfWorkFactoy = unitOfWorkFactoy;
         }
 
-        public async Task<IEnumerable<Track>> ImportKml(Stream xml, string filename)
+        public async Task<IEnumerable<Track>> ImportTracks()
         {
-            List<Track> importedTracks = new List<Track>();
-            XmlSerializer xmlSerializer = new XmlSerializer(typeof(KmlType));
-            KmlType kmlFile = (KmlType)xmlSerializer.Deserialize(xml);
-
-            if (string.IsNullOrWhiteSpace(kmlFile.Document?.Placemark?.LineString?.Coordinates))
+            string fileExtension = "";
+            try
             {
-                await ImportFailed("There are not Tracks in this File.");
-                return importedTracks;
-            }
+                List<Track> createdTracks = new List<Track>();
 
-            using (IUnitOfWork unitOfWork = _unitOfWorkFactory.Create())
-            {
-                string[] coordinates = kmlFile.Document.Placemark.LineString.Coordinates.Split(' ');
-                if (coordinates.Length > 0)
+                FileOpenPicker openPicker = new FileOpenPicker();
+                openPicker.ViewMode = PickerViewMode.List;
+                openPicker.SuggestedStartLocation = PickerLocationId.Desktop;
+                openPicker.FileTypeFilter.Add(".gpx");
+                openPicker.FileTypeFilter.Add(".kml");
+                StorageFile file = await openPicker.PickSingleFileAsync();
+                if (file != null)
                 {
-                    List<Point> points = new List<Point>();
-                    foreach (string coordinate in coordinates)
+                    IRandomAccessStreamWithContentType xmlStream = await file.OpenReadAsync();
+                    IEnumerable<Track> tracks;
+                    fileExtension = Path.GetExtension(file.Name);
+                    if (fileExtension.Equals(".kml", StringComparison.OrdinalIgnoreCase))
                     {
-                        string[] coordParts = coordinate.Split(',');
-                        if (coordParts.Length == 2)
+                        tracks = await _kmlTrackBuilder.Import(xmlStream.AsStreamForRead(), file.Name);
+                    }
+                    else
+                    {
+                        tracks = await _gpxTrackBuilder.Import(xmlStream.AsStreamForRead(), file.Name);
+                    }
+                    foreach (Track track in tracks)
+                    {
+                        createdTracks.Add(track);
+                    }
+                }
+
+                return createdTracks;
+            }
+            catch (Exception ex)
+            {
+                OutdoorTrackerEvents.Log.TrackImportError(fileExtension, ex);
+                await DialogHelper.ShowErrorAndReport($"Could not import any tracks from the selected file. Are you sure that this is a valid file?", "Failed to import tracks", ex, new Dictionary<string, string> { { "FileExtension", fileExtension } });
+                return Enumerable.Empty<Track>();
+            }
+        }
+
+        public async Task ExportTracks(int[] trackIds)
+        {
+            string fileExtension = "";
+            try
+            {
+                FileSavePicker savePicker = new FileSavePicker();
+                savePicker.SuggestedStartLocation = PickerLocationId.DocumentsLibrary;
+                savePicker.FileTypeChoices.Add("GPX file", new[] { ".gpx" });
+                savePicker.FileTypeChoices.Add("KML file", new[] { ".kml" });
+                savePicker.DefaultFileExtension = ".gpx";
+                StorageFile file = await savePicker.PickSaveFileAsync();
+                if (file != null)
+                {
+                    using (IUnitOfWork unitOfWork = _unitOfWorkFactoy.Create())
+                    {
+                        fileExtension = Path.GetExtension(file.Name);
+                        if (fileExtension.Equals(".kml", StringComparison.OrdinalIgnoreCase))
                         {
-                            double lat;
-                            double lon;
-                            if (double.TryParse(coordParts[1], out lat) && double.TryParse(coordParts[0], out lon))
-                            {
-                                points.Add(new Point(lat, lon));
-                            }
+                            await _kmlTrackBuilder.Export(file, trackIds, unitOfWork);
+                        }
+                        else
+                        {
+                            await _gpxTrackBuilder.Export(file, trackIds, unitOfWork);
                         }
                     }
-                    importedTracks.Add(await CreateTrack(kmlFile.Document.Name, points, unitOfWork));
                 }
             }
-            return importedTracks;
-        }
-
-        public async Task<IEnumerable<Track>> ImportGpx(Stream xml, string filename)
-        {
-            List<Track> importedTracks = new List<Track>();
-            XmlSerializer xmlSerializer = new XmlSerializer(typeof(GpxType));
-            GpxType gpxFile = (GpxType)xmlSerializer.Deserialize(xml);
-
-            if (!gpxFile.Tracks.Any() && !gpxFile.Waypoints.Any())
+            catch (Exception ex)
             {
-                await ImportFailed("There are not Tracks in this File.");
-                return importedTracks;
+                OutdoorTrackerEvents.Log.TrackExportError(fileExtension, ex);
+                await DialogHelper.ShowErrorAndReport($"", "Failed to export tracks", ex, new Dictionary<string, string> { { "FileExtension", fileExtension } });
             }
-
-            using (IUnitOfWork unitOfWork = _unitOfWorkFactory.Create())
-            {
-                if (gpxFile.Tracks.Any())
-                {
-                    foreach (TrackType gpxTrack in gpxFile.Tracks)
-                    {
-                        importedTracks.Add(await CreateTrack(gpxTrack.Name, gpxTrack.Segments.SelectMany(s => s.Points).Select(p => p.ToPoint()), unitOfWork));
-                    }
-                }
-                if (gpxFile.Waypoints.Any())
-                {
-                    importedTracks.Add(await CreateTrack(filename, gpxFile.Waypoints.Select(p => p.ToPoint()), unitOfWork));
-                }
-            }
-            return importedTracks;
-        }
-
-        private async Task<Track> CreateTrack(string name, IEnumerable<Point> points, IUnitOfWork unitOfWork)
-        {
-            Track track = new Track();
-            track.Name = name;
-            int pointNumber = 0;
-            foreach (Point point in points)
-            {
-                TrackPoint trackPoint = new TrackPoint();
-                trackPoint.Track = track;
-                trackPoint.Latitude = point.X;
-                trackPoint.Longitude = point.Y;
-                trackPoint.Time = DateTime.Now;
-                trackPoint.Number = pointNumber++;
-                unitOfWork.TrackPoints.Add(trackPoint);
-            }
-            unitOfWork.Tracks.Add(track);
-            await unitOfWork.SaveChangesAsync();
-            return track;
-        }
-
-        private async Task ImportFailed(string message)
-        {
-            var dialog = new MessageDialog(message, "GPX Import failed");
-
-            dialog.Commands.Add(new UICommand("OK") { Id = true });
-
-            dialog.DefaultCommandIndex = 0;
-            dialog.CancelCommandIndex = 0;
-
-            await dialog.ShowAsync();
         }
     }
 }

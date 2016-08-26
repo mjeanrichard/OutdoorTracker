@@ -29,6 +29,7 @@ using OutdoorTracker.Common;
 using OutdoorTracker.Database;
 using OutdoorTracker.Helpers;
 using OutdoorTracker.Layers;
+using OutdoorTracker.Logging;
 
 using UniversalMapControl.Interfaces;
 using UniversalMapControl.Projections;
@@ -63,18 +64,28 @@ namespace OutdoorTracker.Services
 
         public async Task<MapConfiguration> GetCurrentConfiguration()
         {
-            string mapLayerName = _settingsManager.MapLayerName;
-            if ((_currentConfiguration == null) || !_currentConfiguration.Name.Equals(mapLayerName))
+            string mapLayerName = "";
+            try
             {
-                MapConfiguration mapConfiguration = await _readonlyUnitOfWork.MapConfigurations.FirstOrDefaultAsync(c => c.Name.Equals(mapLayerName, StringComparison.OrdinalIgnoreCase));
-                if (mapConfiguration == null)
+                mapLayerName = _settingsManager.MapLayerName;
+                if ((_currentConfiguration == null) || !_currentConfiguration.Name.Equals(mapLayerName))
                 {
-                    return Default;
+                    MapConfiguration mapConfiguration = await _readonlyUnitOfWork.MapConfigurations.FirstOrDefaultAsync(c => c.Name.Equals(mapLayerName, StringComparison.OrdinalIgnoreCase));
+                    if (mapConfiguration == null)
+                    {
+                        return Default;
+                    }
+                    Deserialize(mapConfiguration);
+                    _currentConfiguration = mapConfiguration;
                 }
-                Deserialize(mapConfiguration);
-                _currentConfiguration = mapConfiguration;
+                return _currentConfiguration;
             }
-            return _currentConfiguration;
+            catch (Exception ex)
+            {
+                OutdoorTrackerEvents.Log.MapDefinitionGetCurrentFailed(mapLayerName, ex);
+                DialogHelper.ReportException(ex, new Dictionary<string, string> { { "LayerName", mapLayerName } });
+                return Default;
+            }
         }
 
         private void Deserialize(MapConfiguration mapConfiguration)
@@ -137,12 +148,14 @@ namespace OutdoorTracker.Services
                     await Import(json, unitOfWork, forceOverwrite);
                     await unitOfWork.SaveChangesAsync();
                 }
-                catch (JsonReaderException)
+                catch (JsonReaderException ex)
                 {
+                    OutdoorTrackerEvents.Log.MapDefinitionImportFailedInvalidJson(json, ex);
                     await DialogHelper.ShowError($"The selected layer definition could not be imported, it is not valid.", $"Cannot import map definition");
                 }
                 catch (Exception ex)
                 {
+                    OutdoorTrackerEvents.Log.MapDefinitionImportFailed(json, ex);
                     await DialogHelper.ShowErrorAndReport($"The selected layer definition could not be imported.", $"Cannot import map definition", ex, new Dictionary<string, string> { { "Json", json } });
                 }
             }
