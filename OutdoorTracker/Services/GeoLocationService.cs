@@ -23,6 +23,8 @@ using Windows.Devices.Sensors;
 
 using Microsoft.HockeyApp;
 
+using OutdoorTracker.Helpers;
+
 namespace OutdoorTracker.Services
 {
     public class GeoLocationService
@@ -56,13 +58,13 @@ namespace OutdoorTracker.Services
                     }
                     catch (Exception ex)
                     {
-                        HockeyClient.Current.TrackException(ex, new Dictionary<string, string> { { "Event", "CompassDisabled" } });
+                        DialogHelper.ReportException(ex, new Dictionary<string, string> { { "Event", "CompassDisabled" } });
                         HasCompass = false;
                     }
                 }
                 else
                 {
-                    HockeyClient.Current.TrackEvent("No Compass");
+                    DialogHelper.TrackEvent(TrackEvents.NoCompass);
                 }
             }
 
@@ -85,11 +87,11 @@ namespace OutdoorTracker.Services
                     break;
 
                 case GeolocationAccessStatus.Denied:
-                    HockeyClient.Current.TrackEvent("Geo Location Denied.");
+                    DialogHelper.TrackEvent(TrackEvents.GeoLocationDenied);
                     CurrentLocation.UpdateState(PositionStatus.NotAvailable);
                     break;
                 case GeolocationAccessStatus.Unspecified:
-                    HockeyClient.Current.TrackEvent("Geo Location state unspecified.");
+                    DialogHelper.TrackEvent(TrackEvents.LocationStateUnspecified);
                     CurrentLocation.UpdateState(PositionStatus.NotAvailable);
                     break;
             }

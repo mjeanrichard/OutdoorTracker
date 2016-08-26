@@ -110,7 +110,9 @@
     <Compile Include="Common\BaseViewModel.cs" />
     <Compile Include="Common\DependencyContainer.cs" />
     <Compile Include="Common\DispatcherHelper.cs" />
+    <Compile Include="Common\IAppPage.cs" />
     <Compile Include="Common\NavigationService.cs" />
+    <Compile Include="Helpers\TrackEvents.cs" />
     <Compile Include="Logging\OutdoorTrackerEvents.cs">
       <Generator>EventSourceGenerator</Generator>
       <LastGenOutput>OutdoorTrackerEvents.g.cs</LastGenOutput>

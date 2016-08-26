@@ -26,6 +26,33 @@ namespace OutdoorTracker.Helpers
 {
     public static class DialogHelper
     {
+        public static async Task ShowErrorAndReport(string errorMessage, string title, Exception ex, Dictionary<string, string> properties = null)
+        {
+            var dialog = new MessageDialog(errorMessage + Environment.NewLine + "Would you like to report this Error?", title);
+
+            dialog.Commands.Add(new UICommand("No") { Id = 0 });
+            dialog.Commands.Add(new UICommand("Yes, send report") { Id = 1 });
+
+            dialog.DefaultCommandIndex = 1;
+            dialog.CancelCommandIndex = 0;
+
+            IUICommand result = await dialog.ShowAsync();
+            if ((int)result.Id == 1)
+            {
+                ReportException(ex, properties);
+            }
+        }
+
+        public static void ReportException(Exception exception, Dictionary<string, string> properties)
+        {
+            HockeyClient.Current.TrackException(exception, properties);
+        }
+
+        public static void TrackEvent(TrackEvents trackEvent, Dictionary<string, string> properties = null, IDictionary<string, double> metrics = null)
+        {
+            HockeyClient.Current.TrackEvent(trackEvent.ToString("G"), properties, metrics);
+        }
+
         public static async Task ShowError(string errorMessage, string title)
         {
             var dialog = new MessageDialog(errorMessage, title);
@@ -46,23 +73,6 @@ namespace OutdoorTracker.Helpers
             dialog.DefaultCommandIndex = 0;
             dialog.CancelCommandIndex = 0;
             await dialog.ShowAsync();
-        }
-
-        public static async Task ShowErrorAndReport(string errorMessage, string title, Exception ex, Dictionary<string, string> properties = null)
-        {
-            var dialog = new MessageDialog(errorMessage + Environment.NewLine + "Would you like to report this Error?", title);
-
-            dialog.Commands.Add(new UICommand("No") { Id = 0 });
-            dialog.Commands.Add(new UICommand("Yes, send report") { Id = 1 });
-
-            dialog.DefaultCommandIndex = 1;
-            dialog.CancelCommandIndex = 0;
-
-            IUICommand result = await dialog.ShowAsync();
-            if ((int)result.Id == 1)
-            {
-                HockeyClient.Current.TrackException(ex, properties);
-            }
         }
     }
 }

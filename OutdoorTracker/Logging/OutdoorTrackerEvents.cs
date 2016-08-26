@@ -14,6 +14,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+using System;
+
 using Microsoft.Diagnostics.Tracing;
 
 namespace OutdoorTracker.Logging
@@ -26,5 +28,8 @@ namespace OutdoorTracker.Logging
 
         [TemplateEvent(101, Message = "Disposed a new UnitOfWork {0}.", Level = EventLevel.Informational)]
         public abstract void UnitOfWorkDisposed(int id);
+
+        [TemplateEvent(101, Message = "Disposed a new UnitOfWork {0}.", Level = EventLevel.Informational)]
+        public abstract void UnitOfWorkDisposed(int id, Exception ex);
     }
 }

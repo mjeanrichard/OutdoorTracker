@@ -15,6 +15,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 using Windows.ApplicationModel.ExtendedExecution;
@@ -24,6 +25,7 @@ using Microsoft.EntityFrameworkCore;
 
 using OutdoorTracker.Common;
 using OutdoorTracker.Database;
+using OutdoorTracker.Helpers;
 using OutdoorTracker.Tracks;
 
 using UniversalMapControl.Interfaces;
@@ -129,6 +131,7 @@ namespace OutdoorTracker.Services
         public async Task StartTracking(Track track, int startNr = 0)
         {
             _settingsManager.CurrentTrackingId = track.Id;
+            _nextTrackPointNumber = startNr;
             IsTracking = true;
             RecordingTrack = track;
             await StartLocationExtensionSession();
@@ -158,7 +161,7 @@ namespace OutdoorTracker.Services
             ExtendedExecutionResult result = await _extendedExecutionSession.RequestExtensionAsync();
             if (result == ExtendedExecutionResult.Denied)
             {
-                //TODO: handle denied
+                DialogHelper.TrackEvent(TrackEvents.ExtendedExecutionDenied);
             }
         }
 
@@ -176,8 +179,8 @@ namespace OutdoorTracker.Services
                     {
                         int trackId = _settingsManager.CurrentTrackingId.Value;
                         Track track = await unitOfWork.Tracks.SingleOrDefaultAsync(t => t.Id == trackId);
-                        int trackPointCount = await unitOfWork.TrackPoints.CountAsync(p => p.TrackId == trackId);
-                        await StartTracking(track, trackPointCount);
+                        int trackPointCount = await unitOfWork.TrackPoints.Where(p => p.TrackId == trackId).MaxAsync(p => p.Number);
+                        await StartTracking(track, trackPointCount + 1);
                     }
                 }
                 else
