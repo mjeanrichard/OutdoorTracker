@@ -276,15 +276,25 @@ namespace OutdoorTracker.Views.Map
 
         public override Task Leave()
         {
+            SaveMapPosition();
+            return Task.CompletedTask;
+        }
+
+        public override Task Suspending()
+        {
+            SaveMapPosition();
+            return Task.CompletedTask;
+        }
+
+        private void SaveMapPosition()
+        {
             _settingsManager.HeadingMode = _headingMode;
-            LocationModel.PropertyChanged -= LocationModelPropertyChanged;
             if (MapConfiguration != null)
             {
                 double zoomFactor = MapConfiguration.Projection.GetZoomFactor(_zoomLevel);
                 double cartesianScaleFactor = MapConfiguration.Projection.CartesianScaleFactor(MapCenter);
                 _settingsManager.SetLastPosition(MapCenter, zoomFactor * cartesianScaleFactor, Heading);
             }
-            return Task.CompletedTask;
         }
     }
 }

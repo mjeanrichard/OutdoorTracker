@@ -20,8 +20,6 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 
-using Windows.Storage;
-using Windows.Storage.Pickers;
 using Windows.UI.Popups;
 
 using Microsoft.EntityFrameworkCore;
@@ -92,8 +90,6 @@ namespace OutdoorTracker.Views.Tracks
                 ExportTracksCommand.RaiseCanExecuteChanged();
             }
         }
-
-        public Track SelectedTrack { get; set; }
 
         private async Task ExportTracks()
         {

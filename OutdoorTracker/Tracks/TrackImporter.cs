@@ -101,15 +101,17 @@ namespace OutdoorTracker.Tracks
                 StorageFile file = await savePicker.PickSaveFileAsync();
                 if (file != null)
                 {
-                    IUnitOfWork unitOfWork = _unitOfWorkFactoy.Create();
-                    fileExtension = Path.GetExtension(file.Name);
-                    if (fileExtension.Equals(".kml", StringComparison.OrdinalIgnoreCase))
+                    using (IUnitOfWork unitOfWork = _unitOfWorkFactoy.Create())
                     {
-                        await _kmlTrackBuilder.Export(file, trackIds, unitOfWork);
-                    }
-                    else
-                    {
-                        await _gpxTrackBuilder.Export(file, trackIds, unitOfWork);
+                        fileExtension = Path.GetExtension(file.Name);
+                        if (fileExtension.Equals(".kml", StringComparison.OrdinalIgnoreCase))
+                        {
+                            await _kmlTrackBuilder.Export(file, trackIds, unitOfWork);
+                        }
+                        else
+                        {
+                            await _gpxTrackBuilder.Export(file, trackIds, unitOfWork);
+                        }
                     }
                 }
             }

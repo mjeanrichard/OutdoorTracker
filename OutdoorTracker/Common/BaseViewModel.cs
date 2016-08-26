@@ -92,5 +92,15 @@ namespace OutdoorTracker.Common
                 }
             }
         }
+
+        public virtual Task Suspending()
+        {
+            return Task.CompletedTask;
+        }
+
+        public virtual Task Resuming()
+        {
+            return Task.CompletedTask;
+        }
     }
 }

@@ -14,22 +14,17 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-using System;
-using System.Threading.Tasks;
+using Microsoft.Diagnostics.Tracing;
 
-using Microsoft.EntityFrameworkCore;
-
-using OutdoorTracker.Layers;
-using OutdoorTracker.Tracks;
-
-namespace OutdoorTracker.Database
+namespace OutdoorTracker.Logging
 {
-    public interface IUnitOfWork : IDisposable
+    [TemplateEventSource(Name = "OutdoorTracker", AllowUnsafeCode = false)]
+    public abstract class OutdoorTrackerEventsBase : EventSource
     {
-        DbSet<Track> Tracks { get; }
-        DbSet<TrackPoint> TrackPoints { get; }
-        DbSet<MapConfiguration> MapConfigurations { get; }
+        [TemplateEvent(100, Message = "Created a new UnitOfWork {0} (Transient: {1}).", Level = EventLevel.Informational)]
+        public abstract void UnitOfWorkCreated(int id, bool isTransient, bool isReadonly);
 
-        Task SaveChangesAsync();
+        [TemplateEvent(101, Message = "Disposed a new UnitOfWork {0}.", Level = EventLevel.Informational)]
+        public abstract void UnitOfWorkDisposed(int id);
     }
 }
