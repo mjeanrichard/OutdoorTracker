@@ -19,6 +19,11 @@ function Build()
 {
     Write-Host -Object 'Building solution' -ForegroundColor Green 
     &('C:\Program Files (x86)\MSBuild\14.0\Bin\MSBuild.exe') $projectFile /v:m /p:Configuration="Release$(if ($BuildForStore) {';UapAppxPackageBuildMode=CI'})"
+	if ($LASTEXITCODE -ne 0)
+	{
+		Write-Host "Build Failed with $LASTEXITCODE.";
+		exit $LASTEXITCODE;
+	}
 }
 
 function UpdateFiles()
