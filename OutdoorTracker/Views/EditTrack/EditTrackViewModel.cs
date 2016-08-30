@@ -103,7 +103,7 @@ namespace OutdoorTracker.Views.EditTrack
             else
             {
                 Track = new Track();
-                Track.Name = $"Track {DateTime.Now.ToString("s")}";
+                Track.Name = $"Track {DateTime.Now:s}";
                 Track.ShowOnMap = true;
             }
         }

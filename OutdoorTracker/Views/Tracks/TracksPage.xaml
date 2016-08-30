@@ -8,6 +8,9 @@
     xmlns:tracksData="using:OutdoorTracker.Tracks"
     xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
     xmlns:core="using:Microsoft.Xaml.Interactions.Core"
+    xmlns:converters="using:OutdoorTracker.Converters"
+    xmlns:media="using:Microsoft.Xaml.Interactions.Media"
+    xmlns:controls="using:OutdoorTracker.Controls"
     mc:Ignorable="d">
 
     <Page.Resources>
@@ -42,12 +45,7 @@
         </Style>
     </Page.Resources>
 
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition />
-        </Grid.RowDefinitions>
-
+    <controls:PageViewControl IsBusy="{x:Bind ViewModel.IsBusy, Mode=OneWay}" BusyMessage="{x:Bind ViewModel.BusyText, Mode=OneWay}">
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup>
                 <VisualState x:Name="Wide">
@@ -73,26 +71,31 @@
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
 
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
 
-        <TextBlock Grid.Row="0" FontSize="24">Tracks</TextBlock>
+            <TextBlock Grid.Row="0" FontSize="24">Tracks</TextBlock>
 
-        <GridView x:Name="tracksView" Grid.Row="1" VerticalAlignment="Top" SelectionMode="Multiple"
-                  ItemsSource="{x:Bind ViewModel.Tracks}"
-                  SelectionChanged="TracksView_OnSelectionChanged">
-            <GridView.ItemContainerStyle>
-                <Style TargetType="GridViewItem">
-                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                    <Setter Property="HorizontalAlignment" Value="Stretch" />
-                </Style>
-            </GridView.ItemContainerStyle>
-            <GridView.ItemTemplate>
-                <DataTemplate x:DataType="tracksData:Track">
-                    <Grid Margin="5,5,10,5">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="Auto" />
-                        </Grid.ColumnDefinitions>
-                        <!--<FlyoutBase.AttachedFlyout>
+            <GridView x:Name="tracksView" Grid.Row="1" VerticalAlignment="Top" SelectionMode="Multiple"
+                        ItemsSource="{x:Bind ViewModel.Tracks}"
+                        SelectionChanged="TracksView_OnSelectionChanged">
+                <GridView.ItemContainerStyle>
+                    <Style TargetType="GridViewItem">
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                        <Setter Property="HorizontalAlignment" Value="Stretch" />
+                    </Style>
+                </GridView.ItemContainerStyle>
+                <GridView.ItemTemplate>
+                    <DataTemplate x:DataType="tracksData:Track">
+                        <Grid Margin="5,5,10,5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <!--<FlyoutBase.AttachedFlyout>
 							<MenuFlyout x:Name="tracksMenuFlyout">
 								<MenuFlyout.Items>
 									<MenuFlyoutItem x:Name="Edit" Text="Edit"/>
@@ -100,20 +103,20 @@
 								</MenuFlyout.Items>
 							</MenuFlyout>
 						</FlyoutBase.AttachedFlyout>-->
-                        <TextBlock Grid.Column="0" Text="{x:Bind Name, Mode=OneTime}" />
-                        <ToggleSwitch Grid.Column="1" IsOn="{x:Bind ShowOnMap, Mode=TwoWay}" OnContent="Visible" OffContent="Hidden" Margin="0,0,-40,0">
-                            <interactivity:Interaction.Behaviors>
-                                <core:EventTriggerBehavior EventName="Toggled">
-                                    <core:InvokeCommandAction Command="{Binding DataContext.ToggleTrackVisibilityCommand, ElementName=tracksView}" CommandParameter="{x:Bind Mode=OneTime}" />
-                                </core:EventTriggerBehavior>
-                            </interactivity:Interaction.Behaviors>
-                        </ToggleSwitch>
-                    </Grid>
-                </DataTemplate>
-            </GridView.ItemTemplate>
-        </GridView>
-
-    </Grid>
+                            <TextBlock Grid.Column="0" Text="{x:Bind Name, Mode=OneTime}" />
+                            <ToggleSwitch Grid.Column="1" IsOn="{x:Bind ShowOnMap, Mode=TwoWay}" OnContent="Visible" OffContent="Hidden" Margin="0,0,-40,0">
+                                <interactivity:Interaction.Behaviors>
+                                    <core:EventTriggerBehavior EventName="Toggled">
+                                        <core:InvokeCommandAction Command="{Binding DataContext.ToggleTrackVisibilityCommand, ElementName=tracksView}" CommandParameter="{x:Bind Mode=OneTime}" />
+                                    </core:EventTriggerBehavior>
+                                </interactivity:Interaction.Behaviors>
+                            </ToggleSwitch>
+                        </Grid>
+                    </DataTemplate>
+                </GridView.ItemTemplate>
+            </GridView>
+        </Grid>
+    </controls:PageViewControl>
 
     <Page.BottomAppBar>
         <CommandBar>

@@ -34,6 +34,7 @@ namespace OutdoorTracker.Views.Layers
         private readonly SettingsManager _settingsManager;
         private readonly MapDefinitionManager _mapDefinitionManager;
         private MapLayerModel _selectedLayer;
+        private string _busyText;
 
         public LayersViewModel()
         {
@@ -62,6 +63,16 @@ namespace OutdoorTracker.Views.Layers
 
         public RelayCommand AddMapCommand { get; }
 
+        public string BusyText
+        {
+            get { return _busyText; }
+            set
+            {
+                _busyText = value;
+                OnPropertyChanged();
+            }
+        }
+
         protected override async Task InitializeInternal()
         {
             IEnumerable<MapConfiguration> mapConfigurations = await _mapDefinitionManager.GetMapConfigurations();
@@ -71,6 +82,7 @@ namespace OutdoorTracker.Views.Layers
 
         public async Task ImportMapDefinition()
         {
+            BusyText = "Importing map definition...";
             using (MarkBusy())
             {
                 FileOpenPicker openPicker = new FileOpenPicker();
@@ -85,21 +97,6 @@ namespace OutdoorTracker.Views.Layers
                     await InitializeInternal();
                 }
             }
-        }
-    }
-
-    public class MapLayerModel
-    {
-        private readonly MapConfiguration _mapConfiguration;
-
-        public MapLayerModel(MapConfiguration mapConfiguration)
-        {
-            _mapConfiguration = mapConfiguration;
-        }
-
-        public string Name
-        {
-            get { return _mapConfiguration.Name; }
         }
     }
 }
