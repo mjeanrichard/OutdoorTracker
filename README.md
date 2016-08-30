@@ -9,12 +9,18 @@ For the latest Beta Builds see here (*NOTE:* To install these builds, you need t
 You can install the Beta Version side by side with the Store Version, since they have a different ProductId and Name.
 
 ## Release Notes
-### Version 1.1.0 (Code required)
+### [Milestone 1.1](../../milestone/2?closed=1)
+#### Version 1.1.2 (public store)
+- Added ETW Logging ([#2](../../issues/2))
+- Display busy state on all views ([#11](../../issues/11))
+
+#### Version 1.1.1 (Code required)
 - Added About Page ([#10](../../issues/10))
 - Fixed several small bugs ([#1](../../issues/1), [#9](../../issues/9))
 - Added Configuration for Track smoothing ([#8](../../issues/8))
 
-### Version 1.0.0 (Code required)
+### [Milestone 1.0](../../milestone/1?closed=1)
+#### Version 1.0.0 (Code required)
 - Initial release
 - OpenStreetMap
 - Basic Tracking
