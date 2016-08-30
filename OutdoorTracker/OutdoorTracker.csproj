@@ -112,6 +112,7 @@
     <Compile Include="Common\DispatcherHelper.cs" />
     <Compile Include="Common\IAppPage.cs" />
     <Compile Include="Common\NavigationService.cs" />
+    <Compile Include="Controls\PageViewControl.cs" />
     <Compile Include="Helpers\TrackEvents.cs" />
     <Compile Include="Logging\OutdoorTrackerEvents.cs" />
     <Compile Include="Common\ParameterCommand.cs" />
@@ -169,6 +170,7 @@
       <DependentUpon>EditTrackPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\EditTrack\EditTrackViewModel.cs" />
+    <Compile Include="Views\Layers\MapLayerModel.cs" />
     <Compile Include="Views\Tracks\TracksPage.xaml.cs">
       <DependentUpon>TracksPage.xaml</DependentUpon>
     </Compile>

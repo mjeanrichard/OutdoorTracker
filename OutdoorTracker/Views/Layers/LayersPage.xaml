@@ -5,6 +5,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:layers="using:OutdoorTracker.Views.Layers"
+    xmlns:controls="using:OutdoorTracker.Controls"
 
     mc:Ignorable="d">
 
@@ -28,26 +29,28 @@
         </Style>
     </Page.Resources>
 
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition />
-        </Grid.RowDefinitions>
+    <controls:PageViewControl IsBusy="{x:Bind ViewModel.IsBusy, Mode=OneWay}" BusyMessage="{x:Bind ViewModel.BusyText, Mode=OneWay}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
 
-        <TextBlock Grid.Row="0" FontSize="24">Layers</TextBlock>
+            <TextBlock Grid.Row="0" FontSize="24">Layers</TextBlock>
 
-        <GridView x:Name="layersView" Grid.Row="1" VerticalAlignment="Top" SelectionMode="Single"
-                  ItemClick="LayersGridView_OnItemClick" IsItemClickEnabled="True"
-                  ItemsSource="{x:Bind ViewModel.Layers}">
-            <GridView.ItemTemplate>
-                <DataTemplate x:DataType="layers:MapLayerModel">
-                    <Grid>
-                        <TextBlock Grid.Column="0" Text="{x:Bind Name}" />
-                    </Grid>
-                </DataTemplate>
-            </GridView.ItemTemplate>
-        </GridView>
-
+            <GridView x:Name="layersView" Grid.Row="1" VerticalAlignment="Top" SelectionMode="Single"
+                      ItemClick="LayersGridView_OnItemClick" IsItemClickEnabled="True"
+                      ItemsSource="{x:Bind ViewModel.Layers}">
+                <GridView.ItemTemplate>
+                    <DataTemplate x:DataType="layers:MapLayerModel">
+                        <Grid>
+                            <TextBlock Grid.Column="0" Text="{x:Bind Name}" />
+                        </Grid>
+                    </DataTemplate>
+                </GridView.ItemTemplate>
+            </GridView>
+        </Grid>
+        
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup>
                 <VisualState x:Name="Wide">
@@ -70,7 +73,7 @@
                 </VisualState>
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
-    </Grid>
+    </controls:PageViewControl>
 
     <Page.BottomAppBar>
         <CommandBar>

@@ -39,6 +39,7 @@ namespace OutdoorTracker.Views.Tracks
         private readonly NavigationService _navigationService;
         private ObservableCollection<Track> _tracks;
         private IList<Track> _selectedTracks;
+        private string _busyText;
 
         public TracksViewModel()
         {
@@ -91,11 +92,25 @@ namespace OutdoorTracker.Views.Tracks
             }
         }
 
+        public string BusyText
+        {
+            get { return _busyText; }
+            set
+            {
+                _busyText = value;
+                OnPropertyChanged();
+            }
+        }
+
         private async Task ExportTracks()
         {
-            if (SelectedTracks.Any())
+            using (MarkBusy())
             {
-                await _trackImporter.ExportTracks(SelectedTracks.Select(t => t.Id).ToArray());
+                BusyText = "Exporting selected tracks...";
+                if (SelectedTracks.Any())
+                {
+                    await _trackImporter.ExportTracks(SelectedTracks.Select(t => t.Id).ToArray());
+                }
             }
         }
 
@@ -191,6 +206,7 @@ namespace OutdoorTracker.Views.Tracks
         {
             using (MarkBusy())
             {
+                BusyText = "Importing tracks...";
                 IEnumerable<Track> importedTracks = await _trackImporter.ImportTracks();
                 foreach (Track importedTrack in importedTracks)
                 {

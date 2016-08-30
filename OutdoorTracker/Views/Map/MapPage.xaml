@@ -15,7 +15,6 @@
     mc:Ignorable="d">
 
     <Page.Resources>
-        <converters:BooleanToVisibilityConverter x:Name="boolToVis" />
         <converters:LocationToStringConverter x:Name="locToString" />
         <converters:StringFormatConverter x:Name="stringFormat" />
     </Page.Resources>

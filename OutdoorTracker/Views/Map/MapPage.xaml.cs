@@ -15,6 +15,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 using Windows.UI.Xaml;
+using Windows.UI.Xaml.Input;
 
 using OutdoorTracker.Common;
 
@@ -32,6 +33,7 @@ namespace OutdoorTracker.Views.Map
         {
             InitializeComponent();
             map.Visibility = Visibility.Collapsed;
+            map.ManipulationMode = ManipulationModes.Rotate | ManipulationModes.Scale | ManipulationModes.TranslateX | ManipulationModes.TranslateY | ManipulationModes.TranslateInertia;
         }
 
         protected override void InitializeCompleted()
