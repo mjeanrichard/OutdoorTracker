@@ -65,6 +65,11 @@
                         <Run Text="GNU General Public License" />
                     </Hyperlink>
                 </TextBlock>
+                <TextBlock Style="{StaticResource FlowText}">
+                    <Hyperlink NavigateUri="https://github.com/mjeanrichard/OutdoorTracker/blob/master/PrivacyPolicy.md">
+                        <Run Text="Privacy Policy" />
+                    </Hyperlink>
+                </TextBlock>
             </StackPanel>
         </PivotItem>
     </Pivot>
