@@ -13,7 +13,6 @@
     <Page.Resources>
         <converters:LocationToStringConverter x:Key="locToString" />
         <converters:StringFormatConverter x:Key="stringFormat" />
-        <converters:BooleanToVisibilityConverter x:Key="boolToVis" />
     </Page.Resources>
 
     <Grid>
@@ -22,17 +21,17 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <TextBlock Grid.Row="0" FontSize="24">Location Info</TextBlock>
+        <TextBlock x:Uid="LocationInfo_Title" Grid.Row="0" Style="{StaticResource PageHeader}">Location Info</TextBlock>
 
         <StackPanel Grid.Row="1" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
             <TextBlock Visibility="{x:Bind ViewModel.ShowLocationSettingsInfo, Converter={StaticResource boolToVis}}">
-                <Run Text="This app is not able to access the location. Go to " />
+                <Run x:Uid="LocationInfo_DisabledInfo1" />
                 <Hyperlink NavigateUri="ms-settings:privacy-location">
-                    <Run Text="Settings" />
+                    <Run  x:Uid="LocationInfo_SettingsLink" />
                 </Hyperlink>
-                <Run Text=" to check the location privacy settings." />
+                <Run x:Uid="LocationInfo_DisabledInfo2" />
             </TextBlock>
-            <controls:HeaderControl Header="Location Service State">
+            <controls:HeaderControl  x:Uid="LocationInfo_ServiceState">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="{x:Bind ViewModel.Location.State, Mode=OneWay}" />
                     <TextBlock Margin="10,0,0,0"
@@ -40,7 +39,7 @@
                                Text="{x:Bind ViewModel.Location.PositionSource, Mode=OneWay, Converter={StaticResource stringFormat}, ConverterParameter='(\{0\})'}" />
                 </StackPanel>
             </controls:HeaderControl>
-            <controls:HeaderControl Header="Location WGS84">
+            <controls:HeaderControl x:Uid="LocationInfo_Location">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="{x:Bind ViewModel.Location.Location, Mode=OneWay, Converter={StaticResource locToString}}" />
                     <TextBlock Margin="10,0,0,0" Text="{x:Bind ViewModel.Location.Accuracy, Mode=OneWay, Converter={StaticResource stringFormat}, ConverterParameter='±\{0:0.0\}m'}" />
@@ -48,7 +47,7 @@
             </controls:HeaderControl>
             <controls:HeaderControl Header="Altitude">
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Not available" Visibility="{x:Bind ViewModel.Location.IsAltitudeValid, Mode=OneWay, Converter={StaticResource boolToVis}, ConverterParameter=true}" />
+                    <TextBlock  x:Uid="LocationInfo_AltNotAvailable" Visibility="{x:Bind ViewModel.Location.IsAltitudeValid, Mode=OneWay, Converter={StaticResource boolToVis}, ConverterParameter=true}" />
                     <TextBlock Text="{x:Bind ViewModel.Location.Altitude, Mode=OneWay, Converter={StaticResource stringFormat}, ConverterParameter='\{0:0}m'}"
                                Visibility="{x:Bind ViewModel.Location.IsAltitudeValid, Mode=OneWay, Converter={StaticResource boolToVis}}" />
                     <TextBlock Margin="10,0,0,0"
@@ -57,14 +56,14 @@
                 </StackPanel>
             </controls:HeaderControl>
             <StackPanel Orientation="Horizontal">
-                <controls:HeaderControl Header="Speed" Visibility="{x:Bind ViewModel.Location.Speed.HasValue, Converter={StaticResource boolToVis}, Mode=OneWay }">
+                <controls:HeaderControl x:Uid="LocationInfo_Speed" Visibility="{x:Bind ViewModel.Location.Speed.HasValue, Converter={StaticResource boolToVis}, Mode=OneWay }">
                     <TextBlock Text="{x:Bind ViewModel.Location.Speed, Mode=OneWay}" />
                 </controls:HeaderControl>
-                <controls:HeaderControl Header="Heading" Visibility="{x:Bind ViewModel.Location.Heading.HasValue, Converter={StaticResource boolToVis}, Mode=OneWay }">
+                <controls:HeaderControl x:Uid="LocationInfo_Heading" Visibility="{x:Bind ViewModel.Location.Heading.HasValue, Converter={StaticResource boolToVis}, Mode=OneWay }">
                     <TextBlock Text="{x:Bind ViewModel.Location.Heading, Mode=OneWay}" />
                 </controls:HeaderControl>
             </StackPanel>
-            <controls:HeaderControl Header="Last Update">
+            <controls:HeaderControl x:Uid="LocationInfo_LastUpdate">
                 <TextBlock Text="{x:Bind ViewModel.Location.LastUpdate, Mode=OneWay}" />
             </controls:HeaderControl>
         </StackPanel>

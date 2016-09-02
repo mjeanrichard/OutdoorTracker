@@ -77,7 +77,7 @@
                 <RowDefinition />
             </Grid.RowDefinitions>
 
-            <TextBlock Grid.Row="0" FontSize="24">Tracks</TextBlock>
+            <TextBlock x:Uid="Tracks_Title" Grid.Row="0" Style="{StaticResource PageHeader}" />
 
             <GridView x:Name="tracksView" Grid.Row="1" VerticalAlignment="Top" SelectionMode="Multiple"
                         ItemsSource="{x:Bind ViewModel.Tracks}"
@@ -104,7 +104,7 @@
 							</MenuFlyout>
 						</FlyoutBase.AttachedFlyout>-->
                             <TextBlock Grid.Column="0" Text="{x:Bind Name, Mode=OneTime}" />
-                            <ToggleSwitch Grid.Column="1" IsOn="{x:Bind ShowOnMap, Mode=TwoWay}" OnContent="Visible" OffContent="Hidden" Margin="0,0,-40,0">
+                            <ToggleSwitch x:Uid="Tracks_ShowOnMap" Grid.Column="1" IsOn="{x:Bind ShowOnMap, Mode=TwoWay}" Margin="0,0,-40,0">
                                 <interactivity:Interaction.Behaviors>
                                     <core:EventTriggerBehavior EventName="Toggled">
                                         <core:InvokeCommandAction Command="{Binding DataContext.ToggleTrackVisibilityCommand, ElementName=tracksView}" CommandParameter="{x:Bind Mode=OneTime}" />
@@ -120,11 +120,11 @@
 
     <Page.BottomAppBar>
         <CommandBar>
-            <AppBarButton Label="Start Tracking" Command="{x:Bind ViewModel.StartTrackingCommand, Mode=OneTime}" Icon="Add" />
-            <AppBarButton Label="Import" Command="{x:Bind ViewModel.ImportGpxTrackCommand, Mode=OneTime}" Icon="OpenLocal" />
-            <AppBarButton Label="Export" Command="{x:Bind ViewModel.ExportTracksCommand, Mode=OneTime}" Icon="SaveLocal" />
-            <AppBarButton Label="Edit" Command="{x:Bind ViewModel.EditTrackCommand, Mode=OneTime}" Icon="Edit" />
-            <AppBarButton Label="Delete" Command="{x:Bind ViewModel.DeleteTrackCommand, Mode=OneTime}" Icon="Delete" />
+            <AppBarButton x:Uid="Tracks_StartTrackingButton" Command="{x:Bind ViewModel.StartTrackingCommand, Mode=OneTime}" Icon="Add" />
+            <AppBarButton x:Uid="Tracks_ImportButton" Command="{x:Bind ViewModel.ImportGpxTrackCommand, Mode=OneTime}" Icon="OpenLocal" />
+            <AppBarButton x:Uid="Tracks_ExportButton" Command="{x:Bind ViewModel.ExportTracksCommand, Mode=OneTime}" Icon="SaveLocal" />
+            <AppBarButton x:Uid="Tracks_EditButton" Command="{x:Bind ViewModel.EditTrackCommand, Mode=OneTime}" Icon="Edit" />
+            <AppBarButton x:Uid="Tracks_DeleteButton" Command="{x:Bind ViewModel.DeleteTrackCommand, Mode=OneTime}" Icon="Delete" />
         </CommandBar>
     </Page.BottomAppBar>
 </tracks:TracksPageBase>
