@@ -13,65 +13,53 @@
     </Page.Resources>
 
     <Pivot>
-        <PivotItem Header="Map">
+        <PivotItem x:Uid="Settings_NavigationPivot">
             <StackPanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-                <controls:HeaderControl Header="Navigation">
+                <controls:HeaderControl x:Uid="Settings_NavigationHeader">
                     <StackPanel Orientation="Vertical">
-                        <ToggleSwitch Header="Show the current location on the Map" IsOn="{Binding ShowLocation, Mode=TwoWay}" />
-                        <ToggleSwitch Header="Show the accuracy of the current position on the map" IsOn="{Binding ShowAccuracy, Mode=TwoWay}" />
-                        <ToggleSwitch Header="Allow the rotating the Map with your fingers" IsOn="{Binding RotationEnabled, Mode=TwoWay}" />
+                        <ToggleSwitch x:Uid="Settings_ShowLocation" IsOn="{Binding ShowLocation, Mode=TwoWay}" />
+                        <ToggleSwitch x:Uid="Settings_ShowAccuracy" IsOn="{Binding ShowAccuracy, Mode=TwoWay}" />
+                        <ToggleSwitch x:Uid="Settings_AllowRotate" IsOn="{Binding RotationEnabled, Mode=TwoWay}" />
                     </StackPanel>
                 </controls:HeaderControl>
             </StackPanel>
         </PivotItem>
-        <PivotItem Header="Tracking">
+        <PivotItem x:Uid="Settings_TrackingPivot">
             <StackPanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-                <controls:HeaderControl Header="Track smoothing">
+                <controls:HeaderControl x:Uid="Settings_TrackSmoothing">
                     <StackPanel Orientation="Vertical">
-                        <ToggleSwitch Margin="0,0,0,0" 
-                                      Header="Average recorded points to create a smoother track." 
-                                      IsOn="{x:Bind ViewModel.EnableTrackSmoothing, Mode=TwoWay}"
-                                      OnContent="Enabled" 
-                                      OffContent="Disabled" />
-                        <TextBox Header="Minimum distance in meters to the last recorded point before a new point is recorded." 
+                        <ToggleSwitch Margin="0,0,0,0"
+                                      x:Uid="Settings_EnableTrackSmoothing"
+                                      IsOn="{x:Bind ViewModel.EnableTrackSmoothing, Mode=TwoWay}" />
+                        <TextBox x:Uid="Settings_MinDistanceTrackPoints"
                                  MaxLength="10"
                                  HorizontalAlignment="Left"
-                                 InputScope="Number" 
+                                 InputScope="Number"
                                  Text="{x:Bind ViewModel.TrackMinDistanceMeters, Mode=TwoWay}"
-                                 IsEnabled="{x:Bind ViewModel.EnableTrackSmoothing, Mode=OneWay}"/>
+                                 IsEnabled="{x:Bind ViewModel.EnableTrackSmoothing, Mode=OneWay}" />
                     </StackPanel>
                 </controls:HeaderControl>
             </StackPanel>
         </PivotItem>
-        <PivotItem Header="About">
+        <PivotItem x:Uid="Settings_AboutPivot">
             <StackPanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
                 <TextBlock Style="{StaticResource FlowTextHeader}">Outdoor Tracker</TextBlock>
                 <TextBlock Style="{StaticResource FlowText}">
-                    <Run Text="Version: " />
+                    <Run x:Uid="Settings_AboutVersion" />
                     <Run Text="{x:Bind ViewModel.Version, Mode=OneTime}" />
                 </TextBlock>
                 <TextBlock Style="{StaticResource FlowText}">
-                    <Run Text="For Questions and Feedback please visit " />
+                    <Run x:Uid="Settings_AboutFeedbackLinkTextPart1" />
                     <Hyperlink NavigateUri="https://github.com/mjeanrichard/OutdoorTracker">
-                        <Run Text="Outdoor Tracker on GitHub" />
+                        <Run x:Uid="Settings_AboutFeedbackLink" />
                     </Hyperlink>
-                    <Run Text="." />
+                    <Run x:Uid="Settings_AboutFeedbackLinkTextPart2" />
                 </TextBlock>
 
-                <TextBlock Style="{StaticResource FlowTextHeader}">License</TextBlock>
-                <TextBlock Style="{StaticResource FlowText}">Copyright (C) 2016  Meinrad Jean-Richard</TextBlock>
-                <TextBlock Style="{StaticResource FlowText}">
-                    This program is free software: you can redistribute it and/or modify
-                    it under the terms of the GNU General Public License as published by
-                    the Free Software Foundation, either version 3 of the License, or
-                    (at your option) any later version.
-                </TextBlock>
-                <TextBlock Style="{StaticResource FlowText}">
-                    This program is distributed in the hope that it will be useful,
-                    but WITHOUT ANY WARRANTY; without even the implied warranty of
-                    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-                    GNU General Public License for more details.
-                </TextBlock>
+                <TextBlock Style="{StaticResource FlowTextHeader}" x:Uid="Settings_AboutLicense_Title" />
+                <TextBlock Style="{StaticResource FlowText}" x:Uid="Settings_AboutLicense_Copyright" />
+                <TextBlock Style="{StaticResource FlowText}" x:Uid="Settings_AboutLicense_Text1" MaxWidth="400" HorizontalAlignment="Left" />
+                <TextBlock Style="{StaticResource FlowText}" x:Uid="Settings_AboutLicense_Text2" MaxWidth="400" HorizontalAlignment="Left" />
                 <TextBlock Style="{StaticResource FlowText}">
                     <Hyperlink NavigateUri="http://www.gnu.org/licenses">
                         <Run Text="GNU General Public License" />

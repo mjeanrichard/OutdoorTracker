@@ -36,7 +36,7 @@
                 <RowDefinition />
             </Grid.RowDefinitions>
 
-            <TextBlock Grid.Row="0" FontSize="24">Layers</TextBlock>
+            <TextBlock x:Uid="Layers_Title" Grid.Row="0" Style="{StaticResource PageHeader}" />
 
             <GridView x:Name="layersView" Grid.Row="1" VerticalAlignment="Top" SelectionMode="Single"
                       ItemClick="LayersGridView_OnItemClick" IsItemClickEnabled="True"
@@ -77,7 +77,7 @@
 
     <Page.BottomAppBar>
         <CommandBar>
-            <AppBarButton Label="Import Layers" Command="{Binding AddMapCommand}" Icon="Add" />
+            <AppBarButton x:Uid="Layers_ImportButton" Command="{Binding AddMapCommand}" Icon="Add" />
         </CommandBar>
     </Page.BottomAppBar>
 </layers:LayersPageBase>

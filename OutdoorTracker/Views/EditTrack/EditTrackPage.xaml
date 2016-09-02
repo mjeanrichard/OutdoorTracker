@@ -8,7 +8,6 @@
     xmlns:editTrack="using:OutdoorTracker.Views.EditTrack"
     xmlns:controls="using:OutdoorTracker.Controls"
     xmlns:converters="using:OutdoorTracker.Converters"
-
     mc:Ignorable="d">
 
     <Page.Resources>
@@ -21,18 +20,18 @@
             <RowDefinition />
         </Grid.RowDefinitions>
 
-        <TextBlock Grid.Row="0" FontSize="24">Edit Track</TextBlock>
+        <TextBlock x:Uid="EditTrack_Title" Grid.Row="0" Style="{StaticResource PageHeader}" />
 
         <StackPanel Grid.Row="1" Orientation="Vertical">
-            <TextBox Header="Track Name:" Text="{x:Bind ViewModel.Track.Name, Mode=TwoWay}" />
+            <TextBox x:Uid="EditTrack_NameField" Text="{x:Bind ViewModel.Track.Name, Mode=TwoWay}" />
         </StackPanel>
     </Grid>
 
     <Page.BottomAppBar>
         <CommandBar>
-            <AppBarButton Label="Create" Command="{x:Bind ViewModel.CreateCommand, Mode=OneTime}" Icon="Save" Visibility="{x:Bind ViewModel.IsNew, Converter={StaticResource boolToVis}, Mode=OneTime}" />
-            <AppBarButton Label="Save" Command="{x:Bind ViewModel.SaveCommand, Mode=OneTime}" Icon="Save" Visibility="{x:Bind ViewModel.IsNew, Converter={StaticResource boolToVis}, ConverterParameter=true, Mode=OneTime}" />
-            <AppBarButton Label="Cancel" Command="{x:Bind ViewModel.CancelCommand, Mode=OneTime}" Icon="Cancel" />
+            <AppBarButton x:Uid="EditTrack_CreateButton" Command="{x:Bind ViewModel.CreateCommand, Mode=OneTime}" Icon="Save" Visibility="{x:Bind ViewModel.IsNew, Converter={StaticResource boolToVis}, Mode=OneTime}" />
+            <AppBarButton x:Uid="EditTrack_SaveButton" Command="{x:Bind ViewModel.SaveCommand, Mode=OneTime}" Icon="Save" Visibility="{x:Bind ViewModel.IsNew, Converter={StaticResource boolToVis}, ConverterParameter=true, Mode=OneTime}" />
+            <AppBarButton x:Uid="EditTrack_CancelButton" Command="{x:Bind ViewModel.CancelCommand, Mode=OneTime}" Icon="Cancel" />
         </CommandBar>
     </Page.BottomAppBar>
 </editTrack:EditTrackPageBase>
