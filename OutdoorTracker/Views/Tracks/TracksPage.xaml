@@ -103,7 +103,7 @@
 								</MenuFlyout.Items>
 							</MenuFlyout>
 						</FlyoutBase.AttachedFlyout>-->
-                            <TextBlock Grid.Column="0" Text="{x:Bind Name, Mode=OneTime}" />
+                            <TextBlock Grid.Column="0" TextWrapping="WrapWholeWords" Text="{x:Bind Name, Mode=OneTime}" />
                             <ToggleSwitch x:Uid="Tracks_ShowOnMap" Grid.Column="1" IsOn="{x:Bind ShowOnMap, Mode=TwoWay}" Margin="0,0,-40,0">
                                 <interactivity:Interaction.Behaviors>
                                     <core:EventTriggerBehavior EventName="Toggled">

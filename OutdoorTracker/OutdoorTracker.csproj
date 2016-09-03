@@ -100,7 +100,10 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="project.json" />
-    <PRIResource Include="Resources.resw" />
+    <PRIResource Include="Resources\de\Resources.resw" />
+    <PRIResource Include="Resources\de\Messages.resw" />
+    <PRIResource Include="Resources\Messages.resw" />
+    <PRIResource Include="Resources\Resources.resw" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App.xaml.cs">
@@ -145,6 +148,11 @@
     <Compile Include="Migrations\003_AddOpenStreetMap.cs" />
     <Compile Include="Database\IDbScript.cs" />
     <Compile Include="Migrations\004_TrackShowOnMap.cs" />
+    <Compile Include="Resources\Messages.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Messages.tt</DependentUpon>
+    </Compile>
     <Compile Include="Services\LocationData.cs" />
     <Compile Include="Services\SettingsManager.cs" />
     <Compile Include="Database\TrackRepository.cs" />
@@ -247,6 +255,11 @@
     <Content Include="Assets\Square44x44Logo.scale-200.png" />
     <Content Include="Assets\Square44x44Logo.targetsize-24_altform-unplated.png" />
     <Content Include="Assets\Wide310x150Logo.scale-200.png" />
+    <Content Include="Resources\Messages.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Messages.resw</DependentUpon>
+      <LastGenOutput>Messages.cs</LastGenOutput>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -281,6 +294,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">

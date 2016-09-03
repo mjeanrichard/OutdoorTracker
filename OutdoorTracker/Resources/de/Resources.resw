@@ -1,0 +1,280 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="EditTrack_CancelButton.Label" xml:space="preserve">
+    <value>Abbrechen</value>
+  </data>
+  <data name="EditTrack_CreateButton.Label" xml:space="preserve">
+    <value>Erstellen</value>
+  </data>
+  <data name="EditTrack_EditButton.Label" xml:space="preserve">
+    <value>Bearbeiten</value>
+  </data>
+  <data name="EditTrack_NameField.Header" xml:space="preserve">
+    <value>Pfad name:</value>
+  </data>
+  <data name="EditTrack_Title.Header" xml:space="preserve">
+    <value>Pfad bearbeiten</value>
+  </data>
+  <data name="Layers_ImportButton.Label" xml:space="preserve">
+    <value>Ebenen importieren</value>
+  </data>
+  <data name="Layers_Title.Text" xml:space="preserve">
+    <value>Ebenen</value>
+  </data>
+  <data name="Map_CompassCommand.Label" xml:space="preserve">
+    <value>Kompass</value>
+  </data>
+  <data name="Map_GotoPositionCommand.Label" xml:space="preserve">
+    <value>Aktuelle Position</value>
+  </data>
+  <data name="Map_LocationInfoCommand.Label" xml:space="preserve">
+    <value>Positions Info</value>
+  </data>
+  <data name="Map_NorthUpCommand.Label" xml:space="preserve">
+    <value>Norden oben</value>
+  </data>
+  <data name="Map_SettingsCommand.Label" xml:space="preserve">
+    <value>Einstellungen</value>
+  </data>
+  <data name="Map_ShowLayersCommand.Label" xml:space="preserve">
+    <value>Ebenen</value>
+  </data>
+  <data name="Map_StopTrackingCommand.Label" xml:space="preserve">
+    <value>Aufzeichnung beenden</value>
+  </data>
+  <data name="Map_TracksCommand.Label" xml:space="preserve">
+    <value>Pfade</value>
+  </data>
+  <data name="Settings_AboutFeedbackLink.Text" xml:space="preserve">
+    <value>Outdoor Tracker auf GitHub</value>
+  </data>
+  <data name="Settings_AboutFeedbackLinkTextPart1.Text" xml:space="preserve">
+    <value>Für Fragen und Rückmeldungen besuchen Sie bitte</value>
+  </data>
+  <data name="Settings_AboutFeedbackLinkTextPart2.Text" xml:space="preserve">
+    <value>.</value>
+  </data>
+  <data name="Settings_AboutLicense_Copyright.Text" xml:space="preserve">
+    <value>Copyright (C) 2016  Meinrad Jean-Richard</value>
+  </data>
+  <data name="Settings_AboutLicense_Text1.Text" xml:space="preserve">
+    <value>This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.</value>
+  </data>
+  <data name="Settings_AboutLicense_Text2.Text" xml:space="preserve">
+    <value>This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.</value>
+  </data>
+  <data name="Settings_AboutLicense_Title.Text" xml:space="preserve">
+    <value>Lizenz</value>
+  </data>
+  <data name="Settings_AboutPivot.Header" xml:space="preserve">
+    <value>Über</value>
+  </data>
+  <data name="Settings_AboutVersion.Text" xml:space="preserve">
+    <value>Version:</value>
+  </data>
+  <data name="Settings_AllowRotate.Header" xml:space="preserve">
+    <value>Rotation der Karte mit den Findern zulassen</value>
+  </data>
+  <data name="Settings_EnableTrackSmoothing.Header" xml:space="preserve">
+    <value>Anzahl Punkte die verwendet werden um den Pfad zu glätten.</value>
+  </data>
+  <data name="Settings_MinDistanceTrackPoints.Header" xml:space="preserve">
+    <value>Mindestabstand in Meter bevor ein neuer Punkt aufgezeichnet wird.</value>
+  </data>
+  <data name="Settings_NavigationPivot.Header" xml:space="preserve">
+    <value>Karte</value>
+  </data>
+  <data name="Settings_ShowAccuracy.Header" xml:space="preserve">
+    <value>Genauigkeit der aktuellen Position auf der Karte anzeigen.</value>
+  </data>
+  <data name="Settings_ShowLocation.Header" xml:space="preserve">
+    <value>Aktuelle Position auf der Karte dastellen.</value>
+  </data>
+  <data name="Settings_TrackingPivot.Header" xml:space="preserve">
+    <value>Pfade</value>
+  </data>
+  <data name="Settings_TrackSmoothing.Header" xml:space="preserve">
+    <value>Pfade glätten</value>
+  </data>
+  <data name="Tracks_DeleteButton.Label" xml:space="preserve">
+    <value>Löschen</value>
+  </data>
+  <data name="Tracks_EditButton.Label" xml:space="preserve">
+    <value>Bearbeiten</value>
+  </data>
+  <data name="Tracks_ExportButton.Label" xml:space="preserve">
+    <value>Exportieren</value>
+  </data>
+  <data name="Tracks_ImportButton.Label" xml:space="preserve">
+    <value>Importieren</value>
+  </data>
+  <data name="Tracks_ShowOnMap.OffContent" xml:space="preserve">
+    <value>Unsichtbar</value>
+  </data>
+  <data name="Tracks_ShowOnMap.OnContent" xml:space="preserve">
+    <value>Sichtbar</value>
+  </data>
+  <data name="Tracks_StartTrackingButton.Label" xml:space="preserve">
+    <value>Pfad aufzeichnen</value>
+  </data>
+  <data name="Tracks_Title.Text" xml:space="preserve">
+    <value>Pfade</value>
+  </data>
+  <data name="LocationInfo_Altitude.Header" xml:space="preserve">
+    <value>Höhe</value>
+  </data>
+  <data name="LocationInfo_AltNotAvailable.Text" xml:space="preserve">
+    <value>Nicht verfügbar</value>
+  </data>
+  <data name="LocationInfo_DisabledInfo1.Text" xml:space="preserve">
+    <value>Diese App kann nicht auf die aktuelle Position zugreiffen. Gehe zu</value>
+  </data>
+  <data name="LocationInfo_DisabledInfo2.Text" xml:space="preserve">
+    <value>um die Einstellungen zu prüfen.</value>
+  </data>
+  <data name="LocationInfo_Heading.Header" xml:space="preserve">
+    <value>Orientierung</value>
+  </data>
+  <data name="LocationInfo_LastUpdate.Header" xml:space="preserve">
+    <value>Letzte aktualisierung</value>
+  </data>
+  <data name="LocationInfo_Location.Header" xml:space="preserve">
+    <value>WGS84 Position</value>
+  </data>
+  <data name="LocationInfo_ServiceState.Header" xml:space="preserve">
+    <value>Status des Positionsservice</value>
+  </data>
+  <data name="LocationInfo_SettingsLink.Text" xml:space="preserve">
+    <value>Einstellungen</value>
+  </data>
+  <data name="LocationInfo_Speed.Header" xml:space="preserve">
+    <value>Geschwindigkeit</value>
+  </data>
+  <data name="LocationInfo_Title.Text" xml:space="preserve">
+    <value>Positions Info</value>
+  </data>
+  <data name="Settings_NavigationHeader.Header" xml:space="preserve">
+    <value>Navigation</value>
+  </data>
+  <data name="Tracks_ShowOnMap.Margin" xml:space="preserve">
+    <value>0,0,-10,0</value>
+  </data>
+</root>

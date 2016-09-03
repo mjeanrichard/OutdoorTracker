@@ -271,4 +271,7 @@
   <data name="LocationInfo_Title.Text" xml:space="preserve">
     <value>Location Info</value>
   </data>
+  <data name="Settings_NavigationHeader.Header" xml:space="preserve">
+    <value>Navigation</value>
+  </data>
 </root>
