@@ -24,12 +24,11 @@ using Windows.Storage;
 using Windows.Storage.Pickers;
 using Windows.Storage.Streams;
 
-using Microsoft.EntityFrameworkCore;
-
 using OutdoorTracker.Common;
 using OutdoorTracker.Database;
 using OutdoorTracker.Helpers;
 using OutdoorTracker.Logging;
+using OutdoorTracker.Resources;
 using OutdoorTracker.Tracks.Gpx;
 using OutdoorTracker.Tracks.Kml;
 
@@ -85,7 +84,7 @@ namespace OutdoorTracker.Tracks
             catch (Exception ex)
             {
                 OutdoorTrackerEvents.Log.TrackImportError(fileExtension, ex);
-                await DialogHelper.ShowErrorAndReport($"Could not import any tracks from the selected file. Are you sure that this is a valid file?", "Failed to import tracks", ex, new Dictionary<string, string> { { "FileExtension", fileExtension } });
+                await DialogHelper.ShowErrorAndReport(Messages.TrackImporter.ImportError, Messages.TrackImporter.ImportErrorTitle, ex, new Dictionary<string, string> { { "FileExtension", fileExtension } });
                 return Enumerable.Empty<Track>();
             }
         }
@@ -97,8 +96,8 @@ namespace OutdoorTracker.Tracks
             {
                 FileSavePicker savePicker = new FileSavePicker();
                 savePicker.SuggestedStartLocation = PickerLocationId.DocumentsLibrary;
-                savePicker.FileTypeChoices.Add("GPX file", new[] { ".gpx" });
-                savePicker.FileTypeChoices.Add("KML file", new[] { ".kml" });
+                savePicker.FileTypeChoices.Add(Messages.TrackImporter.GpxFile, new[] { ".gpx" });
+                savePicker.FileTypeChoices.Add(Messages.TrackImporter.KmlFile, new[] { ".kml" });
                 savePicker.DefaultFileExtension = ".gpx";
                 StorageFile file = await savePicker.PickSaveFileAsync();
                 if (file != null)
@@ -120,7 +119,7 @@ namespace OutdoorTracker.Tracks
             catch (Exception ex)
             {
                 OutdoorTrackerEvents.Log.TrackExportError(fileExtension, ex);
-                await DialogHelper.ShowErrorAndReport($"", "Failed to export tracks", ex, new Dictionary<string, string> { { "FileExtension", fileExtension } });
+                await DialogHelper.ShowErrorAndReport(Messages.TrackImporter.ExportError, Messages.TrackImporter.ExportErrorTitle, ex, new Dictionary<string, string> { { "FileExtension", fileExtension } });
             }
         }
     }

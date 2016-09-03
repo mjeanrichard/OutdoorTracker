@@ -22,13 +22,13 @@ using System.Threading.Tasks;
 using System.Xml.Serialization;
 
 using Windows.Storage;
-using Windows.Storage.Provider;
 
 using Microsoft.EntityFrameworkCore;
 
 using OutdoorTracker.Common;
 using OutdoorTracker.Database;
 using OutdoorTracker.Helpers;
+using OutdoorTracker.Resources;
 
 namespace OutdoorTracker.Tracks.Gpx
 {
@@ -42,7 +42,7 @@ namespace OutdoorTracker.Tracks.Gpx
 
         protected override string FormatName
         {
-            get { return "GPX"; }
+            get { return Messages.GpxTrackBuilder.Format; }
         }
 
         public async Task<IEnumerable<Track>> Import(Stream xml, string filename)
@@ -52,7 +52,7 @@ namespace OutdoorTracker.Tracks.Gpx
 
             if (!gpxFile.Tracks.Any() && !gpxFile.Waypoints.Any())
             {
-                await ImportFailed("There are not Tracks in this File.");
+                await ImportFailed(Messages.GpxTrackBuilder.NoTracksFound);
                 return importedTracks;
             }
 
@@ -108,7 +108,7 @@ namespace OutdoorTracker.Tracks.Gpx
                 _gpxSerializer.Serialize(xmlFile, gpxDocument);
             }
             await CachedFileManager.CompleteUpdatesAsync(file);
-            await DialogHelper.ShowMessage("The selected tracks have been exported successfully.", "Export completed");
+            await DialogHelper.ShowMessage(Messages.GpxTrackBuilder.Success, Messages.GpxTrackBuilder.SuccessTitle);
         }
     }
 }

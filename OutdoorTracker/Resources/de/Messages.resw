@@ -117,4 +117,104 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Dialog_Cancel" xml:space="preserve">
+    <value>Abbrechen</value>
+  </data>
+  <data name="Dialog_No" xml:space="preserve">
+    <value>Nein</value>
+  </data>
+  <data name="Dialog_Ok" xml:space="preserve">
+    <value>Ok</value>
+  </data>
+  <data name="Dialog_SendReport" xml:space="preserve">
+    <value>Möchten Sie diesen Fehler melden?</value>
+  </data>
+  <data name="Dialog_Yes" xml:space="preserve">
+    <value>Ja</value>
+  </data>
+  <data name="Dialog_YesSendReport" xml:space="preserve">
+    <value>Ja, melden</value>
+  </data>
+  <data name="GpxTrackBuilder_Format" xml:space="preserve">
+    <value>GPX</value>
+  </data>
+  <data name="GpxTrackBuilder_NoTracksFound" xml:space="preserve">
+    <value>In dieser Datei wurden keine Pfade gefunden.</value>
+  </data>
+  <data name="GpxTrackBuilder_Success" xml:space="preserve">
+    <value>Die ausgewählten Pfade wurden erfolgreich exportiert.</value>
+  </data>
+  <data name="GpxTrackBuilder_SuccessTitle" xml:space="preserve">
+    <value>Export erfolgreich</value>
+  </data>
+  <data name="KmlTrackBuilder_Format" xml:space="preserve">
+    <value>KML</value>
+  </data>
+  <data name="KmlTrackBuilder_NoTracksFound" xml:space="preserve">
+    <value>In dieser Datei wurden keine Pfade gefunden.</value>
+  </data>
+  <data name="KmlTrackBuilder_Success" xml:space="preserve">
+    <value>Die ausgewählten Pfade wurden erfolgreich exportiert.</value>
+  </data>
+  <data name="KmlTrackBuilder_SuccessTitle" xml:space="preserve">
+    <value>Export erfolgreich</value>
+  </data>
+  <data name="MapDefinitionManager_ImportError" xml:space="preserve">
+    <value>Die gewählte Kartendefinition konnte nicht importiert werden.</value>
+  </data>
+  <data name="MapDefinitionManager_ImportErrorTitle" xml:space="preserve">
+    <value>Fehler beim Import</value>
+  </data>
+  <data name="MapDefinitionManager_ImportInvalidJson" xml:space="preserve">
+    <value>Die gewählte Kartendefinition konnte nicht importiert werden. Das Format ist ungültig.</value>
+  </data>
+  <data name="MapDefinitionManager_ImportInvalidJsonTitle" xml:space="preserve">
+    <value>Fehler beim Import</value>
+  </data>
+  <data name="MapDefinitionManager_LayerExists" xml:space="preserve">
+    <value>Es gibt bereits eine Kartendefinition mit dem Namen '{0}'. Möchten Sie diese überschreiben?</value>
+    <comment>string name</comment>
+  </data>
+  <data name="MapDefinitionManager_Overwrite" xml:space="preserve">
+    <value>Überschreiben</value>
+  </data>
+  <data name="MapDefinitionManager_Skip" xml:space="preserve">
+    <value>Überspringen</value>
+  </data>
+  <data name="MapDefinitionManager_UnknownConfig" xml:space="preserve">
+    <value>Die Karte konnte nicht geladen werden. Unbekannte Ebene '{0}'.</value>
+    <comment>string config</comment>
+  </data>
+  <data name="MapDefinitionManager_UnknownProjection" xml:space="preserve">
+    <value>Die Karte konnte nicht geladen werden. Unbekannte Projektion '{0}'.</value>
+    <comment>string projection</comment>
+  </data>
+  <data name="TrackBuilder_ImportFailedTitle" xml:space="preserve">
+    <value>{0} Import fehlgeschlagen</value>
+    <comment>string format</comment>
+  </data>
+  <data name="TrackImporter_ExportError" xml:space="preserve">
+    <value />
+  </data>
+  <data name="TrackImporter_ExportErrorTitle" xml:space="preserve">
+    <value>Die Pfade konnten nicht exportiert werden</value>
+  </data>
+  <data name="TrackImporter_GpxFile" xml:space="preserve">
+    <value>GPX Datei</value>
+  </data>
+  <data name="TrackImporter_ImportError" xml:space="preserve">
+    <value>Aus der gew'hlten Datei konnten keine Pfade importiert werden. Sind Sie sicher, dass es eine g[ltige Datei ist?</value>
+  </data>
+  <data name="TrackImporter_ImportErrorTitle" xml:space="preserve">
+    <value>Pfad-Import fehlgeschlagen</value>
+  </data>
+  <data name="TrackImporter_KmlFile" xml:space="preserve">
+    <value>KML Datei</value>
+  </data>
+  <data name="TrackRecorder_ContinueTracking" xml:space="preserve">
+    <value>Möchten Sie die Aufzeichnung fortsetzen?</value>
+  </data>
+  <data name="TrackRecorder_ContinueTrackingTitle" xml:space="preserve">
+    <value>Laufende Pfad Aufzeichnung gefunden</value>
+  </data>
 </root>

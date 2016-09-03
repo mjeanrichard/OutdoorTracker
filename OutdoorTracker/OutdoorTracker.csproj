@@ -102,7 +102,11 @@
     <None Include="project.json" />
     <PRIResource Include="Resources\de\Resources.resw" />
     <PRIResource Include="Resources\de\Messages.resw" />
-    <PRIResource Include="Resources\Messages.resw" />
+    <PRIResource Include="Resources\Messages.resw">
+      <Generator>T4Toolbox.TemplatedFileGenerator</Generator>
+      <LastGenOutput>Messages.cs</LastGenOutput>
+      <Template>Messages.tt</Template>
+    </PRIResource>
     <PRIResource Include="Resources\Resources.resw" />
   </ItemGroup>
   <ItemGroup>
@@ -150,8 +154,8 @@
     <Compile Include="Migrations\004_TrackShowOnMap.cs" />
     <Compile Include="Resources\Messages.cs">
       <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
       <DependentUpon>Messages.tt</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="Services\LocationData.cs" />
     <Compile Include="Services\SettingsManager.cs" />

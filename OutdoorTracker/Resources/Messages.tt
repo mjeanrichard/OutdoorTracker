@@ -24,20 +24,18 @@ using System.Runtime.CompilerServices;
 
 using Windows.ApplicationModel.Resources;
 
+<#
+    string filename = Path.GetFileNameWithoutExtension(Host.TemplateFile);
+#>
+
 namespace <#= System.Runtime.Remoting.Messaging.CallContext.LogicalGetData("NamespaceHint") #>
 {
     [CompilerGenerated]
     [DebuggerNonUserCode]
     [GeneratedCode("TextTemplatingFileGenerator", "1.0")]
-    public static class <#= Path.GetFileNameWithoutExtension(Host.TemplateFile) #>
+    public static class <#= filename #>
     {
-        private static ResourceLoader ActiveResourceLoader
-        {
-            get
-            {
-                return ResourceLoader.GetForCurrentView();
-            }
-        }
+        private static readonly ResourceLoader ActiveResourceLoader = ResourceLoader.GetForCurrentView("<#= filename #>");
 
 <#
     string inputFile = Path.ChangeExtension(Host.TemplateFile, "resw");

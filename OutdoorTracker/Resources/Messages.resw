@@ -117,4 +117,104 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Dialog_Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="Dialog_No" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="Dialog_Ok" xml:space="preserve">
+    <value>Ok</value>
+  </data>
+  <data name="Dialog_SendReport" xml:space="preserve">
+    <value>Would you like to report this Error?</value>
+  </data>
+  <data name="Dialog_Yes" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <data name="Dialog_YesSendReport" xml:space="preserve">
+    <value>Yes, send report</value>
+  </data>
+  <data name="GpxTrackBuilder_Format" xml:space="preserve">
+    <value>GPX</value>
+  </data>
+  <data name="GpxTrackBuilder_NoTracksFound" xml:space="preserve">
+    <value>There are not Tracks in this File.</value>
+  </data>
+  <data name="GpxTrackBuilder_Success" xml:space="preserve">
+    <value>The selected tracks have been exported successfully.</value>
+  </data>
+  <data name="GpxTrackBuilder_SuccessTitle" xml:space="preserve">
+    <value>Export completed</value>
+  </data>
+  <data name="KmlTrackBuilder_Format" xml:space="preserve">
+    <value>KML</value>
+  </data>
+  <data name="KmlTrackBuilder_NoTracksFound" xml:space="preserve">
+    <value>There are not Tracks in this File.</value>
+  </data>
+  <data name="KmlTrackBuilder_Success" xml:space="preserve">
+    <value>The selected tracks have been exported successfully.</value>
+  </data>
+  <data name="KmlTrackBuilder_SuccessTitle" xml:space="preserve">
+    <value>Export completed</value>
+  </data>
+  <data name="MapDefinitionManager_ImportError" xml:space="preserve">
+    <value>The selected layer definition could not be imported.</value>
+  </data>
+  <data name="MapDefinitionManager_ImportErrorTitle" xml:space="preserve">
+    <value>Cannot import map definition</value>
+  </data>
+  <data name="MapDefinitionManager_ImportInvalidJson" xml:space="preserve">
+    <value>The selected layer definition could not be imported, it is not valid.</value>
+  </data>
+  <data name="MapDefinitionManager_ImportInvalidJsonTitle" xml:space="preserve">
+    <value>Cannot import map definition</value>
+  </data>
+  <data name="MapDefinitionManager_LayerExists" xml:space="preserve">
+    <value>There is already a Map Definition with the name '{0}'. Do you want to overwrite it?</value>
+    <comment>string name</comment>
+  </data>
+  <data name="MapDefinitionManager_Overwrite" xml:space="preserve">
+    <value>Overwrite</value>
+  </data>
+  <data name="MapDefinitionManager_Skip" xml:space="preserve">
+    <value>Skip</value>
+  </data>
+  <data name="MapDefinitionManager_UnknownConfig" xml:space="preserve">
+    <value>The Map could not be loaded. Unknown layer definition '{0}'.</value>
+    <comment>string config</comment>
+  </data>
+  <data name="MapDefinitionManager_UnknownProjection" xml:space="preserve">
+    <value>The Map could not be loaded. Unknown projection '{0}'.</value>
+    <comment>string projection</comment>
+  </data>
+  <data name="TrackBuilder_ImportFailedTitle" xml:space="preserve">
+    <value>{0} Import failed</value>
+    <comment>string format</comment>
+  </data>
+  <data name="TrackImporter_ExportError" xml:space="preserve">
+    <value />
+  </data>
+  <data name="TrackImporter_ExportErrorTitle" xml:space="preserve">
+    <value>Failed to export tracks</value>
+  </data>
+  <data name="TrackImporter_GpxFile" xml:space="preserve">
+    <value>GPX file</value>
+  </data>
+  <data name="TrackImporter_ImportError" xml:space="preserve">
+    <value>Could not import any tracks from the selected file. Are you sure that this is a valid file?</value>
+  </data>
+  <data name="TrackImporter_ImportErrorTitle" xml:space="preserve">
+    <value>Failed to import tracks</value>
+  </data>
+  <data name="TrackImporter_KmlFile" xml:space="preserve">
+    <value>KML file</value>
+  </data>
+  <data name="TrackRecorder_ContinueTracking" xml:space="preserve">
+    <value>Would you like to continue the last Tracking session?</value>
+  </data>
+  <data name="TrackRecorder_ContinueTrackingTitle" xml:space="preserve">
+    <value>Tracking session found</value>
+  </data>
 </root>

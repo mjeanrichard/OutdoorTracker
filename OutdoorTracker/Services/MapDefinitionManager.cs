@@ -30,6 +30,7 @@ using OutdoorTracker.Database;
 using OutdoorTracker.Helpers;
 using OutdoorTracker.Layers;
 using OutdoorTracker.Logging;
+using OutdoorTracker.Resources;
 
 using UniversalMapControl.Interfaces;
 using UniversalMapControl.Projections;
@@ -104,7 +105,7 @@ namespace OutdoorTracker.Services
                 case "SwissGrid":
                     return new SwissGridProjection();
                 default:
-                    throw new ArgumentException($"The Map could not be loaded. Unknown projection '{mapDefinition.Projection}'.");
+                    throw new ArgumentException(Messages.MapDefinitionManager.UnknownProjection(mapDefinition.Projection));
             }
         }
 
@@ -131,7 +132,7 @@ namespace OutdoorTracker.Services
                     config = swissTopoLayerConfig;
                     break;
                 default:
-                    throw new ArgumentException($"The Map could not be loaded. Unknown layer definition '{layerDefinition.Config}'.");
+                    throw new ArgumentException(Messages.MapDefinitionManager.UnknownConfig(layerDefinition.Config));
             }
 
             config.TileLoader.MaxParallelTasks = 5;
@@ -151,12 +152,12 @@ namespace OutdoorTracker.Services
                 catch (JsonReaderException ex)
                 {
                     OutdoorTrackerEvents.Log.MapDefinitionImportFailedInvalidJson(json, ex);
-                    await DialogHelper.ShowError($"The selected layer definition could not be imported, it is not valid.", $"Cannot import map definition");
+                    await DialogHelper.ShowError(Messages.MapDefinitionManager.ImportInvalidJson, Messages.MapDefinitionManager.ImportInvalidJsonTitle);
                 }
                 catch (Exception ex)
                 {
                     OutdoorTrackerEvents.Log.MapDefinitionImportFailed(json, ex);
-                    await DialogHelper.ShowErrorAndReport($"The selected layer definition could not be imported.", $"Cannot import map definition", ex, new Dictionary<string, string> { { "Json", json } });
+                    await DialogHelper.ShowErrorAndReport(Messages.MapDefinitionManager.ImportError, Messages.MapDefinitionManager.ImportErrorTitle, ex, new Dictionary<string, string> { { "Json", json } });
                 }
             }
         }
@@ -189,10 +190,10 @@ namespace OutdoorTracker.Services
 
         private async Task<bool> AllowOverwrite(string name)
         {
-            var dialog = new MessageDialog($"There is already a Map Definition with the name '${name}'. Do you want to overwrite it?");
+            var dialog = new MessageDialog(Messages.MapDefinitionManager.LayerExists(name));
 
-            dialog.Commands.Add(new UICommand("Overwrite") { Id = true });
-            dialog.Commands.Add(new UICommand("Skip") { Id = false });
+            dialog.Commands.Add(new UICommand(Messages.MapDefinitionManager.Overwrite) { Id = true });
+            dialog.Commands.Add(new UICommand(Messages.MapDefinitionManager.Skip) { Id = false });
 
             dialog.DefaultCommandIndex = 0;
             dialog.CancelCommandIndex = 1;

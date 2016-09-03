@@ -7,6 +7,7 @@ using Windows.UI.Popups;
 
 using OutdoorTracker.Common;
 using OutdoorTracker.Database;
+using OutdoorTracker.Resources;
 
 namespace OutdoorTracker.Tracks
 {
@@ -42,9 +43,9 @@ namespace OutdoorTracker.Tracks
 
         protected async Task ImportFailed(string message)
         {
-            var dialog = new MessageDialog(message, $"{FormatName} Import failed");
+            var dialog = new MessageDialog(message, Messages.TrackBuilder.ImportFailedTitle(FormatName));
 
-            dialog.Commands.Add(new UICommand("OK") { Id = true });
+            dialog.Commands.Add(new UICommand(Messages.Dialog.Ok) { Id = true });
 
             dialog.DefaultCommandIndex = 0;
             dialog.CancelCommandIndex = 0;

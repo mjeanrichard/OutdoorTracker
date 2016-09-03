@@ -22,16 +22,18 @@ using Windows.UI.Popups;
 
 using Microsoft.HockeyApp;
 
+using OutdoorTracker.Resources;
+
 namespace OutdoorTracker.Helpers
 {
     public static class DialogHelper
     {
         public static async Task ShowErrorAndReport(string errorMessage, string title, Exception ex, Dictionary<string, string> properties = null)
         {
-            var dialog = new MessageDialog(errorMessage + Environment.NewLine + "Would you like to report this Error?", title);
+            var dialog = new MessageDialog(errorMessage + Environment.NewLine + Messages.Dialog.SendReport, title);
 
-            dialog.Commands.Add(new UICommand("No") { Id = 0 });
-            dialog.Commands.Add(new UICommand("Yes, send report") { Id = 1 });
+            dialog.Commands.Add(new UICommand(Messages.Dialog.No) { Id = 0 });
+            dialog.Commands.Add(new UICommand(Messages.Dialog.SendReport) { Id = 1 });
 
             dialog.DefaultCommandIndex = 1;
             dialog.CancelCommandIndex = 0;
@@ -57,7 +59,7 @@ namespace OutdoorTracker.Helpers
         {
             var dialog = new MessageDialog(errorMessage, title);
 
-            dialog.Commands.Add(new UICommand("Ok") { Id = 0 });
+            dialog.Commands.Add(new UICommand(Messages.Dialog.Ok) { Id = 0 });
 
             dialog.DefaultCommandIndex = 0;
             dialog.CancelCommandIndex = 0;
@@ -68,7 +70,7 @@ namespace OutdoorTracker.Helpers
         {
             var dialog = new MessageDialog(message, title);
 
-            dialog.Commands.Add(new UICommand("Ok") { Id = 0 });
+            dialog.Commands.Add(new UICommand(Messages.Dialog.Ok) { Id = 0 });
 
             dialog.DefaultCommandIndex = 0;
             dialog.CancelCommandIndex = 0;

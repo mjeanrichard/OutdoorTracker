@@ -26,6 +26,7 @@ using Microsoft.EntityFrameworkCore;
 using OutdoorTracker.Common;
 using OutdoorTracker.Database;
 using OutdoorTracker.Helpers;
+using OutdoorTracker.Resources;
 using OutdoorTracker.Tracks;
 
 using UniversalMapControl.Interfaces;
@@ -193,10 +194,10 @@ namespace OutdoorTracker.Services
 
         private async Task<bool> AskToContinueTracking()
         {
-            var dialog = new MessageDialog("Would you like to continue the last Tracking session?", "Tracking session found");
+            var dialog = new MessageDialog(Messages.TrackRecorder.ContinueTracking, Messages.TrackRecorder.ContinueTrackingTitle);
 
-            dialog.Commands.Add(new UICommand("Yes") { Id = true });
-            dialog.Commands.Add(new UICommand("No") { Id = false });
+            dialog.Commands.Add(new UICommand(Messages.Dialog.Yes) { Id = true });
+            dialog.Commands.Add(new UICommand(Messages.Dialog.No) { Id = false });
 
             dialog.DefaultCommandIndex = 1;
             dialog.CancelCommandIndex = 0;
