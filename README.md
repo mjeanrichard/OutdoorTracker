@@ -10,7 +10,10 @@ You can install the Beta Version side by side with the Store Version, since they
 
 ## Release Notes
 ### [Milestone 1.1](../../milestone/2?closed=1)
-#### Version 1.1.2 (public store)
+#### Version 1.1.3 (public store)
+- Added Privacy Policy ([#15](../../issues/15))
+
+#### Version 1.1.2 
 - Added ETW Logging ([#2](../../issues/2))
 - Display busy state on all views ([#11](../../issues/11))
 
