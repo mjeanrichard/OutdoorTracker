@@ -136,7 +136,7 @@ namespace OutdoorTracker.Services
             }
 
             config.TileLoader.MaxParallelTasks = 5;
-            config.TileProvider.LowerTileSetsToLoad = int.MaxValue;
+            config.TileProvider.LowerTileSetsToLoad = 2;
             return config;
         }
 
