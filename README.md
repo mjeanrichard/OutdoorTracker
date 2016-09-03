@@ -12,6 +12,8 @@ You can install the Beta Version side by side with the Store Version, since they
 ### [Milestone 1.1](../../milestone/2?closed=1)
 #### Version 1.1.3 (public store)
 - Added Privacy Policy ([#15](../../issues/15))
+- Improved Performance
+- Added Translation for German
 
 #### Version 1.1.2 
 - Added ETW Logging ([#2](../../issues/2))
