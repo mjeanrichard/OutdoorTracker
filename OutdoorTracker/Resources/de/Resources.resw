@@ -129,7 +129,7 @@
   <data name="EditTrack_NameField.Header" xml:space="preserve">
     <value>Pfad name:</value>
   </data>
-  <data name="EditTrack_Title.Header" xml:space="preserve">
+  <data name="EditTrack_Title.Text" xml:space="preserve">
     <value>Pfad bearbeiten</value>
   </data>
   <data name="Layers_ImportButton.Label" xml:space="preserve">
@@ -199,8 +199,8 @@
   <data name="Settings_MinDistanceTrackPoints.Header" xml:space="preserve">
     <value>Mindestabstand in Meter bevor ein neuer Punkt aufgezeichnet wird.</value>
   </data>
-  <data name="Settings_NavigationPivot.Header" xml:space="preserve">
-    <value>Karte</value>
+  <data name="Settings_GeneralPivot.Header" xml:space="preserve">
+    <value>Allgemein</value>
   </data>
   <data name="Settings_ShowAccuracy.Header" xml:space="preserve">
     <value>Genauigkeit der aktuellen Position auf der Karte anzeigen.</value>
@@ -276,5 +276,14 @@
   </data>
   <data name="Tracks_ShowOnMap.Margin" xml:space="preserve">
     <value>0,0,-10,0</value>
+  </data>
+  <data name="Settings_GeneralHeader.Header" xml:space="preserve">
+    <value>Allgemeine Einstellungen</value>
+  </data>
+  <data name="Settings_LanguageCombo.Header" xml:space="preserve">
+    <value>App Sprache</value>
+  </data>
+  <data name="Settings_LanguageDefault.Content" xml:space="preserve">
+    <value>Gerätesprache</value>
   </data>
 </root>

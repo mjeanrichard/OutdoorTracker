@@ -13,8 +13,19 @@
     </Page.Resources>
 
     <Pivot>
-        <PivotItem x:Uid="Settings_NavigationPivot">
+        <PivotItem x:Uid="Settings_GeneralPivot">
             <StackPanel Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+                <controls:HeaderControl x:Uid="Settings_GeneralHeader">
+                    <StackPanel Orientation="Vertical">
+                        <ComboBox x:Uid="Settings_LanguageCombo" 
+                                  SelectedValue="{x:Bind ViewModel.SelectedLanguage, Mode=TwoWay}"
+                                  SelectedValuePath="DataContext">
+                            <ComboBoxItem x:Uid="Settings_LanguageDefault" DataContext="" />
+                            <ComboBoxItem Content="English" DataContext="en" />
+                            <ComboBoxItem Content="Deutsch" DataContext="de" />
+                        </ComboBox>
+                    </StackPanel>
+                </controls:HeaderControl>
                 <controls:HeaderControl x:Uid="Settings_NavigationHeader">
                     <StackPanel Orientation="Vertical">
                         <ToggleSwitch x:Uid="Settings_ShowLocation" IsOn="{Binding ShowLocation, Mode=TwoWay}" />

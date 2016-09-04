@@ -129,7 +129,7 @@
   <data name="EditTrack_NameField.Header" xml:space="preserve">
     <value>Track Name:</value>
   </data>
-  <data name="EditTrack_Title.Header" xml:space="preserve">
+  <data name="EditTrack_Title.Text" xml:space="preserve">
     <value>Edit Track</value>
   </data>
   <data name="Layers_ImportButton.Label" xml:space="preserve">
@@ -199,8 +199,8 @@
   <data name="Settings_MinDistanceTrackPoints.Header" xml:space="preserve">
     <value>Minimum distance in meters to the last recorded point before a new point is recorded.</value>
   </data>
-  <data name="Settings_NavigationPivot.Header" xml:space="preserve">
-    <value>Map</value>
+  <data name="Settings_GeneralPivot.Header" xml:space="preserve">
+    <value>General</value>
   </data>
   <data name="Settings_ShowAccuracy.Header" xml:space="preserve">
     <value>Show the accuracy of the current position on the map</value>
@@ -273,5 +273,17 @@
   </data>
   <data name="Settings_NavigationHeader.Header" xml:space="preserve">
     <value>Navigation</value>
+  </data>
+  <data name="Tracks_ShowOnMap.Margin" xml:space="preserve">
+    <value>0,0,-30,0</value>
+  </data>
+  <data name="Settings_GeneralHeader.Header" xml:space="preserve">
+    <value>General Settings</value>
+  </data>
+  <data name="Settings_LanguageCombo.Header" xml:space="preserve">
+    <value>Application language</value>
+  </data>
+  <data name="Settings_LanguageDefault.Content" xml:space="preserve">
+    <value>User default</value>
   </data>
 </root>

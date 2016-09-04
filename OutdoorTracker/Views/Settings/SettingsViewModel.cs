@@ -18,6 +18,7 @@ using System.Globalization;
 using System.Threading.Tasks;
 
 using Windows.ApplicationModel;
+using Windows.Globalization;
 
 using OutdoorTracker.Common;
 using OutdoorTracker.Services;
@@ -83,6 +84,19 @@ namespace OutdoorTracker.Views.Settings
                     _settingsManager.TrackMinDistanceMeters = intValue;
                 }
                 OnPropertyChanged();
+            }
+        }
+
+        public string SelectedLanguage
+        {
+            get { return ApplicationLanguages.PrimaryLanguageOverride; }
+            set
+            {
+                if (ApplicationLanguages.PrimaryLanguageOverride != value)
+                {
+                    ApplicationLanguages.PrimaryLanguageOverride = value;
+                    OnPropertyChanged();
+                }
             }
         }
 

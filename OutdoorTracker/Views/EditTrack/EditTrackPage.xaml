@@ -4,14 +4,10 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:tracksData="using:OutdoorTracker.Tracks"
     xmlns:editTrack="using:OutdoorTracker.Views.EditTrack"
-    xmlns:controls="using:OutdoorTracker.Controls"
-    xmlns:converters="using:OutdoorTracker.Converters"
     mc:Ignorable="d">
 
     <Page.Resources>
-        <converters:BooleanToVisibilityConverter x:Key="boolToVis" />
     </Page.Resources>
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">

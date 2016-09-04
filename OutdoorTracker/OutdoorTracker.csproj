@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>OutdoorTracker</RootNamespace>
     <AssemblyName>OutdoorTracker</AssemblyName>
-    <DefaultLanguage>en-US</DefaultLanguage>
+    <DefaultLanguage>en</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
     <TargetPlatformVersion>10.0.14393.0</TargetPlatformVersion>
     <TargetPlatformMinVersion>10.0.10240.0</TargetPlatformMinVersion>
@@ -102,12 +102,13 @@
     <None Include="project.json" />
     <PRIResource Include="Resources\de\Resources.resw" />
     <PRIResource Include="Resources\de\Messages.resw" />
-    <PRIResource Include="Resources\Messages.resw">
+    <PRIResource Include="Resources\en\Messages.resw">
       <Generator>T4Toolbox.TemplatedFileGenerator</Generator>
       <LastGenOutput>Messages.cs</LastGenOutput>
       <Template>Messages.tt</Template>
+      <CustomToolNamespace>OutdoorTracker.Resources</CustomToolNamespace>
     </PRIResource>
-    <PRIResource Include="Resources\Resources.resw" />
+    <PRIResource Include="Resources\en\Resources.resw" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App.xaml.cs">
@@ -152,9 +153,9 @@
     <Compile Include="Migrations\003_AddOpenStreetMap.cs" />
     <Compile Include="Database\IDbScript.cs" />
     <Compile Include="Migrations\004_TrackShowOnMap.cs" />
-    <Compile Include="Resources\Messages.cs">
+    <Compile Include="Resources\en\Messages.cs">
       <AutoGen>True</AutoGen>
-      <DependentUpon>Messages.tt</DependentUpon>
+      <DependentUpon>Messages.resw</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="Services\LocationData.cs" />
@@ -259,10 +260,11 @@
     <Content Include="Assets\Square44x44Logo.scale-200.png" />
     <Content Include="Assets\Square44x44Logo.targetsize-24_altform-unplated.png" />
     <Content Include="Assets\Wide310x150Logo.scale-200.png" />
-    <Content Include="Resources\Messages.tt">
+    <Content Include="Resources\en\Messages.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>Messages.resw</DependentUpon>
       <LastGenOutput>Messages.cs</LastGenOutput>
+      <CustomToolNamespace>OutdoorTracker.Resources</CustomToolNamespace>
     </Content>
   </ItemGroup>
   <ItemGroup>
