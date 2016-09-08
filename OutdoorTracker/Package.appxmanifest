@@ -11,7 +11,7 @@
   <Properties>
     <DisplayName>Outdoor Tracker Beta</DisplayName>
     <PublisherDisplayName>Meinrad Jean-Richard</PublisherDisplayName>
-    <Logo>Assets\NewStoreLogo.png</Logo>
+    <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
 
   <Dependencies>
