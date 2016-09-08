@@ -12,6 +12,10 @@ You can install the Beta Version side by side with the Store Version, since they
 
 ## Release Notes
 ### [Milestone 1.1](../../milestone/2?closed=1)
+#### Version 1.1.5 (public store)
+- Fixed Crash when BatchSprites are not supported ([#18](../../issues/18))
+- Fixed Crash because the Database was not initialized correctly ([#17](../../issues/17))
+
 #### Version 1.1.4 (public store)
 - Fixed Translation Bug
 - Added Setting to change Language

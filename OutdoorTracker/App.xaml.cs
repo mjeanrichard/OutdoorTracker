@@ -97,7 +97,7 @@ namespace OutdoorTracker
                 Window.Current.Content = RootFrame;
             }
 
-            if (e.PreviousExecutionState == ApplicationExecutionState.NotRunning)
+            if (e.PreviousExecutionState != ApplicationExecutionState.Suspended && e.PreviousExecutionState != ApplicationExecutionState.Running)
             {
                 await DependencyContainer.Current.Resolve<DbInitializer>().InitDatabase();
             }
