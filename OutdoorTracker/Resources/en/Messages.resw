@@ -168,6 +168,28 @@
   <data name="KmlTrackBuilder_SuccessTitle" xml:space="preserve">
     <value>Export completed</value>
   </data>
+  <data name="LayersViewModel_DeleteCacheMessage" xml:space="preserve">
+    <value>Do you want to delete all downloaded maps from this app?</value>
+  </data>
+  <data name="LayersViewModel_DeleteCacheMessageTitle" xml:space="preserve">
+    <value>Delete map cache?</value>
+  </data>
+  <data name="LayersViewModel_ImportingMessage" xml:space="preserve">
+    <value>Importing Map Layers...</value>
+  </data>
+  <data name="LayersViewModel_LoadingSize" xml:space="preserve">
+    <value>Loading size...</value>
+  </data>
+  <data name="LayersViewModel_SizeText" xml:space="preserve">
+    <value>Size: {0:N0} mb</value>
+    <comment>ulong size</comment>
+  </data>
+  <data name="LayersViewModel_UnknownSize" xml:space="preserve">
+    <value>Size not available.</value>
+  </data>
+  <data name="LayersViewModel_YesDelete" xml:space="preserve">
+    <value>Yes, delete</value>
+  </data>
   <data name="MapDefinitionManager_ImportError" xml:space="preserve">
     <value>The selected layer definition could not be imported.</value>
   </data>

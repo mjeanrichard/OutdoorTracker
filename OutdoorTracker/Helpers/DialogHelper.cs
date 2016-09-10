@@ -16,6 +16,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading.Tasks;
 
 using Windows.UI.Popups;
@@ -47,12 +48,16 @@ namespace OutdoorTracker.Helpers
 
         public static void ReportException(Exception exception, Dictionary<string, string> properties)
         {
+#if !DEBUG
             HockeyClient.Current.TrackException(exception, properties);
+#endif
         }
 
         public static void TrackEvent(TrackEvents trackEvent, Dictionary<string, string> properties = null, IDictionary<string, double> metrics = null)
         {
+#if !DEBUG
             HockeyClient.Current.TrackEvent(trackEvent.ToString("G"), properties, metrics);
+#endif
         }
 
         public static async Task ShowError(string errorMessage, string title)

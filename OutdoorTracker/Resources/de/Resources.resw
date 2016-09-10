@@ -286,4 +286,10 @@
   <data name="Settings_LanguageDefault.Content" xml:space="preserve">
     <value>Gerätesprache</value>
   </data>
+  <data name="Layers_ClearAllCache.Label" xml:space="preserve">
+    <value>Kartendaten löschen</value>
+  </data>
+  <data name="Layers_LoadLayerSize.Label" xml:space="preserve">
+    <value>Kartengrössen laden</value>
+  </data>
 </root>

@@ -173,6 +173,66 @@ namespace OutdoorTracker.Resources
 
         }
 
+        public static class LayersViewModel
+        {
+            /// <summary>
+            ///      Looks up a Text similar to "Do you want to delete all downloaded maps from this app?"
+            /// </summary>
+            public static string DeleteCacheMessage
+            {
+                get { return ActiveResourceLoader.GetString("LayersViewModel_DeleteCacheMessage"); }
+            }
+
+            /// <summary>
+            ///      Looks up a Text similar to "Delete map cache?"
+            /// </summary>
+            public static string DeleteCacheMessageTitle
+            {
+                get { return ActiveResourceLoader.GetString("LayersViewModel_DeleteCacheMessageTitle"); }
+            }
+
+            /// <summary>
+            ///      Looks up a Text similar to "Importing Map Layers..."
+            /// </summary>
+            public static string ImportingMessage
+            {
+                get { return ActiveResourceLoader.GetString("LayersViewModel_ImportingMessage"); }
+            }
+
+            /// <summary>
+            ///      Looks up a Text similar to "Loading size..."
+            /// </summary>
+            public static string LoadingSize
+            {
+                get { return ActiveResourceLoader.GetString("LayersViewModel_LoadingSize"); }
+            }
+
+            /// <summary>
+            ///      Looks up a Text similar to "Size: {0:N0} mb"
+            /// </summary>
+            public static string SizeText(ulong size)
+            {
+                return string.Format(CultureInfo.CurrentCulture, ActiveResourceLoader.GetString("LayersViewModel_SizeText"), size);
+            }
+
+            /// <summary>
+            ///      Looks up a Text similar to "Size not available."
+            /// </summary>
+            public static string UnknownSize
+            {
+                get { return ActiveResourceLoader.GetString("LayersViewModel_UnknownSize"); }
+            }
+
+            /// <summary>
+            ///      Looks up a Text similar to "Yes, delete"
+            /// </summary>
+            public static string YesDelete
+            {
+                get { return ActiveResourceLoader.GetString("LayersViewModel_YesDelete"); }
+            }
+
+        }
+
         public static class MapDefinitionManager
         {
             /// <summary>

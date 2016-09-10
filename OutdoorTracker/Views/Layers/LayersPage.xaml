@@ -40,12 +40,13 @@
 
             <GridView x:Name="layersView" Grid.Row="1" VerticalAlignment="Top" SelectionMode="Single"
                       ItemClick="LayersGridView_OnItemClick" IsItemClickEnabled="True"
-                      ItemsSource="{x:Bind ViewModel.Layers}">
+                      ItemsSource="{x:Bind ViewModel.Layers, Mode=OneWay}">
                 <GridView.ItemTemplate>
                     <DataTemplate x:DataType="layers:MapLayerModel">
-                        <Grid>
-                            <TextBlock Grid.Column="0" Text="{x:Bind Name}" />
-                        </Grid>
+                        <StackPanel Orientation="Vertical">
+                            <TextBlock Text="{x:Bind Name}" />
+                            <TextBlock Text="{x:Bind Size, Mode=OneWay}" Visibility="{x:Bind IsSizeVisible, Mode=OneWay, Converter={StaticResource boolToVis}}"/>
+                        </StackPanel>
                     </DataTemplate>
                 </GridView.ItemTemplate>
             </GridView>
@@ -77,7 +78,11 @@
 
     <Page.BottomAppBar>
         <CommandBar>
-            <AppBarButton x:Uid="Layers_ImportButton" Command="{Binding AddMapCommand}" Icon="Add" />
+            <AppBarButton x:Uid="Layers_ImportButton" Command="{x:Bind ViewModel.AddMapCommand}" Icon="Add" />
+            <CommandBar.SecondaryCommands>
+                <AppBarButton x:Uid="Layers_ClearAllCache" Command="{x:Bind ViewModel.ClearAllCacheCommand}" />
+                <AppBarButton x:Uid="Layers_LoadLayerSize" Command="{x:Bind ViewModel.LoadLayerSizeCommand}" />
+            </CommandBar.SecondaryCommands>
         </CommandBar>
     </Page.BottomAppBar>
 </layers:LayersPageBase>

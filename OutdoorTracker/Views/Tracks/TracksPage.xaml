@@ -123,8 +123,8 @@
             <AppBarButton x:Uid="Tracks_StartTrackingButton" Command="{x:Bind ViewModel.StartTrackingCommand, Mode=OneTime}" Icon="Add" />
             <AppBarButton x:Uid="Tracks_ImportButton" Command="{x:Bind ViewModel.ImportGpxTrackCommand, Mode=OneTime}" Icon="OpenLocal" />
             <AppBarButton x:Uid="Tracks_ExportButton" Command="{x:Bind ViewModel.ExportTracksCommand, Mode=OneTime}" Icon="SaveLocal" />
-            <AppBarButton x:Uid="Tracks_EditButton" Command="{x:Bind ViewModel.EditTrackCommand, Mode=OneTime}" Icon="Edit" />
             <AppBarButton x:Uid="Tracks_DeleteButton" Command="{x:Bind ViewModel.DeleteTrackCommand, Mode=OneTime}" Icon="Delete" />
+            <AppBarButton x:Uid="Tracks_EditButton" Command="{x:Bind ViewModel.EditTrackCommand, Mode=OneWay}" Icon="Edit" />
         </CommandBar>
     </Page.BottomAppBar>
 </tracks:TracksPageBase>

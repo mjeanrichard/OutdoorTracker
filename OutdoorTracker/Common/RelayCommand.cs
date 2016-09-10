@@ -31,6 +31,7 @@ namespace OutdoorTracker.Common
     {
         private readonly Func<bool> _canExecute;
         private readonly Action _execute;
+        private bool? _enabledOverride;
 
         /// <summary>
         ///     Creates a new command that can always execute.
@@ -39,6 +40,16 @@ namespace OutdoorTracker.Common
         public RelayCommand(Action execute)
             : this(execute, null)
         {
+        }
+
+        public bool? EnabledOverride
+        {
+            get { return _enabledOverride; }
+            set
+            {
+                _enabledOverride = value;
+                RaiseCanExecuteChanged();
+            }
         }
 
         /// <summary>
@@ -70,6 +81,10 @@ namespace OutdoorTracker.Common
         /// <returns>true if this command can be executed; otherwise, false.</returns>
         public override bool CanExecute(object parameter = null)
         {
+            if (_enabledOverride.HasValue)
+            {
+                return _enabledOverride.Value;
+            }
             return _canExecute == null ? true : _canExecute();
         }
 

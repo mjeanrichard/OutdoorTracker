@@ -5,7 +5,7 @@
     "Microsoft.NETCore.UniversalWindowsPlatform": "5.2.2",
     "Newtonsoft.Json": "9.0.1",
     "Unity": "4.0.1",
-    "UniversalMapControl": "0.3.42"
+    "UniversalMapControl": "0.3.45"
   },
   "frameworks": {
     "uap10.0": {}

@@ -154,12 +154,15 @@ namespace OutdoorTracker.Views.Tracks
             }
             if (await AskDelete(message))
             {
-                foreach (Track selectedTrack in SelectedTracks)
+                using (MarkBusy())
                 {
-                    _unitOfWork.TrackPoints.RemoveRange(_unitOfWork.TrackPoints.Where(p => p.Track == selectedTrack));
-                    _unitOfWork.Tracks.Remove(selectedTrack);
-                    await _unitOfWork.SaveChangesAsync();
-                    Tracks.Remove(selectedTrack);
+                    foreach (Track selectedTrack in SelectedTracks)
+                    {
+                        _unitOfWork.TrackPoints.RemoveRange(_unitOfWork.TrackPoints.Where(p => p.Track == selectedTrack));
+                        _unitOfWork.Tracks.Remove(selectedTrack);
+                        await _unitOfWork.SaveChangesAsync();
+                        Tracks.Remove(selectedTrack);
+                    }
                 }
             }
         }

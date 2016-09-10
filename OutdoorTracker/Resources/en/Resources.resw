@@ -286,4 +286,10 @@
   <data name="Settings_LanguageDefault.Content" xml:space="preserve">
     <value>User default</value>
   </data>
+  <data name="Layers_ClearAllCache.Label" xml:space="preserve">
+    <value>Clear map cache</value>
+  </data>
+  <data name="Layers_LoadLayerSize.Label" xml:space="preserve">
+    <value>Load layer size</value>
+  </data>
 </root>

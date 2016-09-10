@@ -168,6 +168,28 @@
   <data name="KmlTrackBuilder_SuccessTitle" xml:space="preserve">
     <value>Export erfolgreich</value>
   </data>
+  <data name="LayersViewModel_DeleteCacheMessage" xml:space="preserve">
+    <value>Möchen Sie wirklich alle von dieser App heruntergeladenen Karten löschen?</value>
+  </data>
+  <data name="LayersViewModel_DeleteCacheMessageTitle" xml:space="preserve">
+    <value>Karten löschen?</value>
+  </data>
+  <data name="LayersViewModel_ImportingMessage" xml:space="preserve">
+    <value>Importiere neue Karten ...</value>
+  </data>
+  <data name="LayersViewModel_LoadingSize" xml:space="preserve">
+    <value>Lade Grösse ...</value>
+  </data>
+  <data name="LayersViewModel_SizeText" xml:space="preserve">
+    <value>Grösse: {0:N0} MB</value>
+    <comment>ulong size</comment>
+  </data>
+  <data name="LayersViewModel_UnknownSize" xml:space="preserve">
+    <value>Grösse nicht verfügbar</value>
+  </data>
+  <data name="LayersViewModel_YesDelete" xml:space="preserve">
+    <value>Ja, löschen</value>
+  </data>
   <data name="MapDefinitionManager_ImportError" xml:space="preserve">
     <value>Die gewählte Kartendefinition konnte nicht importiert werden.</value>
   </data>

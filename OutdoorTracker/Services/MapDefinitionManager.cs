@@ -116,20 +116,20 @@ namespace OutdoorTracker.Services
             switch (layerDefinition.Config)
             {
                 case "Default":
-                    DefaultWebLayerConfig defaultWebLayerConfig = new DefaultWebLayerConfig { LayerName = layerDefinition.Name };
+                    string urlPattern = "http://{RND-a;b;c}.tile.openstreetmap.org/{z}/{x}/{y}.png";
                     if (layerDefinition.Parameters.TryGetValue("urlPattern", out value))
                     {
-                        defaultWebLayerConfig.UrlPattern = value;
+                        urlPattern = value;
                     }
-                    config = defaultWebLayerConfig;
+                    config = new DefaultWebLayerConfig(layerDefinition.Name, urlPattern);
                     break;
                 case "SwissTopo":
-                    SwissTopoLayerConfig swissTopoLayerConfig = new SwissTopoLayerConfig { LayerName = layerDefinition.Name };
+                    string licenseKey = "";
                     if (layerDefinition.Parameters.TryGetValue("lisenceKey", out value))
                     {
-                        swissTopoLayerConfig.LicenseKey = value;
+                        licenseKey = value;
                     }
-                    config = swissTopoLayerConfig;
+                    config = new SwissTopoLayerConfig (layerDefinition.Name, licenseKey);
                     break;
                 default:
                     throw new ArgumentException(Messages.MapDefinitionManager.UnknownConfig(layerDefinition.Config));

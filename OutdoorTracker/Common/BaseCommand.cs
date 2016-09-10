@@ -30,11 +30,7 @@ namespace OutdoorTracker.Common
         /// </summary>
         public virtual void RaiseCanExecuteChanged()
         {
-            var handler = CanExecuteChanged;
-            if (handler != null)
-            {
-                handler(this, EventArgs.Empty);
-            }
+            CanExecuteChanged?.Invoke(this, EventArgs.Empty);
         }
 
         public abstract bool CanExecute(object parameter);
