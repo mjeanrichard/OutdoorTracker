@@ -120,6 +120,9 @@
   <data name="Dialog_Cancel" xml:space="preserve">
     <value>Abbrechen</value>
   </data>
+  <data name="Dialog_GotoGithub" xml:space="preserve">
+    <value>Melden</value>
+  </data>
   <data name="Dialog_No" xml:space="preserve">
     <value>Nein</value>
   </data>
@@ -141,6 +144,9 @@
   <data name="GpxTrackBuilder_NoTracksFound" xml:space="preserve">
     <value>In dieser Datei wurden keine Pfade gefunden.</value>
   </data>
+  <data name="GpxTrackBuilder_NoTracksFoundMessage" xml:space="preserve">
+    <value>Wenn diese Datei gültige Pfade enthält, können Sie dies auf GitHub melden.</value>
+  </data>
   <data name="GpxTrackBuilder_Success" xml:space="preserve">
     <value>Die ausgewählten Pfade wurden erfolgreich exportiert.</value>
   </data>
@@ -152,6 +158,9 @@
   </data>
   <data name="KmlTrackBuilder_NoTracksFound" xml:space="preserve">
     <value>In dieser Datei wurden keine Pfade gefunden.</value>
+  </data>
+  <data name="KmlTrackBuilder_NoTracksFoundMessage" xml:space="preserve">
+    <value>Wenn diese Datei gültige Pfade enthält, können Sie dies auf GitHub melden.</value>
   </data>
   <data name="KmlTrackBuilder_Success" xml:space="preserve">
     <value>Die ausgewählten Pfade wurden erfolgreich exportiert.</value>
@@ -203,7 +212,7 @@
     <value>GPX Datei</value>
   </data>
   <data name="TrackImporter_ImportError" xml:space="preserve">
-    <value>Aus der gew'hlten Datei konnten keine Pfade importiert werden. Sind Sie sicher, dass es eine g[ltige Datei ist?</value>
+    <value>Aus der gewählten Datei konnten keine Pfade importiert werden. Sind Sie sicher, dass es eine gültige Datei ist?</value>
   </data>
   <data name="TrackImporter_ImportErrorTitle" xml:space="preserve">
     <value>Pfad-Import fehlgeschlagen</value>

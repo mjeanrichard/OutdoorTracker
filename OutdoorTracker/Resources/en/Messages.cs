@@ -36,6 +36,14 @@ namespace OutdoorTracker.Resources
             }
 
             /// <summary>
+            ///      Looks up a Text similar to "Create Issue"
+            /// </summary>
+            public static string GotoGithub
+            {
+                get { return ActiveResourceLoader.GetString("Dialog_GotoGithub"); }
+            }
+
+            /// <summary>
             ///      Looks up a Text similar to "No"
             /// </summary>
             public static string No
@@ -88,11 +96,19 @@ namespace OutdoorTracker.Resources
             }
 
             /// <summary>
-            ///      Looks up a Text similar to "There are not Tracks in this File."
+            ///      Looks up a Text similar to "Could not find any Tracks in this file."
             /// </summary>
             public static string NoTracksFound
             {
                 get { return ActiveResourceLoader.GetString("GpxTrackBuilder_NoTracksFound"); }
+            }
+
+            /// <summary>
+            ///      Looks up a Text similar to "If you think this is an error, please create an issue on GitHub."
+            /// </summary>
+            public static string NoTracksFoundMessage
+            {
+                get { return ActiveResourceLoader.GetString("GpxTrackBuilder_NoTracksFoundMessage"); }
             }
 
             /// <summary>
@@ -129,6 +145,14 @@ namespace OutdoorTracker.Resources
             public static string NoTracksFound
             {
                 get { return ActiveResourceLoader.GetString("KmlTrackBuilder_NoTracksFound"); }
+            }
+
+            /// <summary>
+            ///      Looks up a Text similar to "If you think this is an error, please create an issue on GitHub."
+            /// </summary>
+            public static string NoTracksFoundMessage
+            {
+                get { return ActiveResourceLoader.GetString("KmlTrackBuilder_NoTracksFoundMessage"); }
             }
 
             /// <summary>

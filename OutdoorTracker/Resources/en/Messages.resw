@@ -120,6 +120,9 @@
   <data name="Dialog_Cancel" xml:space="preserve">
     <value>Cancel</value>
   </data>
+  <data name="Dialog_GotoGithub" xml:space="preserve">
+    <value>Create Issue</value>
+  </data>
   <data name="Dialog_No" xml:space="preserve">
     <value>No</value>
   </data>
@@ -139,7 +142,10 @@
     <value>GPX</value>
   </data>
   <data name="GpxTrackBuilder_NoTracksFound" xml:space="preserve">
-    <value>There are not Tracks in this File.</value>
+    <value>Could not find any Tracks in this file.</value>
+  </data>
+  <data name="GpxTrackBuilder_NoTracksFoundMessage" xml:space="preserve">
+    <value>If you think this is an error, please create an issue on GitHub.</value>
   </data>
   <data name="GpxTrackBuilder_Success" xml:space="preserve">
     <value>The selected tracks have been exported successfully.</value>
@@ -152,6 +158,9 @@
   </data>
   <data name="KmlTrackBuilder_NoTracksFound" xml:space="preserve">
     <value>There are not Tracks in this File.</value>
+  </data>
+  <data name="KmlTrackBuilder_NoTracksFoundMessage" xml:space="preserve">
+    <value>If you think this is an error, please create an issue on GitHub.</value>
   </data>
   <data name="KmlTrackBuilder_Success" xml:space="preserve">
     <value>The selected tracks have been exported successfully.</value>

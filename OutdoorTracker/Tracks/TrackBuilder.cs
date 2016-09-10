@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using Windows.Foundation;
+using Windows.System;
 using Windows.UI.Popups;
 
 using OutdoorTracker.Common;
@@ -13,6 +14,8 @@ namespace OutdoorTracker.Tracks
 {
     public abstract class TrackBuilder
     {
+        private static readonly Uri GithubTrackerUri = new Uri("https://github.com/mjeanrichard/OutdoorTracker/issues/new");
+
         protected UnitOfWorkFactoy UnitOfWorkFactory { get; }
 
         public TrackBuilder(UnitOfWorkFactoy unitOfWorkFactory)
@@ -41,16 +44,25 @@ namespace OutdoorTracker.Tracks
             return track;
         }
 
-        protected async Task ImportFailed(string message)
+        protected async Task ImportFailed(string message, string title = null)
         {
-            var dialog = new MessageDialog(message, Messages.TrackBuilder.ImportFailedTitle(FormatName));
+            if (title == null)
+            {
+                title = Messages.TrackBuilder.ImportFailedTitle(FormatName);
+            }
+            var dialog = new MessageDialog(message, title);
 
-            dialog.Commands.Add(new UICommand(Messages.Dialog.Ok) { Id = true });
+            dialog.Commands.Add(new UICommand(Messages.Dialog.Ok) { Id = 1 });
+            dialog.Commands.Add(new UICommand(Messages.Dialog.GotoGithub) { Id = 2 });
 
             dialog.DefaultCommandIndex = 0;
             dialog.CancelCommandIndex = 0;
 
-            await dialog.ShowAsync();
+            IUICommand result = await dialog.ShowAsync();
+            if (result.Id.Equals(2))
+            {
+                await Launcher.LaunchUriAsync(GithubTrackerUri);
+            }
         }
     }
 }
