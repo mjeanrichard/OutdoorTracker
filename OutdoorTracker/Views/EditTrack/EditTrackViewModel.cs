@@ -80,6 +80,7 @@ namespace OutdoorTracker.Views.EditTrack
             await _unitOfWork.SaveChangesAsync();
             await _trackRecorder.StartTracking(Track);
             _navigationService.NavigateToMap();
+            _navigationService.RemoveLastFrame();
         }
 
         private async Task SaveTrack()
