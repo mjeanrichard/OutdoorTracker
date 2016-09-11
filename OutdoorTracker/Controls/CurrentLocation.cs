@@ -166,7 +166,7 @@ namespace OutdoorTracker.Controls
             _locationVector = canvasItemsLayer.Scale(viewPortProjection.ToCartesian(location));
 
             double accuracyScale = viewPortProjection.CartesianScaleFactor(location);
-            _accuracyRadius = canvasItemsLayer.Scale(AccuracyMeter * accuracyScale);
+            _accuracyRadius = Convert.ToSingle(AccuracyMeter * accuracyScale);
             _isGeometryValid = true;
         }
     }
