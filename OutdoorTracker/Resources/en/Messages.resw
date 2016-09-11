@@ -248,4 +248,35 @@
   <data name="TrackRecorder_ContinueTrackingTitle" xml:space="preserve">
     <value>Tracking session found</value>
   </data>
+  <data name="TracksPage_DeleteMessage" xml:space="preserve">
+    <value>Are you sure that you want to delete the selected tracks.</value>
+  </data>
+  <data name="TracksPage_DeleteSingleMessage" xml:space="preserve">
+    <value>Are you sure that you want to delete the track '{0}'?</value>
+    <comment>string trackName</comment>
+  </data>
+  <data name="TracksPage_DeleteSingleTitle" xml:space="preserve">
+    <value>Delete track</value>
+  </data>
+  <data name="TracksPage_DeleteTitle" xml:space="preserve">
+    <value>Delete tracks</value>
+  </data>
+  <data name="TracksPage_DeletingText" xml:space="preserve">
+    <value>Deleting selected tracks...</value>
+  </data>
+  <data name="TracksPage_ExportingText" xml:space="preserve">
+    <value>Exporting selected tracks...</value>
+  </data>
+  <data name="TracksPage_ImportingText" xml:space="preserve">
+    <value>Importing tracks...</value>
+  </data>
+  <data name="TracksPage_StopTracking" xml:space="preserve">
+    <value>You are already recoring a track. Do you want to stop recording and create a new track?</value>
+  </data>
+  <data name="TracksPage_YesDelete" xml:space="preserve">
+    <value>Yes, delete</value>
+  </data>
+  <data name="TracksPage_YesStopTracking" xml:space="preserve">
+    <value>Yes, stop tracking</value>
+  </data>
 </root>

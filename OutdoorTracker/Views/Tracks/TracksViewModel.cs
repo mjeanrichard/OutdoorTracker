@@ -26,6 +26,7 @@ using Microsoft.EntityFrameworkCore;
 
 using OutdoorTracker.Common;
 using OutdoorTracker.Database;
+using OutdoorTracker.Resources;
 using OutdoorTracker.Services;
 using OutdoorTracker.Tracks;
 
@@ -138,41 +139,55 @@ namespace OutdoorTracker.Views.Tracks
 
         private async Task DeleteTrack()
         {
-            int count = SelectedTracks.Count();
-            if (count == 0)
+            IList<Track> selectedTracks = SelectedTracks;
+            if (selectedTracks.Count == 0)
             {
                 return;
             }
-            string message;
-            if (count == 1)
+
+            BusyText = Messages.TracksPage.DeletingText;
+            using (MarkBusy())
             {
-                message = $"Are you sure that you want to delete the track '{SelectedTracks[0].Name}'?";
-            }
-            else
-            {
-                message = $"Are you sure that you want to delete the selected tracks.";
-            }
-            if (await AskDelete(message))
-            {
-                using (MarkBusy())
+                string message;
+                string title;
+                if (selectedTracks.Count == 1)
                 {
-                    foreach (Track selectedTrack in SelectedTracks)
+                    message = Messages.TracksPage.DeleteSingleMessage(selectedTracks[0].Name);
+                    title = Messages.TracksPage.DeleteSingleTitle;
+                }
+                else
+                {
+                    message = Messages.TracksPage.DeleteMessage;
+                    title = Messages.TracksPage.DeleteTitle;
+                }
+                if (await AskDelete(message, title))
+                {
+                    await Task.Run(async () =>
                     {
-                        _unitOfWork.TrackPoints.RemoveRange(_unitOfWork.TrackPoints.Where(p => p.Track == selectedTrack));
-                        _unitOfWork.Tracks.Remove(selectedTrack);
-                        await _unitOfWork.SaveChangesAsync();
+                        using (MarkBusy())
+                        {
+                            foreach (Track selectedTrack in selectedTracks)
+                            {
+                                _unitOfWork.TrackPoints.RemoveRange(_unitOfWork.TrackPoints.Where(p => p.Track == selectedTrack));
+                                _unitOfWork.Tracks.Remove(selectedTrack);
+                                await _unitOfWork.SaveChangesAsync();
+                            }
+                        }
+                    });
+                    foreach (Track selectedTrack in selectedTracks)
+                    {
                         Tracks.Remove(selectedTrack);
                     }
                 }
             }
         }
 
-        private async Task<bool> AskDelete(string message)
+        private async Task<bool> AskDelete(string message, string title)
         {
-            var dialog = new MessageDialog(message);
+            var dialog = new MessageDialog(message, title);
 
-            dialog.Commands.Add(new UICommand("Delete") { Id = true });
-            dialog.Commands.Add(new UICommand("Cancel") { Id = false });
+            dialog.Commands.Add(new UICommand(Messages.TracksPage.YesDelete) { Id = true });
+            dialog.Commands.Add(new UICommand(Messages.Dialog.Cancel) { Id = false });
 
             dialog.DefaultCommandIndex = 0;
             dialog.CancelCommandIndex = 1;

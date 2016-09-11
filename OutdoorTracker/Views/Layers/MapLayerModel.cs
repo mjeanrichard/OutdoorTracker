@@ -36,6 +36,7 @@ namespace OutdoorTracker.Views.Layers
     {
         private readonly MapConfiguration _mapConfiguration;
         private string _size;
+        private bool _isBusy;
         private bool _isSizeVisible;
 
         public MapLayerModel(MapConfiguration mapConfiguration)
@@ -64,6 +65,16 @@ namespace OutdoorTracker.Views.Layers
             }
         }
 
+        public bool IsBusy
+        {
+            get { return _isBusy; }
+            set
+            {
+                _isBusy = value;
+                OnPropertyChanged();
+            }
+        }
+
         public string Name
         {
             get { return _mapConfiguration.Name; }
@@ -74,6 +85,7 @@ namespace OutdoorTracker.Views.Layers
             try
             {
                 Size = Messages.LayersViewModel.LoadingSize;
+                IsBusy = true;
                 IsSizeVisible = true;
                 MapDefinition mapDef = JsonConvert.DeserializeObject<MapDefinition>(_mapConfiguration.Json);
                 ulong totalSize = 0;
@@ -93,6 +105,10 @@ namespace OutdoorTracker.Views.Layers
             {
                 DialogHelper.ReportException(e, new Dictionary<string, string>());
                 Size = Messages.LayersViewModel.UnknownSize;
+            }
+            finally
+            {
+                IsBusy = false;
             }
         }
 

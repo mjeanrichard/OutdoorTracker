@@ -17,6 +17,9 @@
 using System;
 
 using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Controls.Primitives;
+using Windows.UI.Xaml.Media;
 
 namespace OutdoorTracker.Common
 {
@@ -42,16 +45,6 @@ namespace OutdoorTracker.Common
         {
         }
 
-        public bool? EnabledOverride
-        {
-            get { return _enabledOverride; }
-            set
-            {
-                _enabledOverride = value;
-                RaiseCanExecuteChanged();
-            }
-        }
-
         /// <summary>
         ///     Creates a new command.
         /// </summary>
@@ -67,9 +60,24 @@ namespace OutdoorTracker.Common
             _canExecute = canExecute;
         }
 
+        public bool? EnabledOverride
+        {
+            get { return _enabledOverride; }
+            set
+            {
+                _enabledOverride = value;
+                RaiseCanExecuteChanged();
+            }
+        }
+
         public Visibility Visibility
         {
             get { return CanExecute() ? Visibility.Visible : Visibility.Collapsed; }
+        }
+
+        public bool IsEnabled
+        {
+            get { return CanExecute(); }
         }
 
         /// <summary>
@@ -102,6 +110,7 @@ namespace OutdoorTracker.Common
         public override void RaiseCanExecuteChanged()
         {
             base.RaiseCanExecuteChanged();
+            OnPropertyChanged(nameof(IsEnabled));
             OnPropertyChanged(nameof(Visibility));
         }
     }

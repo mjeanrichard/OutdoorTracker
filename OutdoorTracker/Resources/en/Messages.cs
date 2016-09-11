@@ -393,6 +393,90 @@ namespace OutdoorTracker.Resources
 
         }
 
+        public static class TracksPage
+        {
+            /// <summary>
+            ///      Looks up a Text similar to "Are you sure that you want to delete the selected tracks."
+            /// </summary>
+            public static string DeleteMessage
+            {
+                get { return ActiveResourceLoader.GetString("TracksPage_DeleteMessage"); }
+            }
+
+            /// <summary>
+            ///      Looks up a Text similar to "Are you sure that you want to delete the track '{0}'?"
+            /// </summary>
+            public static string DeleteSingleMessage(string trackName)
+            {
+                return string.Format(CultureInfo.CurrentCulture, ActiveResourceLoader.GetString("TracksPage_DeleteSingleMessage"), trackName);
+            }
+
+            /// <summary>
+            ///      Looks up a Text similar to "Delete track"
+            /// </summary>
+            public static string DeleteSingleTitle
+            {
+                get { return ActiveResourceLoader.GetString("TracksPage_DeleteSingleTitle"); }
+            }
+
+            /// <summary>
+            ///      Looks up a Text similar to "Delete tracks"
+            /// </summary>
+            public static string DeleteTitle
+            {
+                get { return ActiveResourceLoader.GetString("TracksPage_DeleteTitle"); }
+            }
+
+            /// <summary>
+            ///      Looks up a Text similar to "Deleting selected tracks..."
+            /// </summary>
+            public static string DeletingText
+            {
+                get { return ActiveResourceLoader.GetString("TracksPage_DeletingText"); }
+            }
+
+            /// <summary>
+            ///      Looks up a Text similar to "Exporting selected tracks..."
+            /// </summary>
+            public static string ExportingText
+            {
+                get { return ActiveResourceLoader.GetString("TracksPage_ExportingText"); }
+            }
+
+            /// <summary>
+            ///      Looks up a Text similar to "Importing tracks..."
+            /// </summary>
+            public static string ImportingText
+            {
+                get { return ActiveResourceLoader.GetString("TracksPage_ImportingText"); }
+            }
+
+            /// <summary>
+            ///      Looks up a Text similar to "You are already recoring a track. Do you want to stop recording and create a new track?"
+            /// </summary>
+            public static string StopTracking
+            {
+                get { return ActiveResourceLoader.GetString("TracksPage_StopTracking"); }
+            }
+
+            /// <summary>
+            ///      Looks up a Text similar to "Yes, delete"
+            /// </summary>
+            public static string YesDelete
+            {
+                get { return ActiveResourceLoader.GetString("TracksPage_YesDelete"); }
+            }
+
+            /// <summary>
+            ///      Looks up a Text similar to "Yes, stop tracking"
+            /// </summary>
+            public static string YesStopTracking
+            {
+                get { return ActiveResourceLoader.GetString("TracksPage_YesStopTracking"); }
+            }
+
+        }
+
     }
 }
 

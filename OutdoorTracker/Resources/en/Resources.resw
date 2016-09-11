@@ -157,7 +157,7 @@
     <value>Layers</value>
   </data>
   <data name="Map_StopTrackingCommand.Label" xml:space="preserve">
-    <value>Stop Tracking</value>
+    <value>Stop tracking</value>
   </data>
   <data name="Map_TracksCommand.Label" xml:space="preserve">
     <value>Tracks</value>
@@ -291,5 +291,11 @@
   </data>
   <data name="Layers_LoadLayerSize.Label" xml:space="preserve">
     <value>Load layer size</value>
+  </data>
+  <data name="Map_StopTrackingButton.Content" xml:space="preserve">
+    <value>Yes, stop tracking</value>
+  </data>
+  <data name="Map_StopTrackingText.Text" xml:space="preserve">
+    <value>Do you want to stop tracking?</value>
   </data>
 </root>

@@ -248,4 +248,35 @@
   <data name="TrackRecorder_ContinueTrackingTitle" xml:space="preserve">
     <value>Laufende Pfad Aufzeichnung gefunden</value>
   </data>
+  <data name="TracksPage_DeleteMessage" xml:space="preserve">
+    <value>Wollen Sie die selektierten Pfade löschen?</value>
+  </data>
+  <data name="TracksPage_DeleteSingleMessage" xml:space="preserve">
+    <value>Wollen Sie den Pfad '{0}' löschen?</value>
+    <comment>string trackName</comment>
+  </data>
+  <data name="TracksPage_DeleteSingleTitle" xml:space="preserve">
+    <value>Pfad löschen</value>
+  </data>
+  <data name="TracksPage_DeleteTitle" xml:space="preserve">
+    <value>Pfade löschen</value>
+  </data>
+  <data name="TracksPage_DeletingText" xml:space="preserve">
+    <value>Lösche die ausgewählten Pfade ...</value>
+  </data>
+  <data name="TracksPage_ExportingText" xml:space="preserve">
+    <value>Exportiere die ausgewählten Pfade ...</value>
+  </data>
+  <data name="TracksPage_ImportingText" xml:space="preserve">
+    <value>Importiere Pfade ...</value>
+  </data>
+  <data name="TracksPage_StopTracking" xml:space="preserve">
+    <value>Sie zeichen bereits einen Pfad auf. Wollen Sie die aktuelle Aufzeichnung beenden und eine neue starten?</value>
+  </data>
+  <data name="TracksPage_YesDelete" xml:space="preserve">
+    <value>Ja, löschen</value>
+  </data>
+  <data name="TracksPage_YesStopTracking" xml:space="preserve">
+    <value>Ja, Aufzeichnung beenden</value>
+  </data>
 </root>

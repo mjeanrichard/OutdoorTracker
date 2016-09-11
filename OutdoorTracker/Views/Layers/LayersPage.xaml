@@ -44,14 +44,17 @@
                 <GridView.ItemTemplate>
                     <DataTemplate x:DataType="layers:MapLayerModel">
                         <StackPanel Orientation="Vertical">
-                            <TextBlock Text="{x:Bind Name}" />
-                            <TextBlock Text="{x:Bind Size, Mode=OneWay}" Visibility="{x:Bind IsSizeVisible, Mode=OneWay, Converter={StaticResource boolToVis}}"/>
+                            <TextBlock Text="{x:Bind Name}" Style="{StaticResource FlowTextHeader}" />
+                            <StackPanel Orientation="Horizontal" Visibility="{x:Bind IsSizeVisible, Mode=OneWay, Converter={StaticResource boolToVis}}">
+                                <ProgressRing IsActive="True" Visibility="{x:Bind IsBusy, Mode=OneWay, Converter={StaticResource boolToVis}}" Margin="0,0,10,0" />
+                                <TextBlock Text="{x:Bind Size, Mode=OneWay}" />
+                            </StackPanel>
                         </StackPanel>
                     </DataTemplate>
                 </GridView.ItemTemplate>
             </GridView>
         </Grid>
-        
+
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup>
                 <VisualState x:Name="Wide">
