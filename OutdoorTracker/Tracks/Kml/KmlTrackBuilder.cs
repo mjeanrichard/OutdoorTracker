@@ -56,14 +56,19 @@ namespace OutdoorTracker.Tracks.Kml
             List<KmlPlacemark> placemarks = kmlFile.Document?.Placemarks;
             if ((placemarks == null) || !placemarks.Any())
             {
-                await ImportFailed(Messages.KmlTrackBuilder.NoTracksFound);
+                await ImportFailed(Messages.KmlTrackBuilder.NoTracksFoundMessage, Messages.KmlTrackBuilder.NoTracksFound);
                 return importedTracks;
             }
 
             using (IUnitOfWork unitOfWork = UnitOfWorkFactory.Create())
             {
-                foreach (KmlPlacemark placemark in kmlFile.Document.Placemarks)
+                foreach (KmlPlacemark placemark in placemarks)
                 {
+                    if (string.IsNullOrWhiteSpace(placemark.LineString?.Coordinates))
+                    {
+                        continue;
+                    }
+
                     string[] coordinates = placemark.LineString.Coordinates.Split(' ');
                     if (coordinates.Length > 0)
                     {
@@ -84,6 +89,11 @@ namespace OutdoorTracker.Tracks.Kml
                         importedTracks.Add(await CreateTrack(kmlFile.Document.Name, points, unitOfWork));
                     }
                 }
+            }
+            if (!importedTracks.Any())
+            {
+                await ImportFailed(Messages.KmlTrackBuilder.NoTracksFoundMessage, Messages.KmlTrackBuilder.NoTracksFound);
+                return importedTracks;
             }
             return importedTracks;
         }

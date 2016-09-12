@@ -120,6 +120,9 @@
   <data name="Dialog_Cancel" xml:space="preserve">
     <value>Abbrechen</value>
   </data>
+  <data name="Dialog_GotoGithub" xml:space="preserve">
+    <value>Melden</value>
+  </data>
   <data name="Dialog_No" xml:space="preserve">
     <value>Nein</value>
   </data>
@@ -141,6 +144,9 @@
   <data name="GpxTrackBuilder_NoTracksFound" xml:space="preserve">
     <value>In dieser Datei wurden keine Pfade gefunden.</value>
   </data>
+  <data name="GpxTrackBuilder_NoTracksFoundMessage" xml:space="preserve">
+    <value>Wenn diese Datei gültige Pfade enthält, können Sie dies auf GitHub melden.</value>
+  </data>
   <data name="GpxTrackBuilder_Success" xml:space="preserve">
     <value>Die ausgewählten Pfade wurden erfolgreich exportiert.</value>
   </data>
@@ -153,11 +159,36 @@
   <data name="KmlTrackBuilder_NoTracksFound" xml:space="preserve">
     <value>In dieser Datei wurden keine Pfade gefunden.</value>
   </data>
+  <data name="KmlTrackBuilder_NoTracksFoundMessage" xml:space="preserve">
+    <value>Wenn diese Datei gültige Pfade enthält, können Sie dies auf GitHub melden.</value>
+  </data>
   <data name="KmlTrackBuilder_Success" xml:space="preserve">
     <value>Die ausgewählten Pfade wurden erfolgreich exportiert.</value>
   </data>
   <data name="KmlTrackBuilder_SuccessTitle" xml:space="preserve">
     <value>Export erfolgreich</value>
+  </data>
+  <data name="LayersViewModel_DeleteCacheMessage" xml:space="preserve">
+    <value>Möchen Sie wirklich alle von dieser App heruntergeladenen Karten löschen?</value>
+  </data>
+  <data name="LayersViewModel_DeleteCacheMessageTitle" xml:space="preserve">
+    <value>Karten löschen?</value>
+  </data>
+  <data name="LayersViewModel_ImportingMessage" xml:space="preserve">
+    <value>Importiere neue Karten ...</value>
+  </data>
+  <data name="LayersViewModel_LoadingSize" xml:space="preserve">
+    <value>Lade Grösse ...</value>
+  </data>
+  <data name="LayersViewModel_SizeText" xml:space="preserve">
+    <value>Grösse: {0:N0} MB</value>
+    <comment>ulong size</comment>
+  </data>
+  <data name="LayersViewModel_UnknownSize" xml:space="preserve">
+    <value>Grösse nicht verfügbar</value>
+  </data>
+  <data name="LayersViewModel_YesDelete" xml:space="preserve">
+    <value>Ja, löschen</value>
   </data>
   <data name="MapDefinitionManager_ImportError" xml:space="preserve">
     <value>Die gewählte Kartendefinition konnte nicht importiert werden.</value>
@@ -203,7 +234,7 @@
     <value>GPX Datei</value>
   </data>
   <data name="TrackImporter_ImportError" xml:space="preserve">
-    <value>Aus der gew'hlten Datei konnten keine Pfade importiert werden. Sind Sie sicher, dass es eine g[ltige Datei ist?</value>
+    <value>Aus der gewählten Datei konnten keine Pfade importiert werden. Sind Sie sicher, dass es eine gültige Datei ist?</value>
   </data>
   <data name="TrackImporter_ImportErrorTitle" xml:space="preserve">
     <value>Pfad-Import fehlgeschlagen</value>
@@ -216,5 +247,36 @@
   </data>
   <data name="TrackRecorder_ContinueTrackingTitle" xml:space="preserve">
     <value>Laufende Pfad Aufzeichnung gefunden</value>
+  </data>
+  <data name="TracksPage_DeleteMessage" xml:space="preserve">
+    <value>Wollen Sie die selektierten Pfade löschen?</value>
+  </data>
+  <data name="TracksPage_DeleteSingleMessage" xml:space="preserve">
+    <value>Wollen Sie den Pfad '{0}' löschen?</value>
+    <comment>string trackName</comment>
+  </data>
+  <data name="TracksPage_DeleteSingleTitle" xml:space="preserve">
+    <value>Pfad löschen</value>
+  </data>
+  <data name="TracksPage_DeleteTitle" xml:space="preserve">
+    <value>Pfade löschen</value>
+  </data>
+  <data name="TracksPage_DeletingText" xml:space="preserve">
+    <value>Lösche die ausgewählten Pfade ...</value>
+  </data>
+  <data name="TracksPage_ExportingText" xml:space="preserve">
+    <value>Exportiere die ausgewählten Pfade ...</value>
+  </data>
+  <data name="TracksPage_ImportingText" xml:space="preserve">
+    <value>Importiere Pfade ...</value>
+  </data>
+  <data name="TracksPage_StopTracking" xml:space="preserve">
+    <value>Sie zeichen bereits einen Pfad auf. Wollen Sie die aktuelle Aufzeichnung beenden und eine neue starten?</value>
+  </data>
+  <data name="TracksPage_YesDelete" xml:space="preserve">
+    <value>Ja, löschen</value>
+  </data>
+  <data name="TracksPage_YesStopTracking" xml:space="preserve">
+    <value>Ja, Aufzeichnung beenden</value>
   </data>
 </root>

@@ -80,8 +80,8 @@
             <TextBlock x:Uid="Tracks_Title" Grid.Row="0" Style="{StaticResource PageHeader}" />
 
             <GridView x:Name="tracksView" Grid.Row="1" VerticalAlignment="Top" SelectionMode="Multiple"
-                        ItemsSource="{x:Bind ViewModel.Tracks}"
-                        SelectionChanged="TracksView_OnSelectionChanged">
+                      ItemsSource="{x:Bind ViewModel.Tracks}"
+                      SelectionChanged="TracksView_OnSelectionChanged">
                 <GridView.ItemContainerStyle>
                     <Style TargetType="GridViewItem">
                         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
@@ -124,7 +124,7 @@
             <AppBarButton x:Uid="Tracks_ImportButton" Command="{x:Bind ViewModel.ImportGpxTrackCommand, Mode=OneTime}" Icon="OpenLocal" />
             <AppBarButton x:Uid="Tracks_ExportButton" Command="{x:Bind ViewModel.ExportTracksCommand, Mode=OneTime}" Icon="SaveLocal" />
             <AppBarButton x:Uid="Tracks_EditButton" Command="{x:Bind ViewModel.EditTrackCommand, Mode=OneTime}" Icon="Edit" />
-            <AppBarButton x:Uid="Tracks_DeleteButton" Command="{x:Bind ViewModel.DeleteTrackCommand, Mode=OneTime}" Icon="Delete" />
+            <AppBarButton x:Uid="Tracks_DeleteButton" IsEnabled="{x:Bind ViewModel.DeleteTrackCommand.IsEnabled, Mode=OneWay}" Tapped="DeleteTapped" Icon="Delete" />
         </CommandBar>
     </Page.BottomAppBar>
 </tracks:TracksPageBase>

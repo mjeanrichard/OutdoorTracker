@@ -286,4 +286,16 @@
   <data name="Settings_LanguageDefault.Content" xml:space="preserve">
     <value>Gerätesprache</value>
   </data>
+  <data name="Layers_ClearAllCache.Label" xml:space="preserve">
+    <value>Kartendaten löschen</value>
+  </data>
+  <data name="Layers_LoadLayerSize.Label" xml:space="preserve">
+    <value>Kartengrössen laden</value>
+  </data>
+  <data name="Map_StopTrackingButton.Content" xml:space="preserve">
+    <value>Ja, beenden</value>
+  </data>
+  <data name="Map_StopTrackingText.Text" xml:space="preserve">
+    <value>Möchten Sie die Aufzeichnung beenden?</value>
+  </data>
 </root>

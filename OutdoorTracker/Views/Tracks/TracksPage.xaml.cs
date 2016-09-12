@@ -37,14 +37,14 @@ namespace OutdoorTracker.Views.Tracks
             InitializeComponent();
         }
 
-        private void TracksView_OnRightTapped(object sender, RightTappedRoutedEventArgs e)
-        {
-            FlyoutBase.ShowAttachedFlyout((FrameworkElement)sender);
-        }
-
         private void TracksView_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             ViewModel.SelectedTracks = tracksView.SelectedItems.Cast<Track>().ToList();
+        }
+
+        private void DeleteTapped(object sender, TappedRoutedEventArgs e)
+        {
+            ViewModel.DeleteTrackCommand.Execute();
         }
     }
 }

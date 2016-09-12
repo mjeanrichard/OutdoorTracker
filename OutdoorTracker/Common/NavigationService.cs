@@ -14,6 +14,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+using System.Linq;
+
 using OutdoorTracker.Views.EditTrack;
 using OutdoorTracker.Views.Layers;
 using OutdoorTracker.Views.LocationInfo;
@@ -30,6 +32,14 @@ namespace OutdoorTracker.Common
         public NavigationService(App app)
         {
             _app = app;
+        }
+
+        public void RemoveLastFrame()
+        {
+            if (_app.RootFrame.CanGoBack && _app.RootFrame.BackStackDepth > 0)
+            {
+                _app.RootFrame.BackStack.Remove(_app.RootFrame.BackStack.LastOrDefault());
+            }
         }
 
         public void NavigateToSettings()

@@ -70,10 +70,18 @@
     </Grid>
     <Page.BottomAppBar>
         <CommandBar>
-            <AppBarButton x:Uid="Map_StopTrackingCommand" Command="{x:Bind ViewModel.StopTrackingCommand, Mode=OneTime}" Visibility="{x:Bind ViewModel.IsRecording, Converter={StaticResource boolToVis}, Mode=OneWay}">
+            <AppBarButton x:Name="StopTrackingButton" x:Uid="Map_StopTrackingCommand" Tapped="ShowFlyout" Visibility="{x:Bind ViewModel.IsRecording, Converter={StaticResource boolToVis}, Mode=OneWay}">
                 <AppBarButton.Icon>
                     <PathIcon HorizontalAlignment="Center" VerticalAlignment="Center" Data="F0 M0,10 A10,10 360 1 1 0,10.001 M1.5,10 A8.5,8.5 360 1 1 1.5,10.001 M6.5,6.5 L13.5,6.5 13.5,13.5 6.5,13.5z" />
                 </AppBarButton.Icon>
+                <FlyoutBase.AttachedFlyout>
+                    <Flyout>
+                        <StackPanel>
+                            <TextBlock x:Uid="Map_StopTrackingText" TextWrapping="Wrap" Style="{StaticResource FlyoutText}" />
+                            <Button x:Uid="Map_StopTrackingButton" Tapped="StopTrackingButtonTapped"/>
+                        </StackPanel>
+                    </Flyout>
+                </FlyoutBase.AttachedFlyout>
             </AppBarButton>
             <AppBarButton x:Uid="Map_NorthUpCommand" Command="{x:Bind ViewModel.NorthUpCommand, Mode=OneTime}" Visibility="{x:Bind ViewModel.ShowNorthUpCommand, Mode=OneWay, Converter={StaticResource boolToVis}}">
                 <AppBarButton.Icon>

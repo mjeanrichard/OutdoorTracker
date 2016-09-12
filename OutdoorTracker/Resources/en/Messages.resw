@@ -120,6 +120,9 @@
   <data name="Dialog_Cancel" xml:space="preserve">
     <value>Cancel</value>
   </data>
+  <data name="Dialog_GotoGithub" xml:space="preserve">
+    <value>Create Issue</value>
+  </data>
   <data name="Dialog_No" xml:space="preserve">
     <value>No</value>
   </data>
@@ -139,7 +142,10 @@
     <value>GPX</value>
   </data>
   <data name="GpxTrackBuilder_NoTracksFound" xml:space="preserve">
-    <value>There are not Tracks in this File.</value>
+    <value>Could not find any Tracks in this file.</value>
+  </data>
+  <data name="GpxTrackBuilder_NoTracksFoundMessage" xml:space="preserve">
+    <value>If you think this is an error, please create an issue on GitHub.</value>
   </data>
   <data name="GpxTrackBuilder_Success" xml:space="preserve">
     <value>The selected tracks have been exported successfully.</value>
@@ -153,11 +159,36 @@
   <data name="KmlTrackBuilder_NoTracksFound" xml:space="preserve">
     <value>There are not Tracks in this File.</value>
   </data>
+  <data name="KmlTrackBuilder_NoTracksFoundMessage" xml:space="preserve">
+    <value>If you think this is an error, please create an issue on GitHub.</value>
+  </data>
   <data name="KmlTrackBuilder_Success" xml:space="preserve">
     <value>The selected tracks have been exported successfully.</value>
   </data>
   <data name="KmlTrackBuilder_SuccessTitle" xml:space="preserve">
     <value>Export completed</value>
+  </data>
+  <data name="LayersViewModel_DeleteCacheMessage" xml:space="preserve">
+    <value>Do you want to delete all downloaded maps from this app?</value>
+  </data>
+  <data name="LayersViewModel_DeleteCacheMessageTitle" xml:space="preserve">
+    <value>Delete map cache?</value>
+  </data>
+  <data name="LayersViewModel_ImportingMessage" xml:space="preserve">
+    <value>Importing Map Layers...</value>
+  </data>
+  <data name="LayersViewModel_LoadingSize" xml:space="preserve">
+    <value>Loading size...</value>
+  </data>
+  <data name="LayersViewModel_SizeText" xml:space="preserve">
+    <value>Size: {0:N0} mb</value>
+    <comment>ulong size</comment>
+  </data>
+  <data name="LayersViewModel_UnknownSize" xml:space="preserve">
+    <value>Size not available.</value>
+  </data>
+  <data name="LayersViewModel_YesDelete" xml:space="preserve">
+    <value>Yes, delete</value>
   </data>
   <data name="MapDefinitionManager_ImportError" xml:space="preserve">
     <value>The selected layer definition could not be imported.</value>
@@ -216,5 +247,36 @@
   </data>
   <data name="TrackRecorder_ContinueTrackingTitle" xml:space="preserve">
     <value>Tracking session found</value>
+  </data>
+  <data name="TracksPage_DeleteMessage" xml:space="preserve">
+    <value>Are you sure that you want to delete the selected tracks.</value>
+  </data>
+  <data name="TracksPage_DeleteSingleMessage" xml:space="preserve">
+    <value>Are you sure that you want to delete the track '{0}'?</value>
+    <comment>string trackName</comment>
+  </data>
+  <data name="TracksPage_DeleteSingleTitle" xml:space="preserve">
+    <value>Delete track</value>
+  </data>
+  <data name="TracksPage_DeleteTitle" xml:space="preserve">
+    <value>Delete tracks</value>
+  </data>
+  <data name="TracksPage_DeletingText" xml:space="preserve">
+    <value>Deleting selected tracks...</value>
+  </data>
+  <data name="TracksPage_ExportingText" xml:space="preserve">
+    <value>Exporting selected tracks...</value>
+  </data>
+  <data name="TracksPage_ImportingText" xml:space="preserve">
+    <value>Importing tracks...</value>
+  </data>
+  <data name="TracksPage_StopTracking" xml:space="preserve">
+    <value>You are already recoring a track. Do you want to stop recording and create a new track?</value>
+  </data>
+  <data name="TracksPage_YesDelete" xml:space="preserve">
+    <value>Yes, delete</value>
+  </data>
+  <data name="TracksPage_YesStopTracking" xml:space="preserve">
+    <value>Yes, stop tracking</value>
   </data>
 </root>

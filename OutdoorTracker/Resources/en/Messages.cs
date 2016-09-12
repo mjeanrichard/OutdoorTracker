@@ -36,6 +36,14 @@ namespace OutdoorTracker.Resources
             }
 
             /// <summary>
+            ///      Looks up a Text similar to "Create Issue"
+            /// </summary>
+            public static string GotoGithub
+            {
+                get { return ActiveResourceLoader.GetString("Dialog_GotoGithub"); }
+            }
+
+            /// <summary>
             ///      Looks up a Text similar to "No"
             /// </summary>
             public static string No
@@ -88,11 +96,19 @@ namespace OutdoorTracker.Resources
             }
 
             /// <summary>
-            ///      Looks up a Text similar to "There are not Tracks in this File."
+            ///      Looks up a Text similar to "Could not find any Tracks in this file."
             /// </summary>
             public static string NoTracksFound
             {
                 get { return ActiveResourceLoader.GetString("GpxTrackBuilder_NoTracksFound"); }
+            }
+
+            /// <summary>
+            ///      Looks up a Text similar to "If you think this is an error, please create an issue on GitHub."
+            /// </summary>
+            public static string NoTracksFoundMessage
+            {
+                get { return ActiveResourceLoader.GetString("GpxTrackBuilder_NoTracksFoundMessage"); }
             }
 
             /// <summary>
@@ -132,6 +148,14 @@ namespace OutdoorTracker.Resources
             }
 
             /// <summary>
+            ///      Looks up a Text similar to "If you think this is an error, please create an issue on GitHub."
+            /// </summary>
+            public static string NoTracksFoundMessage
+            {
+                get { return ActiveResourceLoader.GetString("KmlTrackBuilder_NoTracksFoundMessage"); }
+            }
+
+            /// <summary>
             ///      Looks up a Text similar to "The selected tracks have been exported successfully."
             /// </summary>
             public static string Success
@@ -145,6 +169,66 @@ namespace OutdoorTracker.Resources
             public static string SuccessTitle
             {
                 get { return ActiveResourceLoader.GetString("KmlTrackBuilder_SuccessTitle"); }
+            }
+
+        }
+
+        public static class LayersViewModel
+        {
+            /// <summary>
+            ///      Looks up a Text similar to "Do you want to delete all downloaded maps from this app?"
+            /// </summary>
+            public static string DeleteCacheMessage
+            {
+                get { return ActiveResourceLoader.GetString("LayersViewModel_DeleteCacheMessage"); }
+            }
+
+            /// <summary>
+            ///      Looks up a Text similar to "Delete map cache?"
+            /// </summary>
+            public static string DeleteCacheMessageTitle
+            {
+                get { return ActiveResourceLoader.GetString("LayersViewModel_DeleteCacheMessageTitle"); }
+            }
+
+            /// <summary>
+            ///      Looks up a Text similar to "Importing Map Layers..."
+            /// </summary>
+            public static string ImportingMessage
+            {
+                get { return ActiveResourceLoader.GetString("LayersViewModel_ImportingMessage"); }
+            }
+
+            /// <summary>
+            ///      Looks up a Text similar to "Loading size..."
+            /// </summary>
+            public static string LoadingSize
+            {
+                get { return ActiveResourceLoader.GetString("LayersViewModel_LoadingSize"); }
+            }
+
+            /// <summary>
+            ///      Looks up a Text similar to "Size: {0:N0} mb"
+            /// </summary>
+            public static string SizeText(ulong size)
+            {
+                return string.Format(CultureInfo.CurrentCulture, ActiveResourceLoader.GetString("LayersViewModel_SizeText"), size);
+            }
+
+            /// <summary>
+            ///      Looks up a Text similar to "Size not available."
+            /// </summary>
+            public static string UnknownSize
+            {
+                get { return ActiveResourceLoader.GetString("LayersViewModel_UnknownSize"); }
+            }
+
+            /// <summary>
+            ///      Looks up a Text similar to "Yes, delete"
+            /// </summary>
+            public static string YesDelete
+            {
+                get { return ActiveResourceLoader.GetString("LayersViewModel_YesDelete"); }
             }
 
         }
@@ -305,6 +389,90 @@ namespace OutdoorTracker.Resources
             public static string ContinueTrackingTitle
             {
                 get { return ActiveResourceLoader.GetString("TrackRecorder_ContinueTrackingTitle"); }
+            }
+
+        }
+
+        public static class TracksPage
+        {
+            /// <summary>
+            ///      Looks up a Text similar to "Are you sure that you want to delete the selected tracks."
+            /// </summary>
+            public static string DeleteMessage
+            {
+                get { return ActiveResourceLoader.GetString("TracksPage_DeleteMessage"); }
+            }
+
+            /// <summary>
+            ///      Looks up a Text similar to "Are you sure that you want to delete the track '{0}'?"
+            /// </summary>
+            public static string DeleteSingleMessage(string trackName)
+            {
+                return string.Format(CultureInfo.CurrentCulture, ActiveResourceLoader.GetString("TracksPage_DeleteSingleMessage"), trackName);
+            }
+
+            /// <summary>
+            ///      Looks up a Text similar to "Delete track"
+            /// </summary>
+            public static string DeleteSingleTitle
+            {
+                get { return ActiveResourceLoader.GetString("TracksPage_DeleteSingleTitle"); }
+            }
+
+            /// <summary>
+            ///      Looks up a Text similar to "Delete tracks"
+            /// </summary>
+            public static string DeleteTitle
+            {
+                get { return ActiveResourceLoader.GetString("TracksPage_DeleteTitle"); }
+            }
+
+            /// <summary>
+            ///      Looks up a Text similar to "Deleting selected tracks..."
+            /// </summary>
+            public static string DeletingText
+            {
+                get { return ActiveResourceLoader.GetString("TracksPage_DeletingText"); }
+            }
+
+            /// <summary>
+            ///      Looks up a Text similar to "Exporting selected tracks..."
+            /// </summary>
+            public static string ExportingText
+            {
+                get { return ActiveResourceLoader.GetString("TracksPage_ExportingText"); }
+            }
+
+            /// <summary>
+            ///      Looks up a Text similar to "Importing tracks..."
+            /// </summary>
+            public static string ImportingText
+            {
+                get { return ActiveResourceLoader.GetString("TracksPage_ImportingText"); }
+            }
+
+            /// <summary>
+            ///      Looks up a Text similar to "You are already recoring a track. Do you want to stop recording and create a new track?"
+            /// </summary>
+            public static string StopTracking
+            {
+                get { return ActiveResourceLoader.GetString("TracksPage_StopTracking"); }
+            }
+
+            /// <summary>
+            ///      Looks up a Text similar to "Yes, delete"
+            /// </summary>
+            public static string YesDelete
+            {
+                get { return ActiveResourceLoader.GetString("TracksPage_YesDelete"); }
+            }
+
+            /// <summary>
+            ///      Looks up a Text similar to "Yes, stop tracking"
+            /// </summary>
+            public static string YesStopTracking
+            {
+                get { return ActiveResourceLoader.GetString("TracksPage_YesStopTracking"); }
             }
 
         }

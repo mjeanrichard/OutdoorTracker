@@ -15,6 +15,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Input;
 
 using OutdoorTracker.Common;
@@ -47,6 +48,18 @@ namespace OutdoorTracker.Views.Map
             map.ViewPortCenter = e.ViewPortCenter;
             map.ZoomLevel = e.ZoomLevel;
             ViewModel.UpdateTouchInput(e);
+        }
+
+        private void ShowFlyout(object sender, TappedRoutedEventArgs e)
+        {
+            FlyoutBase.ShowAttachedFlyout((FrameworkElement)sender);
+        }
+
+        private void StopTrackingButtonTapped(object sender, TappedRoutedEventArgs e)
+        {
+            ViewModel.StopTrackingCommand.Execute();
+            FlyoutBase flyout = FlyoutBase.GetAttachedFlyout(StopTrackingButton);
+            flyout?.Hide();
         }
     }
 }

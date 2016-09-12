@@ -52,7 +52,7 @@ namespace OutdoorTracker.Tracks.Gpx
 
             if (!gpxFile.Tracks.Any() && !gpxFile.Waypoints.Any())
             {
-                await ImportFailed(Messages.GpxTrackBuilder.NoTracksFound);
+                await ImportFailed(Messages.GpxTrackBuilder.NoTracksFoundMessage, Messages.GpxTrackBuilder.NoTracksFound);
                 return importedTracks;
             }
 

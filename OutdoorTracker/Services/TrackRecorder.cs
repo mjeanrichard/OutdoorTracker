@@ -108,12 +108,18 @@ namespace OutdoorTracker.Services
 
         private async Task UpdateTrack(double latitude, double longitude, double? altitude)
         {
+            Track recordingTrack = RecordingTrack;
+            if (recordingTrack == null)
+            {
+                return;
+            }
+
             using (IUnitOfWork unitOfWork = _unitOfWorkFactory.Create())
             {
                 TrackPoint point = new TrackPoint();
                 point.Number = _nextTrackPointNumber++;
                 point.Time = DateTime.UtcNow;
-                point.TrackId = RecordingTrack.Id;
+                point.TrackId = recordingTrack.Id;
                 point.Latitude = latitude;
                 point.Longitude = longitude;
                 if (altitude.HasValue)
@@ -123,7 +129,7 @@ namespace OutdoorTracker.Services
                 unitOfWork.TrackPoints.Add(point);
 
                 // this is only to update the current Map that might be displayed.
-                RecordingTrack.Points.Add(point);
+                recordingTrack.Points.Add(point);
                 await unitOfWork.SaveChangesAsync();
                 OnTrackUpdated();
             }
