@@ -12,6 +12,13 @@ You can install the Beta Version side by side with the Store Version, since they
 
 ## Release Notes
 ### [Milestone 1.1](../../milestone/2?closed=1)
+#### Version 1.1.6 (public store)
+- Added Clear Cache Function
+- Fixed Accuracy Circle
+- Fixed Map Cache
+- Fixed Null Reference Exception in TrackBuilder ([#20](../../issues/20))
+- Improved UI
+
 #### Version 1.1.5 (public store)
 - Fixed Crash when BatchSprites are not supported ([#18](../../issues/18))
 - Fixed Crash because the Database was not initialized correctly ([#17](../../issues/17))
