@@ -66,6 +66,11 @@ namespace OutdoorTracker.Services
 
         private async void PositionChanged(object sender, EventArgs e)
         {
+            await UpdatePosition();
+        }
+
+        private async Task UpdatePosition()
+        {
             if (IsTracking && _geoLocationService.CurrentLocation.IsLocationValid)
             {
                 ILocation location = _geoLocationService.CurrentLocation.Location;
@@ -143,6 +148,7 @@ namespace OutdoorTracker.Services
             RecordingTrack = track;
             await StartLocationExtensionSession();
             OnTrackUpdated();
+            await UpdatePosition();
         }
 
         public void StopTracking()
@@ -173,9 +179,8 @@ namespace OutdoorTracker.Services
                     using (IUnitOfWork unitOfWork = _unitOfWorkFactory.Create())
                     {
                         int trackId = _settingsManager.CurrentTrackingId.Value;
-                        Track track = await unitOfWork.Tracks.SingleOrDefaultAsync(t => t.Id == trackId);
-                        int trackPointCount = await unitOfWork.TrackPoints.Where(p => p.TrackId == trackId).MaxAsync(p => p.Number);
-                        await StartTracking(track, trackPointCount + 1);
+                        Track track = await unitOfWork.Tracks.Include(t => t.Points).SingleOrDefaultAsync(t => t.Id == trackId);
+                        await StartTracking(track, track.Points.Max(p => p.Number) + 1);
                     }
                 }
                 else
