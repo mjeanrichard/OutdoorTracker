@@ -90,19 +90,12 @@ namespace OutdoorTracker
             {
                 RootFrame = new Frame();
                 RootFrame.NavigationFailed += OnNavigationFailed;
-
-                if (e.PreviousExecutionState == ApplicationExecutionState.Terminated)
-                {
-                    //TODO: Load state from previously suspended application
-                }
-
-                // Place the frame in the current Window
                 Window.Current.Content = RootFrame;
             }
 
             if (e.PreviousExecutionState != ApplicationExecutionState.Suspended && e.PreviousExecutionState != ApplicationExecutionState.Running)
             {
-                await DependencyContainer.Current.Resolve<DbInitializer>().InitDatabase();
+                await DependencyContainer.Current.Resolve<DbInitializer>().InitDatabase().ConfigureAwait(false);
             }
 
             if (RootFrame.Content == null)
@@ -110,7 +103,6 @@ namespace OutdoorTracker
                 // When the navigation stack isn't restored navigate to the first page
                 RootFrame.Navigate(typeof(MapPage), e.Arguments);
             }
-
 
             Window.Current.Activate();
 
@@ -148,7 +140,7 @@ namespace OutdoorTracker
             BaseViewModel baseViewModel = (((Frame)Window.Current.Content)?.Content as IAppPage)?.ViewModel;
             if (baseViewModel != null)
             {
-                await baseViewModel.Suspending();
+                await baseViewModel.Suspending().ConfigureAwait(false);
             }
 
             deferral.Complete();

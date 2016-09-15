@@ -16,12 +16,9 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Threading.Tasks;
 
 using Windows.UI.Popups;
-
-using Microsoft.HockeyApp;
 
 using OutdoorTracker.Resources;
 
@@ -46,7 +43,7 @@ namespace OutdoorTracker.Helpers
             }
         }
 
-        public static void ReportException(Exception exception, Dictionary<string, string> properties)
+        public static void ReportException(Exception exception, Dictionary<string, string> properties = null)
         {
 #if !DEBUG
             HockeyClient.Current.TrackException(exception, properties);

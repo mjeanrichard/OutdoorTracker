@@ -86,7 +86,7 @@ namespace OutdoorTracker.Services
 
                     Wgs84Location avgLocation = new Wgs84Location(lat, lng);
                     double distance = _lastLocation.DistanceTo(avgLocation);
-                    if (!_settingsManager.EnableTrackSmoothing || distance > _settingsManager.TrackMinDistanceMeters)
+                    if (!_settingsManager.EnableTrackSmoothing || (distance > _settingsManager.TrackMinDistanceMeters))
                     {
                         _sumLongitude = 0;
                         _sumLatitude = 0;
@@ -159,26 +159,14 @@ namespace OutdoorTracker.Services
             TrackUpdated?.Invoke(this, EventArgs.Empty);
         }
 
-        private async Task StartLocationExtensionSession()
-        {
-            _extendedExecutionSession = new ExtendedExecutionSession();
-            _extendedExecutionSession.Description = "Location Tracker";
-            _extendedExecutionSession.Reason = ExtendedExecutionReason.LocationTracking;
-            _extendedExecutionSession.Revoked += ExtendedExecutionSessionRevoked;
-            ExtendedExecutionResult result = await _extendedExecutionSession.RequestExtensionAsync();
-            if (result == ExtendedExecutionResult.Denied)
-            {
-                DialogHelper.TrackEvent(TrackEvents.ExtendedExecutionDenied);
-            }
-        }
-
         private void ExtendedExecutionSessionRevoked(object sender, ExtendedExecutionRevokedEventArgs args)
         {
+            RemoveExtendedExecution();
         }
 
         public async Task CheckExistingSession()
         {
-            if (_settingsManager.CurrentTrackingId.HasValue)
+            if (_settingsManager.CurrentTrackingId.HasValue && (_extendedExecutionSession == null))
             {
                 if (await AskToContinueTracking())
                 {
@@ -210,6 +198,39 @@ namespace OutdoorTracker.Services
 
             IUICommand result = await dialog.ShowAsync();
             return (bool)result.Id;
+        }
+
+        private void RemoveExtendedExecution()
+        {
+            if (_extendedExecutionSession != null)
+            {
+                _extendedExecutionSession.Revoked -= ExtendedExecutionSessionRevoked;
+                _extendedExecutionSession.Dispose();
+                _extendedExecutionSession = null;
+            }
+        }
+
+        public async Task StartLocationExtensionSession()
+        {
+            RemoveExtendedExecution();
+            try
+            {
+                _extendedExecutionSession = new ExtendedExecutionSession();
+                _extendedExecutionSession.Description = "Location Tracker";
+                _extendedExecutionSession.Reason = ExtendedExecutionReason.LocationTracking;
+                _extendedExecutionSession.Revoked += ExtendedExecutionSessionRevoked;
+                ExtendedExecutionResult result = await _extendedExecutionSession.RequestExtensionAsync();
+                if (result == ExtendedExecutionResult.Denied)
+                {
+                    // TODO: Send Toast?
+                    DialogHelper.TrackEvent(TrackEvents.ExtendedExecutionDenied);
+                }
+            }
+            catch (Exception e)
+            {
+                // TODO: Send Toast?
+                DialogHelper.ReportException(e);
+            }
         }
     }
 }
