@@ -1,7 +1,7 @@
 ﻿{
   "dependencies": {
     "HockeySDK.UWP": "4.1.4",
-    "Microsoft.EntityFrameworkCore.Sqlite": "1.0.0",
+    "Microsoft.EntityFrameworkCore.Sqlite": "1.0.1",
     "Microsoft.NETCore.UniversalWindowsPlatform": "5.2.2",
     "Newtonsoft.Json": "9.0.1",
     "Unity": "4.0.1",

@@ -50,7 +50,7 @@ namespace OutdoorTracker.Common
             }
             using (MarkBusy())
             {
-                await InitializeInternal();
+                await InitializeInternal().ConfigureAwait(false);
             }
             IsInitialized = true;
         }

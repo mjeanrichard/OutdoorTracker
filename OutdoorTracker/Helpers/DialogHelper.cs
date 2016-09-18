@@ -20,6 +20,8 @@ using System.Threading.Tasks;
 
 using Windows.UI.Popups;
 
+using Microsoft.HockeyApp;
+
 using OutdoorTracker.Resources;
 
 namespace OutdoorTracker.Helpers

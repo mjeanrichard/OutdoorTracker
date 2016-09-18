@@ -28,7 +28,9 @@ using Windows.UI.Popups;
 using Windows.UI.Xaml;
 
 using OutdoorTracker.Common;
+using OutdoorTracker.Helpers;
 using OutdoorTracker.Layers;
+using OutdoorTracker.Logging;
 using OutdoorTracker.Resources;
 using OutdoorTracker.Services;
 
@@ -125,13 +127,8 @@ namespace OutdoorTracker.Views.Layers
 
         protected override async Task InitializeInternal()
         {
-            IEnumerable<MapConfiguration> mapConfigurations = await _mapDefinitionManager.GetMapConfigurations();
+            IEnumerable<MapConfiguration> mapConfigurations = await _mapDefinitionManager.GetMapConfigurations().ConfigureAwait(false);
             Layers = new ObservableCollection<MapLayerModel>(mapConfigurations.Select(c => new MapLayerModel(c)));
-
-            foreach (MapLayerModel layer in Layers)
-            {
-            }
-
             OnPropertyChanged(nameof(Layers));
         }
 
@@ -140,16 +137,24 @@ namespace OutdoorTracker.Views.Layers
             BusyText = Messages.LayersViewModel.ImportingMessage;
             using (MarkBusy())
             {
-                FileOpenPicker openPicker = new FileOpenPicker();
-                openPicker.ViewMode = PickerViewMode.List;
-                openPicker.SuggestedStartLocation = PickerLocationId.Desktop;
-                openPicker.FileTypeFilter.Add(".json");
-                StorageFile file = await openPicker.PickSingleFileAsync();
-                if (file != null)
+                try
                 {
-                    string json = await FileIO.ReadTextAsync(file);
-                    await _mapDefinitionManager.Import(json);
-                    await InitializeInternal();
+                    FileOpenPicker openPicker = new FileOpenPicker();
+                    openPicker.ViewMode = PickerViewMode.List;
+                    openPicker.SuggestedStartLocation = PickerLocationId.Desktop;
+                    openPicker.FileTypeFilter.Add(".json");
+                    StorageFile file = await openPicker.PickSingleFileAsync();
+                    if (file != null)
+                    {
+                        string json = await FileIO.ReadTextAsync(file);
+                        await _mapDefinitionManager.Import(json);
+                        await InitializeInternal();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    OutdoorTrackerEvents.Log.MapDefinitionOpenFileFailed(ex);
+                    await DialogHelper.ShowErrorAndReport(Messages.MapDefinitionManager.ImportError, Messages.MapDefinitionManager.ImportErrorTitle, ex);
                 }
             }
         }
