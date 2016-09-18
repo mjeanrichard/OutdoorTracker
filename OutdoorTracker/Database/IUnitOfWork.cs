@@ -18,6 +18,7 @@ using System;
 using System.Threading.Tasks;
 
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 
 using OutdoorTracker.Layers;
 using OutdoorTracker.Tracks;
@@ -29,6 +30,9 @@ namespace OutdoorTracker.Database
         DbSet<Track> Tracks { get; }
         DbSet<TrackPoint> TrackPoints { get; }
         DbSet<MapConfiguration> MapConfigurations { get; }
+        DbSet<DbVersion> DbVersions { get; }
+
+        DatabaseFacade Database { get; }
 
         Task SaveChangesAsync();
     }

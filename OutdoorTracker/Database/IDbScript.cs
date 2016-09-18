@@ -20,6 +20,6 @@ namespace OutdoorTracker.Database
 {
     public interface IDbScript
     {
-        Task Execute(OutdoorTrackerContext context);
+        Task Execute(IUnitOfWork context);
     }
 }

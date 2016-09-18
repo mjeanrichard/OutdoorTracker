@@ -16,11 +16,13 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Threading.Tasks;
 
 using Windows.UI.Popups;
 
+using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 
 using Newtonsoft.Json;
@@ -57,9 +59,17 @@ namespace OutdoorTracker.Services
 
         public async Task<IEnumerable<MapConfiguration>> GetMapConfigurations()
         {
-            using (IUnitOfWork unitOfWork = _unitOfWorkFactory.Create())
+            try
             {
-                return await unitOfWork.MapConfigurations.ToListAsync();
+                using (IUnitOfWork unitOfWork = _unitOfWorkFactory.Create())
+                {
+                    return await unitOfWork.MapConfigurations.ToListAsync();
+                }
+            }
+            catch (SqliteException sqlEx)
+            {
+                await DialogHelper.CheckDatabaseException(sqlEx);
+                return Enumerable.Empty<MapConfiguration>();
             }
         }
 
@@ -80,6 +90,11 @@ namespace OutdoorTracker.Services
                     _currentConfiguration = mapConfiguration;
                 }
                 return _currentConfiguration;
+            }
+            catch (SqliteException sqlEx)
+            {
+                await DialogHelper.CheckDatabaseException(sqlEx);
+                return Default;
             }
             catch (Exception ex)
             {

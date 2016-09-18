@@ -18,10 +18,16 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
+using Windows.Storage;
+using Windows.Storage.FileProperties;
 using Windows.UI.Popups;
 
+using Microsoft.Data.Sqlite;
 using Microsoft.HockeyApp;
+using Microsoft.Practices.Unity;
 
+using OutdoorTracker.Common;
+using OutdoorTracker.Database;
 using OutdoorTracker.Resources;
 
 namespace OutdoorTracker.Helpers
@@ -47,16 +53,12 @@ namespace OutdoorTracker.Helpers
 
         public static void ReportException(Exception exception, Dictionary<string, string> properties = null)
         {
-#if !DEBUG
-            HockeyClient.Current.TrackException(exception, properties);
-#endif
+            ErrorReporter.Current.TrackException(exception, properties);
         }
 
         public static void TrackEvent(TrackEvents trackEvent, Dictionary<string, string> properties = null, IDictionary<string, double> metrics = null)
         {
-#if !DEBUG
-            HockeyClient.Current.TrackEvent(trackEvent.ToString("G"), properties, metrics);
-#endif
+            ErrorReporter.Current.TrackEvent(trackEvent.ToString("G"), properties, metrics);
         }
 
         public static async Task ShowError(string errorMessage, string title)
@@ -79,6 +81,31 @@ namespace OutdoorTracker.Helpers
             dialog.DefaultCommandIndex = 0;
             dialog.CancelCommandIndex = 0;
             await dialog.ShowAsync();
+        }
+
+        public static async Task CheckDatabaseException(SqliteException sqlEx)
+        {
+            ErrorReporter.Current.TrackException(sqlEx);
+            try
+            {
+                IStorageItem storageItem = await ApplicationData.Current.LocalFolder.TryGetItemAsync("data.sqlite");
+                if (storageItem != null)
+                {
+                    BasicProperties basicProperties = await storageItem.GetBasicPropertiesAsync();
+                    if (basicProperties.Size == 0)
+                    {
+                        ErrorReporter.Current.TrackEvent("Database Missing");
+                        await DependencyContainer.Current.Resolve<DbInitializer>().InitDatabase();
+                    }
+                }
+                else
+                {
+                    ErrorReporter.Current.TrackEvent("Database Missing");
+                }
+            }
+            catch (Exception)
+            {
+            }
         }
     }
 }
