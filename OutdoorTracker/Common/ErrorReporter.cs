@@ -15,16 +15,47 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
+using System.Text;
 
-// ReSharper disable once RedundantUsingDirective
 using Microsoft.HockeyApp;
 
 namespace OutdoorTracker.Common
 {
     public class ErrorReporter
     {
+        public static void Initialize()
+        {
+#if !DEBUG
+            HockeyClient.Current.Configure("b2c844d2de1245bf8e2495ed20350fd8").SetExceptionDescriptionLoader(DescriptionLoader);
+#endif
+        }
+
+        private static string DescriptionLoader(Exception exception)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine($"HResult: {exception.HResult}");
+            DecoratedHockeyAppException hockeyAppEx = exception as DecoratedHockeyAppException;
+            if (hockeyAppEx != null)
+            {
+                exception = hockeyAppEx.InnerException;
+                sb.AppendLine($"Original Exception Type: {exception.GetType().Name}");
+                foreach (KeyValuePair<string, string> property in hockeyAppEx.Properties)
+                {
+                    sb.AppendLine($"{property.Key}: {property.Value}");
+                }
+            }
+            sb.AppendLine();
+            sb.AppendLine($"Original Exception String:");
+            sb.AppendLine($"===========================");
+            sb.AppendLine(exception.ToString());
+            sb.AppendLine($"===========================");
+            return sb.ToString();
+        }
+
         protected ErrorReporter()
         {
         }
@@ -39,6 +70,11 @@ namespace OutdoorTracker.Common
                 Debugger.Break();
             }
 #else
+            //Workaround to the missing properties in the HockeyApp-UI.
+            if (properties != null)
+            {
+                exception = new DecoratedHockeyAppException(exception, properties.ToArray());
+            }
             HockeyClient.Current.TrackException(exception, properties);
 #endif
         }
@@ -48,6 +84,57 @@ namespace OutdoorTracker.Common
 #if !DEBUG
             HockeyClient.Current.TrackEvent(eventName, properties, metrics);
 #endif
+        }
+    }
+
+    /// <summary>
+    /// Exception Wrapper to add additional information to Exceptions that are logged to HockeyApp.
+    /// This can be removed when HockeyAPp finally supports properties.
+    /// </summary>
+    public class DecoratedHockeyAppException : Exception
+    {
+        public DecoratedHockeyAppException(Exception innerException, params KeyValuePair<string, string>[] properties) : base(innerException?.Message ?? string.Empty, innerException)
+        {
+            Properties = properties;
+        }
+
+        public override IDictionary Data
+        {
+            get { return InnerException.Data; }
+        }
+
+        public override string HelpLink
+        {
+            get { return InnerException.HelpLink; }
+            set { InnerException.HelpLink = value; }
+        }
+
+        public override string Message
+        {
+            get { return InnerException.Message; }
+        }
+
+        public override string Source
+        {
+            get { return InnerException.Source; }
+            set { InnerException.Source = value; }
+        }
+
+        public override string StackTrace
+        {
+            get { return InnerException.StackTrace; }
+        }
+
+        public override string ToString()
+        {
+            return InnerException.ToString();
+        }
+
+        public KeyValuePair<string, string>[] Properties { get; }
+
+        public override Exception GetBaseException()
+        {
+            return InnerException.GetBaseException();
         }
     }
 }

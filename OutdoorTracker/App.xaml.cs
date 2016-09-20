@@ -53,10 +53,7 @@ namespace OutdoorTracker
             Resuming += OnResuming;
             UnhandledException += OnUnhandledException;
 
-
-#if !DEBUG
-            HockeyClient.Current.Configure("b2c844d2de1245bf8e2495ed20350fd8");
-#endif
+            ErrorReporter.Initialize();
         }
 
         public Frame RootFrame { get; set; }

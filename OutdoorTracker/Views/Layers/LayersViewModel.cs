@@ -17,15 +17,12 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 
 using Windows.Storage;
-using Windows.Storage.FileProperties;
 using Windows.Storage.Pickers;
 using Windows.UI.Popups;
-using Windows.UI.Xaml;
 
 using OutdoorTracker.Common;
 using OutdoorTracker.Helpers;
@@ -49,18 +46,6 @@ namespace OutdoorTracker.Views.Layers
             AddMapCommand = new RelayCommand(async () => await ImportMapDefinition());
             ClearAllCacheCommand = new RelayCommand(async () => await ClearCache());
             LoadLayerSizeCommand = new RelayCommand(async () => await LoadLayerSizes());
-        }
-
-        private async Task LoadLayerSizes()
-        {
-            LoadLayerSizeCommand.EnabledOverride = false;
-            List<Task> loadTasks = new List<Task>();
-            foreach (MapLayerModel layerModel in Layers)
-            {
-                loadTasks.Add(layerModel.LoadSize());
-            }
-            await Task.WhenAll(loadTasks);
-            LoadLayerSizeCommand.EnabledOverride = null;
         }
 
         public LayersViewModel(SettingsManager settingsManager, MapDefinitionManager mapDefinitionManager)
@@ -94,6 +79,18 @@ namespace OutdoorTracker.Views.Layers
                 _busyText = value;
                 OnPropertyChanged();
             }
+        }
+
+        private async Task LoadLayerSizes()
+        {
+            LoadLayerSizeCommand.EnabledOverride = false;
+            List<Task> loadTasks = new List<Task>();
+            foreach (MapLayerModel layerModel in Layers)
+            {
+                loadTasks.Add(layerModel.LoadSize());
+            }
+            await Task.WhenAll(loadTasks);
+            LoadLayerSizeCommand.EnabledOverride = null;
         }
 
         private async Task ClearCache()

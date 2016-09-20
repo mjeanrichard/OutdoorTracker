@@ -23,7 +23,6 @@ using Windows.Storage.FileProperties;
 using Windows.UI.Popups;
 
 using Microsoft.Data.Sqlite;
-using Microsoft.HockeyApp;
 using Microsoft.Practices.Unity;
 
 using OutdoorTracker.Common;
@@ -39,7 +38,7 @@ namespace OutdoorTracker.Helpers
             var dialog = new MessageDialog(errorMessage + Environment.NewLine + Messages.Dialog.SendReport, title);
 
             dialog.Commands.Add(new UICommand(Messages.Dialog.No) { Id = 0 });
-            dialog.Commands.Add(new UICommand(Messages.Dialog.SendReport) { Id = 1 });
+            dialog.Commands.Add(new UICommand(Messages.Dialog.YesSendReport) { Id = 1 });
 
             dialog.DefaultCommandIndex = 1;
             dialog.CancelCommandIndex = 0;
