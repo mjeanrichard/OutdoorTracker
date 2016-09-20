@@ -40,6 +40,8 @@ namespace OutdoorTracker.Database
 
         public DbSet<Track> Tracks { get; protected set; }
 
+        public DbSet<DbVersion> DbVersions { get; protected set; }
+
         IQueryable<TrackPoint> IReadonlyUnitOfWork.TrackPoints
         {
             get { return TrackPoints.AsNoTracking(); }

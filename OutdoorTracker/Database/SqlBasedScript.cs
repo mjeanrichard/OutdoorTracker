@@ -23,7 +23,7 @@ namespace OutdoorTracker.Database
 {
     public abstract class SqlBasedScript : IDbScript
     {
-        public async Task Execute(OutdoorTrackerContext context)
+        public async Task Execute(IUnitOfWork context)
         {
             foreach (string sql in GetSql())
             {

@@ -12,6 +12,12 @@ You can install the Beta Version side by side with the Store Version, since they
 
 ## Release Notes
 ### [Milestone 1.1](../../milestone/2?closed=1)
+#### Version 1.1.7 (public store)
+- Fixed crash on resume while tracking ([#23](../../issues/23))
+- Fixed crashes when the Database does not exist
+- Fixed crash when a layer cannot be imported ([#22](../../issues/22))
+- Improved error reporting
+
 #### Version 1.1.6 (public store)
 - Added Clear Cache Function
 - Fixed Accuracy Circle

@@ -30,25 +30,25 @@ namespace OutdoorTracker.Database
 {
     public class DbInitializer
     {
-        private readonly Func<OutdoorTrackerContext> _contextFactory;
+        private readonly UnitOfWorkFactoy _contextFactory;
 
-        public DbInitializer(Func<OutdoorTrackerContext> contextFactory)
+        public DbInitializer(UnitOfWorkFactoy contextFactory)
         {
             _contextFactory = contextFactory;
         }
 
         public async Task InitDatabase()
         {
-            using (OutdoorTrackerContext OutdoorTrackerContext = _contextFactory())
+            using (IUnitOfWork outdoorTrackerContext = _contextFactory.Create())
             {
-                IList<DbVersion> versions = await GetLatestScriptVersion(OutdoorTrackerContext);
-                await ExecuteScripts(versions, OutdoorTrackerContext);
+                IList<DbVersion> versions = await GetLatestScriptVersion(outdoorTrackerContext);
+                await ExecuteScripts(versions, outdoorTrackerContext);
 
-                await OutdoorTrackerContext.SaveChangesAsync();
+                await outdoorTrackerContext.SaveChangesAsync();
             }
         }
 
-        private async Task ExecuteScripts(IEnumerable<DbVersion> executedVersions, OutdoorTrackerContext context)
+        private async Task ExecuteScripts(IEnumerable<DbVersion> executedVersions, IUnitOfWork context)
         {
             IEnumerable<TypeInfo> typeInfos = typeof(DbInitializer).GetTypeInfo().Assembly.DefinedTypes.Where(t => !t.IsAbstract && !t.IsInterface && t.ImplementedInterfaces.Contains(typeof(IDbScript)));
             List<KeyValuePair<string, TypeInfo>> scripts = new List<KeyValuePair<string, TypeInfo>>();
@@ -69,7 +69,7 @@ namespace OutdoorTracker.Database
                     {
                         IDbScript script = (IDbScript)DependencyContainer.Current.Resolve(scriptInfo.Value.AsType());
                         await script.Execute(context);
-                        context.Set<DbVersion>().Add(new DbVersion { Name = scriptInfo.Key });
+                        context.DbVersions.Add(new DbVersion { Name = scriptInfo.Key });
 
                         await context.SaveChangesAsync();
                         transaction.Commit();
@@ -78,10 +78,10 @@ namespace OutdoorTracker.Database
             }
         }
 
-        private async Task<IList<DbVersion>> GetLatestScriptVersion(OutdoorTrackerContext context)
+        private async Task<IList<DbVersion>> GetLatestScriptVersion(IUnitOfWork context)
         {
             await context.Database.ExecuteSqlCommandAsync("CREATE TABLE IF NOT EXISTS Version (Id INTEGER PRIMARY KEY AUTOINCREMENT, Name TEXT NOT NULL, CONSTRAINT UQ_Name UNIQUE (Name))");
-            return await context.Set<DbVersion>().ToListAsync();
+            return await context.DbVersions.ToListAsync();
         }
     }
 }

@@ -34,7 +34,7 @@ namespace OutdoorTracker.Migrations
             _mapDefinitionManager = mapDefinitionManager;
         }
 
-        public async Task Execute(OutdoorTrackerContext context)
+        public async Task Execute(IUnitOfWork context)
         {
             StorageFile initialMaps = await StorageFile.GetFileFromApplicationUriAsync(new Uri(@"ms-appx:///Assets/InitialMapLayers.json"));
             string json = await FileIO.ReadTextAsync(initialMaps);

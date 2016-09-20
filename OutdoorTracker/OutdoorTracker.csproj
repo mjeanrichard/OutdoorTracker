@@ -119,6 +119,7 @@
     <Compile Include="Common\BaseViewModel.cs" />
     <Compile Include="Common\DependencyContainer.cs" />
     <Compile Include="Common\DispatcherHelper.cs" />
+    <Compile Include="Common\ErrorReporter.cs" />
     <Compile Include="Common\IAppPage.cs" />
     <Compile Include="Common\NavigationService.cs" />
     <Compile Include="Controls\PageViewControl.cs" />

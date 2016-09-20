@@ -53,10 +53,7 @@ namespace OutdoorTracker
             Resuming += OnResuming;
             UnhandledException += OnUnhandledException;
 
-
-#if !DEBUG
-            HockeyClient.Current.Configure("b2c844d2de1245bf8e2495ed20350fd8");
-#endif
+            ErrorReporter.Initialize();
         }
 
         public Frame RootFrame { get; set; }
@@ -90,13 +87,6 @@ namespace OutdoorTracker
             {
                 RootFrame = new Frame();
                 RootFrame.NavigationFailed += OnNavigationFailed;
-
-                if (e.PreviousExecutionState == ApplicationExecutionState.Terminated)
-                {
-                    //TODO: Load state from previously suspended application
-                }
-
-                // Place the frame in the current Window
                 Window.Current.Content = RootFrame;
             }
 
@@ -110,7 +100,6 @@ namespace OutdoorTracker
                 // When the navigation stack isn't restored navigate to the first page
                 RootFrame.Navigate(typeof(MapPage), e.Arguments);
             }
-
 
             Window.Current.Activate();
 
@@ -148,7 +137,7 @@ namespace OutdoorTracker
             BaseViewModel baseViewModel = (((Frame)Window.Current.Content)?.Content as IAppPage)?.ViewModel;
             if (baseViewModel != null)
             {
-                await baseViewModel.Suspending();
+                await baseViewModel.Suspending().ConfigureAwait(false);
             }
 
             deferral.Complete();

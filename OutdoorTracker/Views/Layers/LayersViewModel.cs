@@ -17,18 +17,17 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 
 using Windows.Storage;
-using Windows.Storage.FileProperties;
 using Windows.Storage.Pickers;
 using Windows.UI.Popups;
-using Windows.UI.Xaml;
 
 using OutdoorTracker.Common;
+using OutdoorTracker.Helpers;
 using OutdoorTracker.Layers;
+using OutdoorTracker.Logging;
 using OutdoorTracker.Resources;
 using OutdoorTracker.Services;
 
@@ -47,18 +46,6 @@ namespace OutdoorTracker.Views.Layers
             AddMapCommand = new RelayCommand(async () => await ImportMapDefinition());
             ClearAllCacheCommand = new RelayCommand(async () => await ClearCache());
             LoadLayerSizeCommand = new RelayCommand(async () => await LoadLayerSizes());
-        }
-
-        private async Task LoadLayerSizes()
-        {
-            LoadLayerSizeCommand.EnabledOverride = false;
-            List<Task> loadTasks = new List<Task>();
-            foreach (MapLayerModel layerModel in Layers)
-            {
-                loadTasks.Add(layerModel.LoadSize());
-            }
-            await Task.WhenAll(loadTasks);
-            LoadLayerSizeCommand.EnabledOverride = null;
         }
 
         public LayersViewModel(SettingsManager settingsManager, MapDefinitionManager mapDefinitionManager)
@@ -94,6 +81,18 @@ namespace OutdoorTracker.Views.Layers
             }
         }
 
+        private async Task LoadLayerSizes()
+        {
+            LoadLayerSizeCommand.EnabledOverride = false;
+            List<Task> loadTasks = new List<Task>();
+            foreach (MapLayerModel layerModel in Layers)
+            {
+                loadTasks.Add(layerModel.LoadSize());
+            }
+            await Task.WhenAll(loadTasks);
+            LoadLayerSizeCommand.EnabledOverride = null;
+        }
+
         private async Task ClearCache()
         {
             using (MarkBusy())
@@ -125,13 +124,8 @@ namespace OutdoorTracker.Views.Layers
 
         protected override async Task InitializeInternal()
         {
-            IEnumerable<MapConfiguration> mapConfigurations = await _mapDefinitionManager.GetMapConfigurations();
+            IEnumerable<MapConfiguration> mapConfigurations = await _mapDefinitionManager.GetMapConfigurations().ConfigureAwait(false);
             Layers = new ObservableCollection<MapLayerModel>(mapConfigurations.Select(c => new MapLayerModel(c)));
-
-            foreach (MapLayerModel layer in Layers)
-            {
-            }
-
             OnPropertyChanged(nameof(Layers));
         }
 
@@ -140,16 +134,24 @@ namespace OutdoorTracker.Views.Layers
             BusyText = Messages.LayersViewModel.ImportingMessage;
             using (MarkBusy())
             {
-                FileOpenPicker openPicker = new FileOpenPicker();
-                openPicker.ViewMode = PickerViewMode.List;
-                openPicker.SuggestedStartLocation = PickerLocationId.Desktop;
-                openPicker.FileTypeFilter.Add(".json");
-                StorageFile file = await openPicker.PickSingleFileAsync();
-                if (file != null)
+                try
                 {
-                    string json = await FileIO.ReadTextAsync(file);
-                    await _mapDefinitionManager.Import(json);
-                    await InitializeInternal();
+                    FileOpenPicker openPicker = new FileOpenPicker();
+                    openPicker.ViewMode = PickerViewMode.List;
+                    openPicker.SuggestedStartLocation = PickerLocationId.Desktop;
+                    openPicker.FileTypeFilter.Add(".json");
+                    StorageFile file = await openPicker.PickSingleFileAsync();
+                    if (file != null)
+                    {
+                        string json = await FileIO.ReadTextAsync(file);
+                        await _mapDefinitionManager.Import(json);
+                        await InitializeInternal();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    OutdoorTrackerEvents.Log.MapDefinitionOpenFileFailed(ex);
+                    await DialogHelper.ShowErrorAndReport(Messages.MapDefinitionManager.ImportError, Messages.MapDefinitionManager.ImportErrorTitle, ex);
                 }
             }
         }

@@ -130,6 +130,21 @@ namespace OutdoorTracker.Logging
             }
         }
 
+        [Event(312, Message = "Exception while reading map configuration '{0}'.", Level = EventLevel.Error)]
+        protected void MapDefinitionOpenFileFailed(string message, string exception)
+        {
+            WriteEvent(312, message, exception);
+        }
+
+        [NonEvent]
+        public void MapDefinitionOpenFileFailed(Exception ex)
+        {
+            if (IsEnabled())
+            {
+                MapDefinitionOpenFileFailed(ex.Message, ex.ToString());
+            }
+        }
+
         #endregion
 
         #region 400 - Settings
