@@ -66,7 +66,7 @@ namespace OutdoorTracker.Views.Map
             _readonlyUnitOfWork = readonlyUnitOfWork;
             _trackRecorder.TrackUpdated += (s, e) => TrackRecorderUpdated();
 
-            GotoGpsCommand = new RelayCommand(GotoCurrentLocation, () => LocationModel.LocationAccuracy != LocationAccuracy.None);
+            GotoGpsCommand = new RelayCommand(async () => await GotoCurrentLocation(), () => LocationModel.LocationAccuracy != LocationAccuracy.None);
             StopTrackingCommand = new RelayCommand(StopTracking);
             ShowTracksCommand = new RelayCommand(() => _navigationService.NavigateToTracks());
             ShowSettingsCommand = new RelayCommand(() => _navigationService.NavigateToSettings());
@@ -219,19 +219,19 @@ namespace OutdoorTracker.Views.Map
             }
         }
 
-        private void GotoCurrentLocation()
+        private async Task GotoCurrentLocation()
         {
             if (LocationModel.LocationAccuracy != LocationAccuracy.None)
             {
-                SetMapCenter(LocationModel.Location);
+                await SetMapCenter(LocationModel.Location);
                 _settingsManager.CenterOnPosition = true;
             }
         }
 
-        private void SetMapCenter(ILocation location)
+        private async Task SetMapCenter(ILocation location)
         {
             _mapCenter = location;
-            DispatcherHelper.InvokeOnUI(() => OnPropertyChanged(nameof(MapCenter)));
+            await DispatcherHelper.InvokeOnUIAsync(() => OnPropertyChanged(nameof(MapCenter)));
         }
 
         protected override async Task InitializeInternal()
@@ -251,7 +251,7 @@ namespace OutdoorTracker.Views.Map
             using (MarkBusy())
             {
                 List<Track> collection = await _readonlyUnitOfWork.Tracks.Where(t => t.ShowOnMap).Include(t => t.Points).ToListAsync().ConfigureAwait(false);
-                DispatcherHelper.InvokeOnUI(() =>
+                await DispatcherHelper.InvokeOnUIAsync(() =>
                 {
                     Tracks = new ObservableCollection<Track>(collection);
                     TrackRecorderUpdated();
@@ -266,7 +266,7 @@ namespace OutdoorTracker.Views.Map
             OnPropertyChanged(nameof(MapConfiguration));
 
             ILocation lastMapCenter = _settingsManager.GetLastMapCenter();
-            SetMapCenter(lastMapCenter);
+            await SetMapCenter(lastMapCenter);
 
             double zoomFactor = _settingsManager.ZoomFactor;
             double cartesianScaleFactor = MapConfiguration.Projection.CartesianScaleFactor(lastMapCenter);

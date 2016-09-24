@@ -55,10 +55,7 @@ namespace OutdoorTracker.Common
                 SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = AppViewBackButtonVisibility.Collapsed;
             }
 
-            using (ViewModel.MarkBusy())
-            {
-                await ViewModel.Initialize();
-            }
+            await ViewModel.Initialize();
             InitializeCompleted();
         }
 

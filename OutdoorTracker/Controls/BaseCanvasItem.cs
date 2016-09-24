@@ -15,6 +15,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 using System;
+using System.Threading.Tasks;
 
 using Windows.UI.Xaml;
 
@@ -35,19 +36,18 @@ namespace OutdoorTracker.Controls
             InvalidateInternal();
         }
 
-
         public abstract void InvalidateInternal();
 
-        public void Invalidate()
+        public async Task Invalidate()
         {
             InvalidateInternal();
-            OnLayoutChanged();
+            await OnLayoutChanged();
         }
 
-        protected virtual void OnLayoutChanged()
+        protected virtual async Task OnLayoutChanged()
         {
             InvalidateInternal();
-            DispatcherHelper.InvokeOnUI(() => LayoutChanged?.Invoke(this, EventArgs.Empty));
+            await DispatcherHelper.InvokeOnUIAsync(() => LayoutChanged?.Invoke(this, EventArgs.Empty));
         }
     }
 }

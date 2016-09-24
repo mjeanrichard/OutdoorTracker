@@ -17,6 +17,7 @@
 using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 
 using Windows.Devices.Geolocation;
 using Windows.Devices.Sensors;
@@ -75,7 +76,7 @@ namespace OutdoorTracker.Services
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public void UpdateState(PositionStatus state)
+        public async Task UpdateState(PositionStatus state)
         {
             State = state;
             if (State != PositionStatus.Ready)
@@ -83,10 +84,10 @@ namespace OutdoorTracker.Services
                 IsLocationValid = false;
                 LocationAccuracy = LocationAccuracy.None;
             }
-            DispatcherHelper.InvokeOnUI(SendPropertyChangeNotifications);
+            await DispatcherHelper.InvokeOnUIAsync(SendPropertyChangeNotifications);
         }
 
-        public void UpdatePosition(Geoposition positionData)
+        public async Task UpdatePosition(Geoposition positionData)
         {
             Geocoordinate coordinate = positionData?.Coordinate;
             if (coordinate == null)
@@ -130,7 +131,7 @@ namespace OutdoorTracker.Services
             {
                 IsAltitudeValid = false;
             }
-            DispatcherHelper.InvokeOnUI(SendPropertyChangeNotifications);
+            await DispatcherHelper.InvokeOnUIAsync(SendPropertyChangeNotifications);
         }
 
         public void UpdateCompass(CompassReading compassReading)

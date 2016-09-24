@@ -95,6 +95,13 @@ namespace OutdoorTracker
                 await DependencyContainer.Current.Resolve<DbInitializer>().InitDatabase();
             }
 
+            await DispatcherHelper.InvokeOnUIAsync(() => NavigateToFirstPage(e));
+
+            await CheckTrackingSession();
+        }
+
+        private void NavigateToFirstPage(LaunchActivatedEventArgs e)
+        {
             if (RootFrame.Content == null)
             {
                 // When the navigation stack isn't restored navigate to the first page
@@ -102,8 +109,6 @@ namespace OutdoorTracker
             }
 
             Window.Current.Activate();
-
-            await CheckTrackingSession();
         }
 
         private async Task CheckTrackingSession()
