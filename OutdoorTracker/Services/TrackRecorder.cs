@@ -15,12 +15,14 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 using Windows.ApplicationModel.ExtendedExecution;
 using Windows.UI.Popups;
 
+using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 
 using OutdoorTracker.Common;
@@ -114,29 +116,36 @@ namespace OutdoorTracker.Services
         private async Task UpdateTrack(double latitude, double longitude, double? altitude)
         {
             Track recordingTrack = RecordingTrack;
-            if (recordingTrack == null)
+            if (recordingTrack == null || !IsTracking)
             {
                 return;
             }
 
-            using (IUnitOfWork unitOfWork = _unitOfWorkFactory.Create())
+            try
             {
-                TrackPoint point = new TrackPoint();
-                point.Number = _nextTrackPointNumber++;
-                point.Time = DateTime.UtcNow;
-                point.TrackId = recordingTrack.Id;
-                point.Latitude = latitude;
-                point.Longitude = longitude;
-                if (altitude.HasValue)
+                using (IUnitOfWork unitOfWork = _unitOfWorkFactory.Create())
                 {
-                    point.Altitude = altitude.Value;
-                }
-                unitOfWork.TrackPoints.Add(point);
+                    TrackPoint point = new TrackPoint();
+                    point.Number = _nextTrackPointNumber++;
+                    point.Time = DateTime.UtcNow;
+                    point.TrackId = recordingTrack.Id;
+                    point.Latitude = latitude;
+                    point.Longitude = longitude;
+                    if (altitude.HasValue)
+                    {
+                        point.Altitude = altitude.Value;
+                    }
+                    unitOfWork.TrackPoints.Add(point);
 
-                // this is only to update the current Map that might be displayed.
-                recordingTrack.Points.Add(point);
-                await unitOfWork.SaveChangesAsync();
-                OnTrackUpdated();
+                    // this is only to update the current Map that might be displayed.
+                    recordingTrack.Points.Add(point);
+                    await unitOfWork.SaveChangesAsync();
+                    OnTrackUpdated();
+                }
+            }
+            catch (SqliteException ex)
+            {
+                ErrorReporter.Current.TrackException(ex, new Dictionary<string, string> { { "Location", "UpdateTrack" } });
             }
         }
 

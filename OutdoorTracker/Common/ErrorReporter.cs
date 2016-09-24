@@ -49,7 +49,7 @@ namespace OutdoorTracker.Common
                 }
             }
             sb.AppendLine();
-            sb.AppendLine($"Original Exception String:");
+            sb.AppendLine($"Exception String:");
             sb.AppendLine($"===========================");
             sb.AppendLine(exception.ToString());
             sb.AppendLine($"===========================");
