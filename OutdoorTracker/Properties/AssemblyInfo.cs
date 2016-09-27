@@ -44,5 +44,6 @@ using System.Runtime.InteropServices;
 
 [assembly: AssemblyVersion("99.0.0.0")]
 [assembly: AssemblyFileVersion("99.0.0.0")]
+[assembly: AssemblyInformationalVersion("Commit 5da530fa1dcc170d9b88f11c694376e025a7c675")]
 [assembly: ComVisible(false)]
 [assembly: NeutralResourcesLanguage("en")]

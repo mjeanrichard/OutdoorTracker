@@ -29,6 +29,13 @@ function Build()
 function UpdateFiles()
 {
 	Write-Host -Object 'Updating Files...' -ForegroundColor Green
+	
+	$assemblyInfoFile = "$projectPath\Properties\AssemblyInfo.cs"
+	(Get-Content $assemblyInfoFile) `
+		-replace '^(\s*\[assembly:\s+Assembly(?:File)?Version\(")([^"]+)("\)\]\s*)$', "`${1}$($Version)`$3" `
+		| Out-File $assemblyInfoFile
+	
+	
     $appxManifestPath = "$projectPath\Package.appxmanifest"
 
     $appxManifest = [xml](get-content $appxManifestPath)
