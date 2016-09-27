@@ -81,7 +81,7 @@ namespace OutdoorTracker.Services
                 mapLayerName = _settingsManager.MapLayerName;
                 if ((_currentConfiguration == null) || !_currentConfiguration.Name.Equals(mapLayerName))
                 {
-                    MapConfiguration mapConfiguration = await _readonlyUnitOfWork.MapConfigurations.FirstOrDefaultAsync(c => c.Name.Equals(mapLayerName, StringComparison.OrdinalIgnoreCase));
+                    MapConfiguration mapConfiguration = await _readonlyUnitOfWork.MapConfigurations.FirstOrDefaultAsync(c => c.Name.Equals(mapLayerName, StringComparison.OrdinalIgnoreCase)).ConfigureAwait(false);
                     if (mapConfiguration == null)
                     {
                         return Default;

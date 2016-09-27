@@ -48,9 +48,9 @@ namespace OutdoorTracker.Controls
         }
 
 
-        private static void DependencyPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static async void DependencyPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            ((CurrentLocation)d).OnLayoutChanged();
+            await ((CurrentLocation)d).OnLayoutChanged();
         }
 
         public ILocation Location

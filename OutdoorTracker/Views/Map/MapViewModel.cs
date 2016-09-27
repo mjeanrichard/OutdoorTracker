@@ -51,7 +51,7 @@ namespace OutdoorTracker.Views.Map
         public MapViewModel()
         {
             LocationModel = new LocationData();
-            SetMapCenter(new SwissGridLocation(600000, 200000));
+            _mapCenter = new SwissGridLocation(600000, 200000);
             Tracks = new ObservableCollection<Track>();
         }
 
@@ -236,14 +236,14 @@ namespace OutdoorTracker.Views.Map
 
         protected override async Task InitializeInternal()
         {
-            await ConfigureMap();
+            await ConfigureMap().ConfigureAwait(false);
 
-            await _geoLocationService.Initialize();
+            await _geoLocationService.Initialize().ConfigureAwait(false);
 
             IsMapInitialized = true;
             OnPropertyChanged(nameof(IsMapInitialized));
 
-            LoadTracks();
+            await LoadTracks().ConfigureAwait(false);
         }
 
         private async Task LoadTracks()
@@ -262,7 +262,7 @@ namespace OutdoorTracker.Views.Map
 
         private async Task ConfigureMap()
         {
-            MapConfiguration = await _mapDefinitionManager.GetCurrentConfiguration();
+            MapConfiguration = await _mapDefinitionManager.GetCurrentConfiguration().ConfigureAwait(false);
             OnPropertyChanged(nameof(MapConfiguration));
 
             ILocation lastMapCenter = _settingsManager.GetLastMapCenter();

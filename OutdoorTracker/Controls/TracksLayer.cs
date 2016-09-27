@@ -19,6 +19,7 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Numerics;
+using System.Threading.Tasks;
 
 using Windows.UI;
 using Windows.UI.Xaml;
@@ -55,7 +56,7 @@ namespace OutdoorTracker.Controls
 
         private List<CanvasGeometry> _trackPaths;
 
-        private void OnTracksChanged(ObservableCollection<Track> oldValue, ObservableCollection<Track> newValue)
+        private async void OnTracksChanged(ObservableCollection<Track> oldValue, ObservableCollection<Track> newValue)
         {
             if (oldValue != null)
             {
@@ -73,10 +74,10 @@ namespace OutdoorTracker.Controls
                     newTrack.Points.CollectionChanged += TrackPointsCollectionChanged;
                 }
             }
-            InvalidateTrack();
+            await InvalidateTrack();
         }
 
-        private void TracksCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        private async void TracksCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             if (e.OldItems != null)
             {
@@ -92,18 +93,18 @@ namespace OutdoorTracker.Controls
                     newTrack.Points.CollectionChanged += TrackPointsCollectionChanged;
                 }
             }
-            InvalidateTrack();
+            await InvalidateTrack();
         }
 
-        private void TrackPointsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        private async void TrackPointsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            InvalidateTrack();
+            await InvalidateTrack();
         }
 
-        public void InvalidateTrack()
+        public async Task InvalidateTrack()
         {
             _isPathValid = false;
-            OnLayoutChanged();
+            await OnLayoutChanged();
         }
 
         private void BuildPathGeometry(CanvasDevice device, CanvasItemsLayer canvasItemsLayer)
