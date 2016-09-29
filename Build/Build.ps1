@@ -33,7 +33,7 @@ function UpdateFiles()
 	$assemblyInfoFile = "$projectPath\Properties\AssemblyInfo.cs"
 	(Get-Content $assemblyInfoFile) `
 		-replace '^(\s*\[assembly:\s+Assembly(?:File)?Version\(")([^"]+)("\)\]\s*)$', "`${1}$($Version)`$3" `
-		| Out-File $assemblyInfoFile
+		| Out-File $assemblyInfoFile -Encoding UTF8
 	
 	
     $appxManifestPath = "$projectPath\Package.appxmanifest"
