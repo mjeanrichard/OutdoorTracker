@@ -57,7 +57,7 @@ namespace OutdoorTracker.Common
 
         protected async void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
-            await DispatcherHelper.InvokeOnUIAsync(() => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName)));
+            await DispatcherHelper.InvokeOnUiAsync(() => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName)));
         }
 
         public IDisposable MarkBusy()

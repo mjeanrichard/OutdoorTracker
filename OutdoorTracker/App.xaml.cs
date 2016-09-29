@@ -95,7 +95,7 @@ namespace OutdoorTracker
                 await DependencyContainer.Current.Resolve<DbInitializer>().InitDatabase();
             }
 
-            await DispatcherHelper.InvokeOnUIAsync(() => NavigateToFirstPage(e));
+            await DispatcherHelper.InvokeOnUiAsync(() => NavigateToFirstPage(e));
 
             await CheckTrackingSession();
         }

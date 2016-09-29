@@ -47,7 +47,7 @@ namespace OutdoorTracker.Controls
         protected virtual async Task OnLayoutChanged()
         {
             InvalidateInternal();
-            await DispatcherHelper.InvokeOnUIAsync(() => LayoutChanged?.Invoke(this, EventArgs.Empty));
+            await DispatcherHelper.InvokeOnUiAsync(() => LayoutChanged?.Invoke(this, EventArgs.Empty));
         }
     }
 }

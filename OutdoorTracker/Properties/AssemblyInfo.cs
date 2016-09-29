@@ -1,4 +1,4 @@
-﻿// 
+// 
 // Outdoor Tracker - Copyright(C) 2016 Meinard Jean-Richard
 //  
 // This program is free software: you can redistribute it and/or modify

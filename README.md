@@ -12,6 +12,9 @@ You can install the Beta Version side by side with the Store Version, since they
 
 ## Release Notes
 ### [Milestone 1.1](../../milestone/2?closed=1)
+#### Version 1.1.9 (public store)
+- Fixed Crash on first startup ([#29](../../issues/29))
+
 #### Version 1.1.8 (public store)
 - Fixed crash when the current track is deleted ([#26](../../issues/26))
 - Fixed AccessViolation on Startup ([#28](../../issues/28)

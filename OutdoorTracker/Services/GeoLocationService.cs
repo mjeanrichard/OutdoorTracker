@@ -23,6 +23,7 @@ using Windows.Devices.Sensors;
 
 using Microsoft.HockeyApp;
 
+using OutdoorTracker.Common;
 using OutdoorTracker.Helpers;
 using OutdoorTracker.Logging;
 
@@ -78,7 +79,9 @@ namespace OutdoorTracker.Services
             }
 
             OutdoorTrackerEvents.Log.LocationInitializing();
-            GeolocationAccessStatus accessStatus = await Geolocator.RequestAccessAsync();
+            GeolocationAccessStatus accessStatus = GeolocationAccessStatus.Unspecified;
+            await DispatcherHelper.InvokeOnUiAsync(async () => accessStatus = await Geolocator.RequestAccessAsync());
+
             OutdoorTrackerEvents.Log.LocationAccessState(accessStatus.ToString("G"));
             switch (accessStatus)
             {
@@ -89,16 +92,16 @@ namespace OutdoorTracker.Services
                     _geolocator.ReportInterval = 1000;
                     _geolocator.StatusChanged += OnGeoStatusChanged;
                     _geolocator.PositionChanged += PositionChangedHandler;
-                    await CurrentLocation.UpdateState(PositionStatus.Initializing);
+                    await CurrentLocation.UpdateState(PositionStatus.Initializing).ConfigureAwait(false);
                     break;
 
                 case GeolocationAccessStatus.Denied:
                     DialogHelper.TrackEvent(TrackEvents.GeoLocationDenied);
-                    await CurrentLocation.UpdateState(PositionStatus.NotAvailable);
+                    await CurrentLocation.UpdateState(PositionStatus.NotAvailable).ConfigureAwait(false);
                     break;
                 case GeolocationAccessStatus.Unspecified:
                     DialogHelper.TrackEvent(TrackEvents.LocationStateUnspecified);
-                    await CurrentLocation.UpdateState(PositionStatus.NotAvailable);
+                    await CurrentLocation.UpdateState(PositionStatus.NotAvailable).ConfigureAwait(false);
                     break;
             }
         }

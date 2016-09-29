@@ -231,7 +231,7 @@ namespace OutdoorTracker.Views.Map
         private async Task SetMapCenter(ILocation location)
         {
             _mapCenter = location;
-            await DispatcherHelper.InvokeOnUIAsync(() => OnPropertyChanged(nameof(MapCenter)));
+            await DispatcherHelper.InvokeOnUiAsync(() => OnPropertyChanged(nameof(MapCenter)));
         }
 
         protected override async Task InitializeInternal()
@@ -251,7 +251,7 @@ namespace OutdoorTracker.Views.Map
             using (MarkBusy())
             {
                 List<Track> collection = await _readonlyUnitOfWork.Tracks.Where(t => t.ShowOnMap).Include(t => t.Points).ToListAsync().ConfigureAwait(false);
-                await DispatcherHelper.InvokeOnUIAsync(() =>
+                await DispatcherHelper.InvokeOnUiAsync(() =>
                 {
                     Tracks = new ObservableCollection<Track>(collection);
                     TrackRecorderUpdated();

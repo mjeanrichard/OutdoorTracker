@@ -29,7 +29,7 @@ namespace OutdoorTracker.Common
             _uiDispatcher = Window.Current.Dispatcher;
         }
 
-        public static async Task InvokeOnUIAsync(Action action)
+        public static async Task InvokeOnUiAsync(Action action)
         {
             if (action == null)
             {

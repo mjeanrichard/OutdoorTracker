@@ -84,7 +84,7 @@ namespace OutdoorTracker.Services
                 IsLocationValid = false;
                 LocationAccuracy = LocationAccuracy.None;
             }
-            await DispatcherHelper.InvokeOnUIAsync(SendPropertyChangeNotifications);
+            await DispatcherHelper.InvokeOnUiAsync(SendPropertyChangeNotifications);
         }
 
         public async Task UpdatePosition(Geoposition positionData)
@@ -131,7 +131,7 @@ namespace OutdoorTracker.Services
             {
                 IsAltitudeValid = false;
             }
-            await DispatcherHelper.InvokeOnUIAsync(SendPropertyChangeNotifications);
+            await DispatcherHelper.InvokeOnUiAsync(SendPropertyChangeNotifications);
         }
 
         public void UpdateCompass(CompassReading compassReading)
