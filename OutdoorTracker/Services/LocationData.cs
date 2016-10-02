@@ -52,6 +52,7 @@ namespace OutdoorTracker.Services
         public double? Heading { get; private set; }
         public double? Compass { get; private set; }
         public double? Speed { get; private set; }
+        public bool HasCompass { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -60,6 +61,7 @@ namespace OutdoorTracker.Services
             OnPropertyChanged(nameof(Altitude));
             OnPropertyChanged(nameof(AltitudeAccuracy));
             OnPropertyChanged(nameof(Accuracy));
+            OnPropertyChanged(nameof(HasCompass));
             OnPropertyChanged(nameof(Heading));
             OnPropertyChanged(nameof(IsAltitudeValid));
             OnPropertyChanged(nameof(IsLocationValid));
@@ -84,7 +86,7 @@ namespace OutdoorTracker.Services
                 IsLocationValid = false;
                 LocationAccuracy = LocationAccuracy.None;
             }
-            await DispatcherHelper.InvokeOnUiAsync(SendPropertyChangeNotifications);
+            await DispatcherHelper.InvokeOnUiAsync(() => SendPropertyChangeNotifications()).ConfigureAwait(false);
         }
 
         public async Task UpdatePosition(Geoposition positionData)
@@ -131,7 +133,7 @@ namespace OutdoorTracker.Services
             {
                 IsAltitudeValid = false;
             }
-            await DispatcherHelper.InvokeOnUiAsync(SendPropertyChangeNotifications);
+            await DispatcherHelper.InvokeOnUiAsync(() => SendPropertyChangeNotifications());
         }
 
         public void UpdateCompass(CompassReading compassReading)

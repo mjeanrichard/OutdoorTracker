@@ -87,7 +87,7 @@ namespace OutdoorTracker.Views.Map
 
         public bool ShowCompassCommand
         {
-            get { return _geoLocationService.HasCompass && (_headingMode == HeadingMode.NorthUp); }
+            get { return LocationModel.HasCompass && (_headingMode == HeadingMode.NorthUp); }
         }
 
         public LocationData LocationModel { get; private set; }
@@ -216,6 +216,11 @@ namespace OutdoorTracker.Views.Map
                     _heading = -LocationModel.Compass.GetValueOrDefault(0);
                     OnPropertyChanged(nameof(Heading));
                 }
+            }
+            if (e.PropertyName == nameof(LocationData.HasCompass))
+            {
+                OnPropertyChanged(nameof(ShowCompassCommand));
+                OnPropertyChanged(nameof(ShowNorthUpCommand));
             }
         }
 

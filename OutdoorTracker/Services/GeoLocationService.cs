@@ -41,13 +41,11 @@ namespace OutdoorTracker.Services
 
         public LocationData CurrentLocation { get; }
 
-        public bool HasCompass { get; private set; }
-
         public event EventHandler PositionChanged;
 
         public async Task Initialize()
         {
-            if (!HasCompass)
+            if (!CurrentLocation.HasCompass)
             {
                 _compass = Compass.GetDefault();
                 if (_compass != null)
@@ -55,15 +53,15 @@ namespace OutdoorTracker.Services
                     try
                     {
                         _compass.ReportInterval = _compass.MinimumReportInterval > 16 ? _compass.MinimumReportInterval : 16;
-                        _compass.ReadingChanged += CompassReadinChanged;
-                        HasCompass = true;
+                        _compass.ReadingChanged += CompassReadingChanged;
+                        CurrentLocation.HasCompass = true;
                         OutdoorTrackerEvents.Log.CompassFound();
                     }
                     catch (Exception ex)
                     {
                         DialogHelper.ReportException(ex, new Dictionary<string, string> { { "Event", "CompassDisabled" } });
                         OutdoorTrackerEvents.Log.CompassAccessException(ex);
-                        HasCompass = false;
+                        CurrentLocation.HasCompass = false;
                     }
                 }
                 else
@@ -80,7 +78,10 @@ namespace OutdoorTracker.Services
 
             OutdoorTrackerEvents.Log.LocationInitializing();
             GeolocationAccessStatus accessStatus = GeolocationAccessStatus.Unspecified;
-            await DispatcherHelper.InvokeOnUiAsync(async () => accessStatus = await Geolocator.RequestAccessAsync());
+            await DispatcherHelper.InvokeOnUiAsync(async () =>
+            {
+                accessStatus = await Geolocator.RequestAccessAsync();
+            });
 
             OutdoorTrackerEvents.Log.LocationAccessState(accessStatus.ToString("G"));
             switch (accessStatus)
@@ -106,7 +107,7 @@ namespace OutdoorTracker.Services
             }
         }
 
-        private void CompassReadinChanged(Compass sender, CompassReadingChangedEventArgs args)
+        private void CompassReadingChanged(Compass sender, CompassReadingChangedEventArgs args)
         {
             CurrentLocation.UpdateCompass(args.Reading);
         }

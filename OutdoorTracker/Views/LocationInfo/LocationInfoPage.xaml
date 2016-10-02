@@ -15,7 +15,7 @@
         <converters:StringFormatConverter x:Key="stringFormat" />
     </Page.Resources>
 
-    <Grid>
+    <Grid Style="{StaticResource PageGrid}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
@@ -24,7 +24,7 @@
         <TextBlock x:Uid="LocationInfo_Title" Grid.Row="0" Style="{StaticResource PageHeader}">Location Info</TextBlock>
 
         <StackPanel Grid.Row="1" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-            <TextBlock Visibility="{x:Bind ViewModel.ShowLocationSettingsInfo, Converter={StaticResource boolToVis}}">
+            <TextBlock Visibility="{x:Bind ViewModel.ShowLocationSettingsInfo, Converter={StaticResource boolToVis}}" Style="{StaticResource FlowText}">
                 <Run x:Uid="LocationInfo_DisabledInfo1" />
                 <Hyperlink NavigateUri="ms-settings:privacy-location">
                     <Run  x:Uid="LocationInfo_SettingsLink" />

@@ -46,6 +46,37 @@ namespace OutdoorTracker.Common
             }
         }
 
+        public static async Task InvokeOnUiAsync(Func<Task> action)
+        {
+            await InvokeOnUiAsync(async () =>
+            {
+                await action();
+                return true;
+            });
+        }
+
+        public static async Task<TResult> InvokeOnUiAsync<TResult>(Func<Task<TResult>> action)
+        {
+            if ((_uiDispatcher == null) || _uiDispatcher.HasThreadAccess)
+            {
+                return await action().ConfigureAwait(false);
+            }
+
+            TaskCompletionSource<TResult> taskCompletionSource = new TaskCompletionSource<TResult>();
+            await _uiDispatcher.RunAsync(CoreDispatcherPriority.Normal, async () =>
+            {
+                try
+                {
+                    taskCompletionSource.SetResult(await action());
+                }
+                catch (Exception ex)
+                {
+                    taskCompletionSource.SetException(ex);
+                }
+            });
+            return await taskCompletionSource.Task;
+        }
+
         private static CoreDispatcher _uiDispatcher;
     }
 }
