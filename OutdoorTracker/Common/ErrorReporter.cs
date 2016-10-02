@@ -23,6 +23,8 @@ using System.Text;
 
 using Microsoft.HockeyApp;
 
+using OutdoorTracker.Helpers;
+
 namespace OutdoorTracker.Common
 {
     public class ErrorReporter
@@ -79,10 +81,10 @@ namespace OutdoorTracker.Common
 #endif
         }
 
-        public void TrackEvent(string eventName, Dictionary<string, string> properties = null, IDictionary<string, double> metrics = null)
+        public void TrackEvent(TrackEvents trackEvent, Dictionary<string, string> properties = null, IDictionary<string, double> metrics = null)
         {
 #if !DEBUG
-            HockeyClient.Current.TrackEvent(eventName, properties, metrics);
+            HockeyClient.Current.TrackEvent(trackEvent.ToString("G"), properties, metrics);
 #endif
         }
     }

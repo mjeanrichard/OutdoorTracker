@@ -242,6 +242,13 @@
   <data name="TrackImporter_KmlFile" xml:space="preserve">
     <value>KML Datei</value>
   </data>
+  <data name="TrackImporter_UnknownType" xml:space="preserve">
+    <value>Das Element '{0}' ist kein bekannter Pfad Typ.</value>
+    <comment>string elementName</comment>
+  </data>
+  <data name="TrackImporter_UnknownTypeTitle" xml:space="preserve">
+    <value>Unbekannter Pfad Typ</value>
+  </data>
   <data name="TrackRecorder_ContinueTracking" xml:space="preserve">
     <value>Möchten Sie die Aufzeichnung fortsetzen?</value>
   </data>

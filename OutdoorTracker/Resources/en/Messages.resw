@@ -242,6 +242,13 @@
   <data name="TrackImporter_KmlFile" xml:space="preserve">
     <value>KML file</value>
   </data>
+  <data name="TrackImporter_UnknownType" xml:space="preserve">
+    <value>The Element '{0}' is not a known track type.</value>
+    <comment>string elementName</comment>
+  </data>
+  <data name="TrackImporter_UnknownTypeTitle" xml:space="preserve">
+    <value>Unknown Track Type</value>
+  </data>
   <data name="TrackRecorder_ContinueTracking" xml:space="preserve">
     <value>Would you like to continue the last Tracking session?</value>
   </data>

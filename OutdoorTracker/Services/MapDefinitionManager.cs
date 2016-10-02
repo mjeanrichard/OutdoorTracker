@@ -99,7 +99,7 @@ namespace OutdoorTracker.Services
             catch (Exception ex)
             {
                 OutdoorTrackerEvents.Log.MapDefinitionGetCurrentFailed(mapLayerName, ex);
-                DialogHelper.ReportException(ex, new Dictionary<string, string> { { "LayerName", mapLayerName } });
+                ErrorReporter.Current.TrackException(ex, new Dictionary<string, string> { { "LayerName", mapLayerName } });
                 return Default;
             }
         }

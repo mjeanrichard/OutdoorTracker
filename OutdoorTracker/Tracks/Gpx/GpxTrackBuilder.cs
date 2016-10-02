@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Xml;
 using System.Xml.Serialization;
 
 using Windows.Storage;
@@ -34,7 +35,8 @@ namespace OutdoorTracker.Tracks.Gpx
 {
     public class GpxTrackBuilder : TrackBuilder
     {
-        private readonly XmlSerializer _gpxSerializer = new XmlSerializer(typeof(GpxType));
+        private readonly XmlSerializer _gpxSerializer10 = new XmlSerializer(typeof(GpxTypeV10));
+        private readonly XmlSerializer _gpxSerializer11 = new XmlSerializer(typeof(GpxTypeV11));
 
         public GpxTrackBuilder(UnitOfWorkFactoy unitOfWorkFactory) : base(unitOfWorkFactory)
         {
@@ -45,10 +47,12 @@ namespace OutdoorTracker.Tracks.Gpx
             get { return Messages.GpxTrackBuilder.Format; }
         }
 
-        public async Task<IEnumerable<Track>> Import(Stream xml, string filename)
+        public async Task<IEnumerable<Track>> Import(XmlReader xmlReader, string filename)
         {
             List<Track> importedTracks = new List<Track>();
-            GpxType gpxFile = (GpxType)_gpxSerializer.Deserialize(xml);
+
+            XmlSerializer serializer = GetSerializer(xmlReader);
+            GpxType gpxFile = (GpxType)serializer.Deserialize(xmlReader);
 
             if (!gpxFile.Tracks.Any() && !gpxFile.Waypoints.Any())
             {
@@ -78,10 +82,23 @@ namespace OutdoorTracker.Tracks.Gpx
             return importedTracks;
         }
 
+        private XmlSerializer GetSerializer(XmlReader xmlReader)
+        {
+            if (xmlReader.NamespaceURI.Equals(GpxType.GpxV10Namespace, StringComparison.OrdinalIgnoreCase))
+            {
+                return _gpxSerializer10;
+            }
+            if (xmlReader.NamespaceURI.Equals(GpxType.GpxV11Namespace, StringComparison.OrdinalIgnoreCase))
+            {
+                return _gpxSerializer11;
+            }
+            throw new InvalidOperationException($"Unknown GPX Namespace '{xmlReader.NamespaceURI}'.");
+        }
+
         public async Task Export(StorageFile file, int[] trackIds, IUnitOfWork unitOfWork)
         {
             List<Track> tracks = await unitOfWork.Tracks.Where(t => trackIds.Contains(t.Id)).ToListAsync();
-            GpxType gpxDocument = new GpxType();
+            GpxType gpxDocument = new GpxTypeV11();
             foreach (Track track in tracks)
             {
                 GpxTrackType gpxTrack = new GpxTrackType();
@@ -105,7 +122,7 @@ namespace OutdoorTracker.Tracks.Gpx
             {
                 xmlFile.Position = 0;
                 xmlFile.SetLength(0);
-                _gpxSerializer.Serialize(xmlFile, gpxDocument);
+                _gpxSerializer11.Serialize(xmlFile, gpxDocument);
             }
             await CachedFileManager.CompleteUpdatesAsync(file);
             await DialogHelper.ShowMessage(Messages.GpxTrackBuilder.Success, Messages.GpxTrackBuilder.SuccessTitle);

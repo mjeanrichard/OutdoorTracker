@@ -15,15 +15,29 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using System.Xml.Serialization;
 
 namespace OutdoorTracker.Tracks.Gpx
 {
-    [XmlType(Namespace = "http://www.topografix.com/GPX/1/1")]
-    [XmlRoot("gpx", Namespace = "http://www.topografix.com/GPX/1/1", IsNullable = false)]
-    public class GpxType
+    [XmlType(Namespace = GpxV11Namespace)]
+    [XmlRoot("gpx", Namespace = GpxV11Namespace, IsNullable = false)]
+    public class GpxTypeV11 : GpxType
     {
-        public GpxType()
+    }
+
+    [XmlType(Namespace = GpxV10Namespace)]
+    [XmlRoot("gpx", Namespace = GpxV10Namespace, IsNullable = false)]
+    public class GpxTypeV10 : GpxType
+    {
+    }
+
+    public abstract class GpxType
+    {
+        public const string GpxV10Namespace = "http://www.topografix.com/GPX/1/0";
+        public const string GpxV11Namespace = "http://www.topografix.com/GPX/1/1";
+
+        protected GpxType()
         {
             Tracks = new List<GpxTrackType>();
             Waypoints = new List<WaypointType>();

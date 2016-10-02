@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Xml;
 
 using Windows.Storage;
 using Windows.Storage.Pickers;
@@ -62,17 +63,7 @@ namespace OutdoorTracker.Tracks
                 StorageFile file = await openPicker.PickSingleFileAsync();
                 if (file != null)
                 {
-                    IRandomAccessStreamWithContentType xmlStream = await file.OpenReadAsync();
-                    IEnumerable<Track> tracks;
-                    fileExtension = Path.GetExtension(file.Name);
-                    if (fileExtension.Equals(".kml", StringComparison.OrdinalIgnoreCase))
-                    {
-                        tracks = await _kmlTrackBuilder.Import(xmlStream.AsStreamForRead(), file.Name);
-                    }
-                    else
-                    {
-                        tracks = await _gpxTrackBuilder.Import(xmlStream.AsStreamForRead(), file.Name);
-                    }
+                    IEnumerable<Track> tracks = await Import(file);
                     foreach (Track track in tracks)
                     {
                         createdTracks.Add(track);
@@ -87,6 +78,32 @@ namespace OutdoorTracker.Tracks
                 await DialogHelper.ShowErrorAndReport(Messages.TrackImporter.ImportError, Messages.TrackImporter.ImportErrorTitle, ex, new Dictionary<string, string> { { "FileExtension", fileExtension } });
                 return Enumerable.Empty<Track>();
             }
+        }
+
+        private async Task<IEnumerable<Track>> Import(StorageFile file)
+        {
+            IEnumerable<Track> tracks = Enumerable.Empty<Track>();
+            using (IRandomAccessStreamWithContentType xmlStream = await file.OpenReadAsync())
+            {
+                XmlReader xmlReader = XmlReader.Create(xmlStream.AsStreamForRead());
+                while (xmlReader.Read() && xmlReader.NodeType != XmlNodeType.Element)
+                {
+                }
+                if (xmlReader.LocalName.Equals("kml", StringComparison.OrdinalIgnoreCase))
+                {
+                    tracks = await _kmlTrackBuilder.Import(xmlReader, file.Name);
+                }
+                else if (xmlReader.LocalName.Equals("gpx", StringComparison.OrdinalIgnoreCase))
+                {
+                    tracks = await _gpxTrackBuilder.Import(xmlReader, file.Name);
+                }
+                else
+                {
+                    ErrorReporter.Current.TrackEvent(TrackEvents.UnknownTrackElement, new Dictionary<string, string> { { "ElementName", xmlReader.LocalName }, { "Schema", xmlReader.NamespaceURI } });
+                    await DialogHelper.ShowError(Messages.TrackImporter.UnknownType(xmlReader.LocalName), Messages.TrackImporter.UnknownTypeTitle);
+                }
+            }
+            return tracks;
         }
 
         public async Task ExportTracks(int[] trackIds)

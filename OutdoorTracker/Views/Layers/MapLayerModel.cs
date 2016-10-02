@@ -26,6 +26,7 @@ using Windows.Storage.FileProperties;
 
 using Newtonsoft.Json;
 
+using OutdoorTracker.Common;
 using OutdoorTracker.Helpers;
 using OutdoorTracker.Layers;
 using OutdoorTracker.Resources;
@@ -103,7 +104,7 @@ namespace OutdoorTracker.Views.Layers
             }
             catch (Exception e)
             {
-                DialogHelper.ReportException(e, new Dictionary<string, string>());
+                ErrorReporter.Current.TrackException(e, new Dictionary<string, string>());
                 Size = Messages.LayersViewModel.UnknownSize;
             }
             finally

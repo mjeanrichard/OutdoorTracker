@@ -237,13 +237,13 @@ namespace OutdoorTracker.Services
                 if (result == ExtendedExecutionResult.Denied)
                 {
                     // TODO: Send Toast?
-                    DialogHelper.TrackEvent(TrackEvents.ExtendedExecutionDenied);
+                    ErrorReporter.Current.TrackEvent(TrackEvents.ExtendedExecutionDenied);
                 }
             }
             catch (Exception e)
             {
                 // TODO: Send Toast?
-                DialogHelper.ReportException(e);
+                ErrorReporter.Current.TrackException(e);
             }
         }
     }

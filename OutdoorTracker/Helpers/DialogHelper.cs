@@ -46,18 +46,8 @@ namespace OutdoorTracker.Helpers
             IUICommand result = await dialog.ShowAsync();
             if ((int)result.Id == 1)
             {
-                ReportException(ex, properties);
+                ErrorReporter.Current.TrackException(ex, properties);
             }
-        }
-
-        public static void ReportException(Exception exception, Dictionary<string, string> properties = null)
-        {
-            ErrorReporter.Current.TrackException(exception, properties);
-        }
-
-        public static void TrackEvent(TrackEvents trackEvent, Dictionary<string, string> properties = null, IDictionary<string, double> metrics = null)
-        {
-            ErrorReporter.Current.TrackEvent(trackEvent.ToString("G"), properties, metrics);
         }
 
         public static async Task ShowError(string errorMessage, string title)
@@ -93,13 +83,13 @@ namespace OutdoorTracker.Helpers
                     BasicProperties basicProperties = await storageItem.GetBasicPropertiesAsync();
                     if (basicProperties.Size == 0)
                     {
-                        ErrorReporter.Current.TrackEvent("Database Missing");
+                        ErrorReporter.Current.TrackEvent(TrackEvents.DatabaseMissing);
                         await DependencyContainer.Current.Resolve<DbInitializer>().InitDatabase();
                     }
                 }
                 else
                 {
-                    ErrorReporter.Current.TrackEvent("Database Missing");
+                    ErrorReporter.Current.TrackEvent(TrackEvents.DatabaseMissing);
                 }
             }
             catch (Exception)

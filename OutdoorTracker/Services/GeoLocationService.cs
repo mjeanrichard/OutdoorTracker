@@ -59,14 +59,14 @@ namespace OutdoorTracker.Services
                     }
                     catch (Exception ex)
                     {
-                        DialogHelper.ReportException(ex, new Dictionary<string, string> { { "Event", "CompassDisabled" } });
+                        ErrorReporter.Current.TrackException(ex, new Dictionary<string, string> { { "Event", "CompassDisabled" } });
                         OutdoorTrackerEvents.Log.CompassAccessException(ex);
                         CurrentLocation.HasCompass = false;
                     }
                 }
                 else
                 {
-                    DialogHelper.TrackEvent(TrackEvents.NoCompass);
+                    ErrorReporter.Current.TrackEvent(TrackEvents.NoCompass);
                     OutdoorTrackerEvents.Log.CompassNotFound();
                 }
             }
@@ -97,11 +97,11 @@ namespace OutdoorTracker.Services
                     break;
 
                 case GeolocationAccessStatus.Denied:
-                    DialogHelper.TrackEvent(TrackEvents.GeoLocationDenied);
+                    ErrorReporter.Current.TrackEvent(TrackEvents.GeoLocationDenied);
                     await CurrentLocation.UpdateState(PositionStatus.NotAvailable).ConfigureAwait(false);
                     break;
                 case GeolocationAccessStatus.Unspecified:
-                    DialogHelper.TrackEvent(TrackEvents.LocationStateUnspecified);
+                    ErrorReporter.Current.TrackEvent(TrackEvents.LocationStateUnspecified);
                     await CurrentLocation.UpdateState(PositionStatus.NotAvailable).ConfigureAwait(false);
                     break;
             }

@@ -371,6 +371,22 @@ namespace OutdoorTracker.Resources
                 get { return ActiveResourceLoader.GetString("TrackImporter_KmlFile"); }
             }
 
+            /// <summary>
+            ///      Looks up a Text similar to "The Element '{0}' is not a known track type."
+            /// </summary>
+            public static string UnknownType(string elementName)
+            {
+                return string.Format(CultureInfo.CurrentCulture, ActiveResourceLoader.GetString("TrackImporter_UnknownType"), elementName);
+            }
+
+            /// <summary>
+            ///      Looks up a Text similar to "Unknown Track Type"
+            /// </summary>
+            public static string UnknownTypeTitle
+            {
+                get { return ActiveResourceLoader.GetString("TrackImporter_UnknownTypeTitle"); }
+            }
+
         }
 
         public static class TrackRecorder

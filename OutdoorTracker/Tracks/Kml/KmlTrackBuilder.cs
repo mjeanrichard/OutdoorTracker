@@ -21,6 +21,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 using System.Xml.Serialization;
 
 using Windows.Foundation;
@@ -37,7 +38,8 @@ namespace OutdoorTracker.Tracks.Kml
 {
     public class KmlTrackBuilder : TrackBuilder
     {
-        private readonly XmlSerializer _kmlSerializer = new XmlSerializer(typeof(KmlType));
+        private readonly XmlSerializer _kmlSerializerV21 = new XmlSerializer(typeof(KmlTypeV21));
+        private readonly XmlSerializer _kmlSerializerV22 = new XmlSerializer(typeof(KmlTypeV22));
 
         public KmlTrackBuilder(UnitOfWorkFactoy unitOfWorkFactory) : base(unitOfWorkFactory)
         {
@@ -48,10 +50,11 @@ namespace OutdoorTracker.Tracks.Kml
             get { return Messages.KmlTrackBuilder.Format; }
         }
 
-        public async Task<IEnumerable<Track>> Import(Stream xml, string filename)
+        public async Task<IEnumerable<Track>> Import(XmlReader xmlReader, string filename)
         {
             List<Track> importedTracks = new List<Track>();
-            KmlType kmlFile = (KmlType)_kmlSerializer.Deserialize(xml);
+            XmlSerializer kmlSerializer = GetSerializer(xmlReader);
+            KmlType kmlFile = (KmlType)kmlSerializer.Deserialize(xmlReader);
 
             List<KmlPlacemark> placemarks = kmlFile.Document?.Placemarks;
             if ((placemarks == null) || !placemarks.Any())
@@ -101,7 +104,7 @@ namespace OutdoorTracker.Tracks.Kml
         public async Task Export(StorageFile file, int[] trackIds, IUnitOfWork unitOfWork)
         {
             List<Track> tracks = await unitOfWork.Tracks.Where(t => trackIds.Contains(t.Id)).ToListAsync();
-            KmlType kml = new KmlType();
+            KmlType kml = new KmlTypeV22();
             kml.Document = new KmlDocument();
             foreach (Track track in tracks)
             {
@@ -123,10 +126,24 @@ namespace OutdoorTracker.Tracks.Kml
             {
                 xmlFile.Position = 0;
                 xmlFile.SetLength(0);
-                _kmlSerializer.Serialize(xmlFile, kml);
+                _kmlSerializerV22.Serialize(xmlFile, kml);
             }
             await CachedFileManager.CompleteUpdatesAsync(file);
             await DialogHelper.ShowMessage(Messages.KmlTrackBuilder.Success, Messages.KmlTrackBuilder.SuccessTitle);
         }
+
+        private XmlSerializer GetSerializer(XmlReader xmlReader)
+        {
+            if (xmlReader.NamespaceURI.Equals(KmlType.KmlV21Namespace, StringComparison.OrdinalIgnoreCase))
+            {
+                return _kmlSerializerV21;
+            }
+            if (xmlReader.NamespaceURI.Equals(KmlType.KmlV22Namespace, StringComparison.OrdinalIgnoreCase))
+            {
+                return _kmlSerializerV22;
+            }
+            throw new InvalidOperationException($"Unknown KML Namespace '{xmlReader.NamespaceURI}'.");
+        }
+
     }
 }

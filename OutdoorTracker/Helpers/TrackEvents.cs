@@ -5,6 +5,9 @@
         NoCompass,
         GeoLocationDenied,
         LocationStateUnspecified,
-        ExtendedExecutionDenied
+        ExtendedExecutionDenied,
+        UnknownTrackElement,
+        UnknownTrackNamespace,
+        DatabaseMissing
     }
 }
