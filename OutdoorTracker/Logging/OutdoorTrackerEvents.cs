@@ -19,6 +19,7 @@ using System.Diagnostics.Tracing;
 
 namespace OutdoorTracker.Logging
 {
+    // GUID: d2a4230f-fdb2-572c-cb08-7f364eec4642
     [EventSource(Name = "OutdoorTracker")]
     public class OutdoorTrackerEvents : EventSource
     {
@@ -215,5 +216,6 @@ namespace OutdoorTracker.Logging
         }
 
         #endregion
+
     }
 }

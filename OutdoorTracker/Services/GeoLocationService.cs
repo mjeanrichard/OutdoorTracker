@@ -23,6 +23,7 @@ using Windows.Devices.Sensors;
 
 using Microsoft.HockeyApp;
 
+using OutdoorTracker.Common;
 using OutdoorTracker.Helpers;
 using OutdoorTracker.Logging;
 
@@ -40,13 +41,11 @@ namespace OutdoorTracker.Services
 
         public LocationData CurrentLocation { get; }
 
-        public bool HasCompass { get; private set; }
-
         public event EventHandler PositionChanged;
 
         public async Task Initialize()
         {
-            if (!HasCompass)
+            if (!CurrentLocation.HasCompass)
             {
                 _compass = Compass.GetDefault();
                 if (_compass != null)
@@ -54,15 +53,15 @@ namespace OutdoorTracker.Services
                     try
                     {
                         _compass.ReportInterval = _compass.MinimumReportInterval > 16 ? _compass.MinimumReportInterval : 16;
-                        _compass.ReadingChanged += CompassReadinChanged;
-                        HasCompass = true;
+                        _compass.ReadingChanged += CompassReadingChanged;
+                        CurrentLocation.HasCompass = true;
                         OutdoorTrackerEvents.Log.CompassFound();
                     }
                     catch (Exception ex)
                     {
                         DialogHelper.ReportException(ex, new Dictionary<string, string> { { "Event", "CompassDisabled" } });
                         OutdoorTrackerEvents.Log.CompassAccessException(ex);
-                        HasCompass = false;
+                        CurrentLocation.HasCompass = false;
                     }
                 }
                 else
@@ -78,7 +77,12 @@ namespace OutdoorTracker.Services
             }
 
             OutdoorTrackerEvents.Log.LocationInitializing();
-            GeolocationAccessStatus accessStatus = await Geolocator.RequestAccessAsync();
+            GeolocationAccessStatus accessStatus = GeolocationAccessStatus.Unspecified;
+            await DispatcherHelper.InvokeOnUiAsync(async () =>
+            {
+                accessStatus = await Geolocator.RequestAccessAsync();
+            });
+
             OutdoorTrackerEvents.Log.LocationAccessState(accessStatus.ToString("G"));
             switch (accessStatus)
             {
@@ -89,33 +93,33 @@ namespace OutdoorTracker.Services
                     _geolocator.ReportInterval = 1000;
                     _geolocator.StatusChanged += OnGeoStatusChanged;
                     _geolocator.PositionChanged += PositionChangedHandler;
-                    CurrentLocation.UpdateState(PositionStatus.Initializing);
+                    await CurrentLocation.UpdateState(PositionStatus.Initializing).ConfigureAwait(false);
                     break;
 
                 case GeolocationAccessStatus.Denied:
                     DialogHelper.TrackEvent(TrackEvents.GeoLocationDenied);
-                    CurrentLocation.UpdateState(PositionStatus.NotAvailable);
+                    await CurrentLocation.UpdateState(PositionStatus.NotAvailable).ConfigureAwait(false);
                     break;
                 case GeolocationAccessStatus.Unspecified:
                     DialogHelper.TrackEvent(TrackEvents.LocationStateUnspecified);
-                    CurrentLocation.UpdateState(PositionStatus.NotAvailable);
+                    await CurrentLocation.UpdateState(PositionStatus.NotAvailable).ConfigureAwait(false);
                     break;
             }
         }
 
-        private void CompassReadinChanged(Compass sender, CompassReadingChangedEventArgs args)
+        private void CompassReadingChanged(Compass sender, CompassReadingChangedEventArgs args)
         {
             CurrentLocation.UpdateCompass(args.Reading);
         }
 
-        private void OnGeoStatusChanged(Geolocator sender, StatusChangedEventArgs args)
+        private async void OnGeoStatusChanged(Geolocator sender, StatusChangedEventArgs args)
         {
-            CurrentLocation.UpdateState(args.Status);
+            await CurrentLocation.UpdateState(args.Status).ConfigureAwait(false);
         }
 
-        private void PositionChangedHandler(Geolocator sender, PositionChangedEventArgs args)
+        private async void PositionChangedHandler(Geolocator sender, PositionChangedEventArgs args)
         {
-            CurrentLocation.UpdatePosition(args.Position);
+            await CurrentLocation.UpdatePosition(args.Position).ConfigureAwait(false);
             OnPositionChanged();
         }
 

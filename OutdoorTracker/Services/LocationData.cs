@@ -17,6 +17,7 @@
 using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 
 using Windows.Devices.Geolocation;
 using Windows.Devices.Sensors;
@@ -51,6 +52,7 @@ namespace OutdoorTracker.Services
         public double? Heading { get; private set; }
         public double? Compass { get; private set; }
         public double? Speed { get; private set; }
+        public bool HasCompass { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -59,6 +61,7 @@ namespace OutdoorTracker.Services
             OnPropertyChanged(nameof(Altitude));
             OnPropertyChanged(nameof(AltitudeAccuracy));
             OnPropertyChanged(nameof(Accuracy));
+            OnPropertyChanged(nameof(HasCompass));
             OnPropertyChanged(nameof(Heading));
             OnPropertyChanged(nameof(IsAltitudeValid));
             OnPropertyChanged(nameof(IsLocationValid));
@@ -75,7 +78,7 @@ namespace OutdoorTracker.Services
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public void UpdateState(PositionStatus state)
+        public async Task UpdateState(PositionStatus state)
         {
             State = state;
             if (State != PositionStatus.Ready)
@@ -83,10 +86,10 @@ namespace OutdoorTracker.Services
                 IsLocationValid = false;
                 LocationAccuracy = LocationAccuracy.None;
             }
-            DispatcherHelper.InvokeOnUI(SendPropertyChangeNotifications);
+            await DispatcherHelper.InvokeOnUiAsync(() => SendPropertyChangeNotifications()).ConfigureAwait(false);
         }
 
-        public void UpdatePosition(Geoposition positionData)
+        public async Task UpdatePosition(Geoposition positionData)
         {
             Geocoordinate coordinate = positionData?.Coordinate;
             if (coordinate == null)
@@ -130,7 +133,7 @@ namespace OutdoorTracker.Services
             {
                 IsAltitudeValid = false;
             }
-            DispatcherHelper.InvokeOnUI(SendPropertyChangeNotifications);
+            await DispatcherHelper.InvokeOnUiAsync(() => SendPropertyChangeNotifications());
         }
 
         public void UpdateCompass(CompassReading compassReading)

@@ -144,7 +144,7 @@ namespace OutdoorTracker.Views.Tracks
             {
                 return;
             }
-
+            
             BusyText = Messages.TracksPage.DeletingText;
             using (MarkBusy())
             {
@@ -168,6 +168,10 @@ namespace OutdoorTracker.Views.Tracks
                         {
                             foreach (Track selectedTrack in selectedTracks)
                             {
+                                if (_trackRecorder.IsTracking && _trackRecorder.RecordingTrack.Id == selectedTrack.Id)
+                                {
+                                    _trackRecorder.StopTracking();
+                                }
                                 _unitOfWork.TrackPoints.RemoveRange(_unitOfWork.TrackPoints.Where(p => p.Track == selectedTrack));
                                 _unitOfWork.Tracks.Remove(selectedTrack);
                                 await _unitOfWork.SaveChangesAsync();

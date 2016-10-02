@@ -12,8 +12,8 @@
             <Setter.Value>
                 <ControlTemplate TargetType="controls:HeaderControl">
                     <StackPanel Orientation="Vertical">
-                        <TextBlock FontWeight="Bold" Margin="5,10,5,2" Text="{TemplateBinding Header}" />
-                        <ContentPresenter Margin="5,0,5,0" />
+                        <TextBlock FontWeight="Bold" Margin="0,10,5,2" Text="{TemplateBinding Header}" />
+                        <ContentPresenter Margin="0,0,5,0" />
                     </StackPanel>
                 </ControlTemplate>
             </Setter.Value>
@@ -21,6 +21,11 @@
     </Style>
 
     <SolidColorBrush x:Key="OutdoorTrackerColor" Color="#8ec735" />
+
+    <Style x:Key="PageGrid" TargetType="Grid">
+        <Setter Property="Margin" Value="12,12,12,12" />
+        <Setter Property="Background" Value="{ThemeResource ApplicationPageBackgroundThemeBrush}" />
+    </Style>
 
     <Style x:Key="FlowTextHeader" TargetType="TextBlock">
         <Setter Property="FontWeight" Value="Bold" />
@@ -55,7 +60,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="controls:PageViewControl">
-                    <Grid>
+                    <Grid Style="{StaticResource PageGrid}">
                         <ContentPresenter ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" />
                         <Grid Visibility="{Binding IsBusy, Converter={StaticResource boolToVis}}">
                             <Grid.Background>

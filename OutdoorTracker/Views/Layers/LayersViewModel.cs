@@ -43,9 +43,9 @@ namespace OutdoorTracker.Views.Layers
         public LayersViewModel()
         {
             Layers = new ObservableCollection<MapLayerModel>();
-            AddMapCommand = new RelayCommand(async () => await ImportMapDefinition());
-            ClearAllCacheCommand = new RelayCommand(async () => await ClearCache());
-            LoadLayerSizeCommand = new RelayCommand(async () => await LoadLayerSizes());
+            AddMapCommand = new RelayCommand(async () => await ImportMapDefinition().ConfigureAwait(false));
+            ClearAllCacheCommand = new RelayCommand(async () => await ClearCache().ConfigureAwait(false));
+            LoadLayerSizeCommand = new RelayCommand(async () => await LoadLayerSizes().ConfigureAwait(false));
         }
 
         public LayersViewModel(SettingsManager settingsManager, MapDefinitionManager mapDefinitionManager)
@@ -89,7 +89,7 @@ namespace OutdoorTracker.Views.Layers
             {
                 loadTasks.Add(layerModel.LoadSize());
             }
-            await Task.WhenAll(loadTasks);
+            await Task.WhenAll(loadTasks).ConfigureAwait(false);
             LoadLayerSizeCommand.EnabledOverride = null;
         }
 
@@ -144,14 +144,14 @@ namespace OutdoorTracker.Views.Layers
                     if (file != null)
                     {
                         string json = await FileIO.ReadTextAsync(file);
-                        await _mapDefinitionManager.Import(json);
-                        await InitializeInternal();
+                        await _mapDefinitionManager.Import(json).ConfigureAwait(false);
+                        await InitializeInternal().ConfigureAwait(false);
                     }
                 }
                 catch (Exception ex)
                 {
                     OutdoorTrackerEvents.Log.MapDefinitionOpenFileFailed(ex);
-                    await DialogHelper.ShowErrorAndReport(Messages.MapDefinitionManager.ImportError, Messages.MapDefinitionManager.ImportErrorTitle, ex);
+                    await DialogHelper.ShowErrorAndReport(Messages.MapDefinitionManager.ImportError, Messages.MapDefinitionManager.ImportErrorTitle, ex).ConfigureAwait(false);
                 }
             }
         }
