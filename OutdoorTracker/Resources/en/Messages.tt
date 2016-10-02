@@ -37,6 +37,11 @@ namespace <#= System.Runtime.Remoting.Messaging.CallContext.LogicalGetData("Name
     {
         private static readonly ResourceLoader ActiveResourceLoader = ResourceLoader.GetForCurrentView("<#= filename #>");
 
+        public static void Init()
+        {
+            // Do Nothing
+        }
+
 <#
     string inputFile = Path.ChangeExtension(Host.TemplateFile, "resw");
     XDocument xDocument = XDocument.Load(inputFile);

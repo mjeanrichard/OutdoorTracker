@@ -31,6 +31,7 @@ using Microsoft.Practices.Unity;
 using OutdoorTracker.Common;
 using OutdoorTracker.Database;
 using OutdoorTracker.Logging;
+using OutdoorTracker.Resources;
 using OutdoorTracker.Services;
 using OutdoorTracker.Views.Map;
 
@@ -88,9 +89,12 @@ namespace OutdoorTracker
                 RootFrame = new Frame();
                 RootFrame.NavigationFailed += OnNavigationFailed;
                 Window.Current.Content = RootFrame;
+
+                // Force Init of the Resourceloader when we actually have a Current View.
+                Messages.Init();
             }
 
-            if (e.PreviousExecutionState != ApplicationExecutionState.Suspended && e.PreviousExecutionState != ApplicationExecutionState.Running)
+            if ((e.PreviousExecutionState != ApplicationExecutionState.Suspended) && (e.PreviousExecutionState != ApplicationExecutionState.Running))
             {
                 await DependencyContainer.Current.Resolve<DbInitializer>().InitDatabase();
             }

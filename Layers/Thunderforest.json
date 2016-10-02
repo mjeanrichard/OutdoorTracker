@@ -1,0 +1,45 @@
+[
+/*
+	Thunderforest Maps
+	These Maps require a ApiKey to work. Please go to http://www.thunderforest.com/pricing/ and register for a key (it's free).
+*/
+{
+	"name": "Thunderforest Open Cycle Map",
+	"projection": "WebMercator",
+	"layers": [
+		{
+			"name": "OpenCycleMap",
+			"config": "Default",
+			"parameters": {
+				"urlPattern": "https://tile.thunderforest.com/cycle/{z}/{x}/{y}.png?apikey=<Your API Key>"
+			}
+		}
+	]
+},
+{
+	"name": "Thunderforest Landscape Map",
+	"projection": "WebMercator",
+	"layers": [
+		{
+			"name": "TFLandscape",
+			"config": "Default",
+			"parameters": {
+				"urlPattern": "https://tile.thunderforest.com/landscape/{z}/{x}/{y}.png?apikey=<Your API Key>"
+			}
+		}
+	]
+},
+{
+	"name": "Thunderforest Outdoors Map",
+	"projection": "WebMercator",
+	"layers": [
+		{
+			"name": "TFOutdoors",
+			"config": "Default",
+			"parameters": {
+				"urlPattern": "https://tile.thunderforest.com/outdoors/{z}/{x}/{y}.png?apikey=<Your API Key>"
+			}
+		}
+	]
+},
+]

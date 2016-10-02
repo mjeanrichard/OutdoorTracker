@@ -25,6 +25,11 @@ namespace OutdoorTracker.Resources
     {
         private static readonly ResourceLoader ActiveResourceLoader = ResourceLoader.GetForCurrentView("Messages");
 
+        public static void Init()
+        {
+            // Do Nothing
+        }
+
         public static class Dialog
         {
             /// <summary>

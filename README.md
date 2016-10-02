@@ -10,6 +10,54 @@ For the latest Beta Builds see here (*NOTE:* To install these builds, you need t
 
 You can install the Beta Version side by side with the Store Version, since they have a different ProductId and Name.
 
+## Adding More Maps
+
+:bangbang: **Please make sure that you have the apropriate licenses before adding more maps to the app** :bangbang: 
+
+The Outdoor Tracker can be extended with more Maps. To add additional Maps to the App a JSON File with the following Structure can be imported into the Application
+
+```JSON
+[
+    {
+        "name": "<MapName>",
+        "projection": "<Projection>"
+        "layers": [
+            {
+                "name": "<LayerName>",
+			    "config": "<ConfigType>",
+			    "parameters": 
+			    {
+		    		"urlPattern": "<UrlPattern>"
+    			}
+            }
+        ]
+    },
+    ...
+]
+```
+
+| Parameter  | Remarks   |
+| :--- | :--- |
+| `MapName`    | The Name of the Map. This name is displayed to the user and used as a uniqe identification for each map. |
+| `Projection` | Either `WebMercator` or `SwissGrid`. Webmercator is used for almost all available online maps such as OpenStreetMaps, Google, etc. SwissGrid should only be used with the maps from SwissTopo (http://maps.geo.admin.ch) |
+| `LayerName`  | The name of the Layer. Currently the App suports only one Layer per map. Make sure this name is uniquq, since it is used for caching the tiles. |
+| `ConfigType` | Either `Default` or `SwissTopo`. Use Default exept for maps from SwissTopo (together with the SwissGrid projection). |
+| `UrlPattern` | Only used with ConfigType `Default`, see the following Table.  |
+
+For the URL Pattern you can use the following Placeholders, that will be replaces when downloading the tiles:
+| Placeholder     | Remarks |
+| :---             | :--- |
+| `{x}`           | x-Index of the map tile. |
+| `{y}`           | y-Index of the map tile. |
+| `{z}`           | z-Index of the map tile. |
+| `{RND-1;2;...}` | This pattern is replaced with one (selected at random) of the values after the `RND-` token. The values are separated with a `;`. |
+
+Examples:
+* `http://mt{RND-1;2;3}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}`
+* `http://{RND-a;b;c}.tile.openstreetmap.org/{z}/{x}/{y}.png`
+
+You can find other examples in the Layers folder of the Project.
+
 ## Release Notes
 ### [Milestone 1.1](../../milestone/2?closed=1)
 #### Version 1.1.9 (public store)
