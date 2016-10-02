@@ -45,8 +45,9 @@ The Outdoor Tracker can be extended with more Maps. To add additional Maps to th
 | `UrlPattern` | Only used with ConfigType `Default`, see the following Table.  |
 
 For the URL Pattern you can use the following Placeholders, that will be replaces when downloading the tiles:
+
 | Placeholder     | Remarks |
-| :---             | :--- |
+| :---            | :---    |
 | `{x}`           | x-Index of the map tile. |
 | `{y}`           | y-Index of the map tile. |
 | `{z}`           | z-Index of the map tile. |
