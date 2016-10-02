@@ -22,7 +22,6 @@ using Windows.Foundation.Collections;
 using Windows.Storage;
 
 using OutdoorTracker.Common;
-using OutdoorTracker.Helpers;
 using OutdoorTracker.Logging;
 
 using UniversalMapControl.Interfaces;
@@ -51,6 +50,7 @@ namespace OutdoorTracker.Services
         private const string CurrentTrackingIdSettingName = "CurrentTrackingId";
         private const string HeadingModeSettingName = "HeadingMode";
         private const string LastHeadingSettingName = "LastHeading";
+        private const string UseHighAccuracyOnlySettingName = "UseHighAccuracyOnly";
 
         private IPropertySet Values
         {
@@ -132,6 +132,12 @@ namespace OutdoorTracker.Services
             set { Values[EnableTrackSmoothingSettingName] = value; }
         }
 
+        public bool UseHighAccuracyOnly
+        {
+            get { return GetValue<bool?>(UseHighAccuracyOnlySettingName) ?? true; }
+            set { Values[UseHighAccuracyOnlySettingName] = value; }
+        }
+
         public ILocation GetLastMapCenter()
         {
             string locationString = GetValue<string>(LastMapCenterSettingName);
@@ -175,7 +181,7 @@ namespace OutdoorTracker.Services
             catch (Exception ex)
             {
                 OutdoorTrackerEvents.Log.SettingsGetValueFailure(name, ex);
-                ErrorReporter.Current.TrackException(ex, new Dictionary<string, string> { {"ValueName", name} });
+                ErrorReporter.Current.TrackException(ex, new Dictionary<string, string> { { "ValueName", name } });
                 return default(TValue);
             }
         }

@@ -298,4 +298,7 @@
   <data name="Map_StopTrackingText.Text" xml:space="preserve">
     <value>Möchten Sie die Aufzeichnung beenden?</value>
   </data>
+  <data name="Settings_UseHighAccuracyOnly.Header" xml:space="preserve">
+    <value>Nur Ortungsdaten mit hoher Genauigkeit verwenden</value>
+  </data>
 </root>

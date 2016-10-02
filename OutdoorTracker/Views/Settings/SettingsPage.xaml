@@ -40,6 +40,9 @@
                 <controls:HeaderControl x:Uid="Settings_TrackSmoothing">
                     <StackPanel Orientation="Vertical">
                         <ToggleSwitch Margin="0,0,0,0"
+                                      x:Uid="Settings_UseHighAccuracyOnly"
+                                      IsOn="{x:Bind ViewModel.UseHighAccuracyOnly, Mode=TwoWay}" />
+                        <ToggleSwitch Margin="0,0,0,0"
                                       x:Uid="Settings_EnableTrackSmoothing"
                                       IsOn="{x:Bind ViewModel.EnableTrackSmoothing, Mode=TwoWay}" />
                         <TextBox x:Uid="Settings_MinDistanceTrackPoints"

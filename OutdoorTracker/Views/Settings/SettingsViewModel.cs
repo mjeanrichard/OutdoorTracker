@@ -60,6 +60,16 @@ namespace OutdoorTracker.Views.Settings
             }
         }
 
+        public bool UseHighAccuracyOnly
+        {
+            get { return _settingsManager.UseHighAccuracyOnly; }
+            set
+            {
+                _settingsManager.UseHighAccuracyOnly = value;
+                OnPropertyChanged();
+            }
+        }
+
         public bool ShowAccuracy
         {
             get { return _settingsManager.ShowAccuracy; }

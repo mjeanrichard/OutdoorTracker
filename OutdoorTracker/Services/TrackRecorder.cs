@@ -30,6 +30,7 @@ using OutdoorTracker.Database;
 using OutdoorTracker.Helpers;
 using OutdoorTracker.Resources;
 using OutdoorTracker.Tracks;
+using OutdoorTracker.Views.Map;
 
 using UniversalMapControl.Interfaces;
 using UniversalMapControl.Projections;
@@ -75,6 +76,12 @@ namespace OutdoorTracker.Services
         {
             if (IsTracking && _geoLocationService.CurrentLocation.IsLocationValid)
             {
+                if (_settingsManager.UseHighAccuracyOnly && _geoLocationService.CurrentLocation.LocationAccuracy != LocationAccuracy.High)
+                {
+                    // Ignore inaccurate locations.
+                    return;
+                }
+
                 ILocation location = _geoLocationService.CurrentLocation.Location;
                 if (_lastLocation != null)
                 {

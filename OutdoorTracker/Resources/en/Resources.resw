@@ -298,4 +298,7 @@
   <data name="Map_StopTrackingText.Text" xml:space="preserve">
     <value>Do you want to stop tracking?</value>
   </data>
+  <data name="Settings_UseHighAccuracyOnly.Header" xml:space="preserve">
+    <value>Only use high accuracy location for tracking</value>
+  </data>
 </root>
