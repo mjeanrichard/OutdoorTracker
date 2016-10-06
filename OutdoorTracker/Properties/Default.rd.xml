@@ -24,8 +24,8 @@
     <Assembly Name="*Application*" Dynamic="Required All" />
 
 
-    <!-- Add your application specific runtime directives here. -->
-
+    <!-- This fixes an Access Violation in EF Core (See https://github.com/aspnet/EntityFramework/issues/6027) -->
+	<Type Name="System.Nullable{T}" DoNotInline="true" DoNotOptimize="true"/>
 
   </Application>
 </Directives>

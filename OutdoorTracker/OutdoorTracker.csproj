@@ -10,6 +10,7 @@
     <RootNamespace>OutdoorTracker</RootNamespace>
     <AssemblyName>OutdoorTracker</AssemblyName>
     <DefaultLanguage>en</DefaultLanguage>
+	<UseDotNetNativeSharedAssemblyFrameworkPackage>false</UseDotNetNativeSharedAssemblyFrameworkPackage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
     <TargetPlatformVersion>10.0.14393.0</TargetPlatformVersion>
     <TargetPlatformMinVersion>10.0.10240.0</TargetPlatformMinVersion>
