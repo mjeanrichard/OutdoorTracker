@@ -1,12 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OutdoorTracker", "OutdoorTracker\OutdoorTracker.csproj", "{7CC7A0CA-8CEB-439A-99A1-4D33165E185F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug Release|ARM = Debug Release|ARM
+		Debug Release|x64 = Debug Release|x64
+		Debug Release|x86 = Debug Release|x86
 		Debug|ARM = Debug|ARM
 		Debug|x64 = Debug|x64
 		Debug|x86 = Debug|x86
@@ -15,6 +18,15 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7CC7A0CA-8CEB-439A-99A1-4D33165E185F}.Debug Release|ARM.ActiveCfg = Debug Release|ARM
+		{7CC7A0CA-8CEB-439A-99A1-4D33165E185F}.Debug Release|ARM.Build.0 = Debug Release|ARM
+		{7CC7A0CA-8CEB-439A-99A1-4D33165E185F}.Debug Release|ARM.Deploy.0 = Debug Release|ARM
+		{7CC7A0CA-8CEB-439A-99A1-4D33165E185F}.Debug Release|x64.ActiveCfg = Debug Release|x64
+		{7CC7A0CA-8CEB-439A-99A1-4D33165E185F}.Debug Release|x64.Build.0 = Debug Release|x64
+		{7CC7A0CA-8CEB-439A-99A1-4D33165E185F}.Debug Release|x64.Deploy.0 = Debug Release|x64
+		{7CC7A0CA-8CEB-439A-99A1-4D33165E185F}.Debug Release|x86.ActiveCfg = Debug Release|x86
+		{7CC7A0CA-8CEB-439A-99A1-4D33165E185F}.Debug Release|x86.Build.0 = Debug Release|x86
+		{7CC7A0CA-8CEB-439A-99A1-4D33165E185F}.Debug Release|x86.Deploy.0 = Debug Release|x86
 		{7CC7A0CA-8CEB-439A-99A1-4D33165E185F}.Debug|ARM.ActiveCfg = Debug|ARM
 		{7CC7A0CA-8CEB-439A-99A1-4D33165E185F}.Debug|ARM.Build.0 = Debug|ARM
 		{7CC7A0CA-8CEB-439A-99A1-4D33165E185F}.Debug|ARM.Deploy.0 = Debug|ARM
