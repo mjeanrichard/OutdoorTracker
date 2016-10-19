@@ -172,8 +172,8 @@ namespace OutdoorTracker.Views.Tracks
                                 {
                                     _trackRecorder.StopTracking();
                                 }
-                                _unitOfWork.TrackPoints.RemoveRange(_unitOfWork.TrackPoints.Where(p => p.Track == selectedTrack));
-                                _unitOfWork.Tracks.Remove(selectedTrack);
+                                _unitOfWork.TrackPoints.RemoveRange(await _unitOfWork.TrackPoints.Where(p => p.TrackId == selectedTrack.Id).ToArrayAsync());
+                                _unitOfWork.Tracks.Remove(await _unitOfWork.Tracks.SingleAsync(t => t.Id == selectedTrack.Id));
                                 await _unitOfWork.SaveChangesAsync();
                             }
                         }
