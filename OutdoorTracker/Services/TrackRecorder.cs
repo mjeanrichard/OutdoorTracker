@@ -172,7 +172,7 @@ namespace OutdoorTracker.Services
             IsTracking = false;
             _settingsManager.CurrentTrackingId = null;
             RecordingTrack = null;
-            _extendedExecutionSession.Dispose();
+            _extendedExecutionSession?.Dispose();
             OnTrackUpdated();
         }
 
