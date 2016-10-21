@@ -196,7 +196,10 @@ namespace OutdoorTracker.Services
                     {
                         int trackId = _settingsManager.CurrentTrackingId.Value;
                         Track track = await unitOfWork.Tracks.Include(t => t.Points).SingleOrDefaultAsync(t => t.Id == trackId);
-                        await StartTracking(track, track.Points.Select(p => p.Number).DefaultIfEmpty().Max() + 1);
+                        if (track != null)
+                        {
+                            await StartTracking(track, track.Points.Select(p => p.Number).DefaultIfEmpty().Max() + 1);
+                        }
                     }
                 }
                 else
