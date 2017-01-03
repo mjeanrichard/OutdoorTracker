@@ -143,10 +143,16 @@ namespace OutdoorTracker.Services
                         point.Altitude = altitude.Value;
                     }
                     unitOfWork.TrackPoints.Add(point);
-
-                    // this is only to update the current Map that might be displayed.
-                    recordingTrack.Points.Add(point);
                     await unitOfWork.SaveChangesAsync();
+
+                    await DispatcherHelper.InvokeOnUiAsync(() =>
+                    {
+                        // Since this track object is used to diplay the track on the UI it must be updated here as well.
+                        // To prevent concurrency issues it is done on the UI-Thread.
+                        // Fixes Issue #30 (https://github.com/mjeanrichard/OutdoorTracker/issues/30)
+                        recordingTrack.Points.Add(point);
+                    });
+                    
                     OnTrackUpdated();
                 }
             }
