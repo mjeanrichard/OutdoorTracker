@@ -43,9 +43,9 @@ namespace OutdoorTracker.Views.Layers
         public LayersViewModel()
         {
             Layers = new ObservableCollection<MapLayerModel>();
-            AddMapCommand = new RelayCommand(async () => await ImportMapDefinition().ConfigureAwait(false));
-            ClearAllCacheCommand = new RelayCommand(async () => await ClearCache().ConfigureAwait(false));
-            LoadLayerSizeCommand = new RelayCommand(async () => await LoadLayerSizes().ConfigureAwait(false));
+            AddMapCommand = new RelayCommand(async () => await ImportMapDefinitionAsync().ConfigureAwait(false));
+            ClearAllCacheCommand = new RelayCommand(async () => await ClearCacheAsync().ConfigureAwait(false));
+            LoadLayerSizeCommand = new RelayCommand(async () => await LoadLayerSizesAsync().ConfigureAwait(false));
         }
 
         public LayersViewModel(SettingsManager settingsManager, MapDefinitionManager mapDefinitionManager)
@@ -81,23 +81,23 @@ namespace OutdoorTracker.Views.Layers
             }
         }
 
-        private async Task LoadLayerSizes()
+        private async Task LoadLayerSizesAsync()
         {
             LoadLayerSizeCommand.EnabledOverride = false;
             List<Task> loadTasks = new List<Task>();
             foreach (MapLayerModel layerModel in Layers)
             {
-                loadTasks.Add(layerModel.LoadSize());
+                loadTasks.Add(layerModel.LoadSizeAsync());
             }
             await Task.WhenAll(loadTasks).ConfigureAwait(false);
             LoadLayerSizeCommand.EnabledOverride = null;
         }
 
-        private async Task ClearCache()
+        private async Task ClearCacheAsync()
         {
             using (MarkBusy())
             {
-                if (await AskDeleteCache())
+                if (await AskDeleteCacheAsync())
                 {
                     IStorageFolder folder = await ApplicationData.Current.LocalCacheFolder.TryGetItemAsync("UMCCache") as IStorageFolder;
                     if (folder != null)
@@ -108,7 +108,7 @@ namespace OutdoorTracker.Views.Layers
             }
         }
 
-        private async Task<bool> AskDeleteCache()
+        private async Task<bool> AskDeleteCacheAsync()
         {
             MessageDialog dialog = new MessageDialog(Messages.LayersViewModel.DeleteCacheMessage, Messages.LayersViewModel.DeleteCacheMessageTitle);
 
@@ -122,14 +122,14 @@ namespace OutdoorTracker.Views.Layers
             return result.Id.Equals(0);
         }
 
-        protected override async Task InitializeInternal()
+        protected override async Task InitializeInternalAsync()
         {
             IEnumerable<MapConfiguration> mapConfigurations = await _mapDefinitionManager.GetMapConfigurations().ConfigureAwait(false);
             Layers = new ObservableCollection<MapLayerModel>(mapConfigurations.Select(c => new MapLayerModel(c)));
             OnPropertyChanged(nameof(Layers));
         }
 
-        public async Task ImportMapDefinition()
+        public async Task ImportMapDefinitionAsync()
         {
             BusyText = Messages.LayersViewModel.ImportingMessage;
             using (MarkBusy())
@@ -145,7 +145,7 @@ namespace OutdoorTracker.Views.Layers
                     {
                         string json = await FileIO.ReadTextAsync(file);
                         await _mapDefinitionManager.Import(json).ConfigureAwait(false);
-                        await InitializeInternal().ConfigureAwait(false);
+                        await InitializeInternalAsync().ConfigureAwait(false);
                     }
                 }
                 catch (Exception ex)

@@ -53,7 +53,7 @@ namespace OutdoorTracker.Views.LocationInfo
             OnPropertyChanged(nameof(ShowLocationSettingsInfo));
         }
 
-        protected override async Task InitializeInternal()
+        protected override async Task InitializeInternalAsync()
         {
             await _geoLocationService.Initialize();
         }

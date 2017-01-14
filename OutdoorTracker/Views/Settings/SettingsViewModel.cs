@@ -110,7 +110,7 @@ namespace OutdoorTracker.Views.Settings
             }
         }
 
-        protected override Task InitializeInternal()
+        protected override Task InitializeInternalAsync()
         {
             return Task.CompletedTask;
         }

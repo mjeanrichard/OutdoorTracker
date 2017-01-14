@@ -239,7 +239,7 @@ namespace OutdoorTracker.Views.Map
             await DispatcherHelper.InvokeOnUiAsync(() => OnPropertyChanged(nameof(MapCenter)));
         }
 
-        protected override async Task InitializeInternal()
+        protected override async Task InitializeInternalAsync()
         {
             await ConfigureMap().ConfigureAwait(false);
 
@@ -247,7 +247,10 @@ namespace OutdoorTracker.Views.Map
 
             IsMapInitialized = true;
             OnPropertyChanged(nameof(IsMapInitialized));
+        }
 
+        protected override async Task LoadData()
+        {
             await LoadTracks().ConfigureAwait(false);
         }
 

@@ -89,7 +89,7 @@ namespace OutdoorTracker.Views.EditTrack
             _navigationService.GoBack();
         }
 
-        protected override async Task InitializeInternal()
+        protected override async Task InitializeInternalAsync()
         {
             if (_trackId.HasValue)
             {

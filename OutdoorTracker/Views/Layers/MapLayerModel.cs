@@ -81,7 +81,7 @@ namespace OutdoorTracker.Views.Layers
             get { return _mapConfiguration.Name; }
         }
 
-        public async Task LoadSize()
+        public async Task LoadSizeAsync()
         {
             try
             {
@@ -96,7 +96,7 @@ namespace OutdoorTracker.Views.Layers
                     IStorageFolder folder = await ApplicationData.Current.LocalCacheFolder.TryGetItemAsync(folderName) as IStorageFolder;
                     if (folder != null)
                     {
-                        totalSize += await CalculateFolderSize(folder, totalSize);
+                        totalSize += await CalculateFolderSizeAsync(folder, totalSize);
                     }
                 }
                 totalSize = totalSize / (1024 * 1024);
@@ -113,12 +113,12 @@ namespace OutdoorTracker.Views.Layers
             }
         }
 
-        private async Task<ulong> CalculateFolderSize(IStorageFolder folder, ulong initialSize)
+        private async Task<ulong> CalculateFolderSizeAsync(IStorageFolder folder, ulong initialSize)
         {
             IReadOnlyList<StorageFolder> folders = await folder.GetFoldersAsync();
             foreach (StorageFolder subFolder in folders)
             {
-                initialSize += await CalculateFolderSize(subFolder, initialSize);
+                initialSize += await CalculateFolderSizeAsync(subFolder, initialSize);
             }
             IReadOnlyList<StorageFile> files = await folder.GetFilesAsync();
             foreach (StorageFile file in files)

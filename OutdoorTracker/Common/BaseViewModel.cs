@@ -28,6 +28,8 @@ namespace OutdoorTracker.Common
 
         protected bool IsInitialized { get; set; }
 
+        protected Task DataLoaderTask { get; private set; }
+
         public bool IsBusy
         {
             get { return _isBusy; }
@@ -40,7 +42,7 @@ namespace OutdoorTracker.Common
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        protected abstract Task InitializeInternal();
+        protected abstract Task InitializeInternalAsync();
 
         public async Task Initialize()
         {
@@ -50,9 +52,15 @@ namespace OutdoorTracker.Common
             }
             using (MarkBusy())
             {
-                await InitializeInternal().ConfigureAwait(false);
+                await InitializeInternalAsync().ConfigureAwait(false);
+                DataLoaderTask = Task.Run(LoadData);
             }
             IsInitialized = true;
+        }
+
+        protected virtual Task LoadData()
+        {
+            return Task.CompletedTask;
         }
 
         protected async void OnPropertyChanged([CallerMemberName] string propertyName = null)
