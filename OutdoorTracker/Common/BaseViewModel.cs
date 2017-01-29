@@ -26,21 +26,13 @@ namespace OutdoorTracker.Common
 {
     public abstract class BaseViewModel : INotifyPropertyChanged
     {
-        private bool _isBusy;
+        private int _busyCounter;
 
         protected bool IsInitialized { get; set; }
 
         protected Task DataLoaderTask { get; private set; }
 
-        public bool IsBusy
-        {
-            get { return _isBusy; }
-            protected set
-            {
-                _isBusy = value;
-                OnPropertyChanged();
-            }
-        }
+        public bool IsBusy => _busyCounter != 0;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -96,26 +88,31 @@ namespace OutdoorTracker.Common
             return Task.CompletedTask;
         }
 
+        private void DecrementBusyCounter()
+        {
+            Interlocked.Decrement(ref _busyCounter);
+            OnPropertyChanged(nameof(IsBusy));
+        }
+
+        private void IncrementBusyCounter()
+        {
+            Interlocked.Increment(ref _busyCounter);
+            OnPropertyChanged(nameof(IsBusy));
+        }
+
         private class BusyState : IDisposable
         {
-            private static int _busyCounter = 0;
-
             private readonly BaseViewModel _baseViewModel;
 
             public BusyState(BaseViewModel baseViewModel)
             {
-                Interlocked.Increment(ref _busyCounter);
                 _baseViewModel = baseViewModel;
-                baseViewModel.IsBusy = true;
+                _baseViewModel.IncrementBusyCounter();
             }
 
             public void Dispose()
             {
-                int value = Interlocked.Decrement(ref _busyCounter);
-                if (value == 0)
-                {
-                    _baseViewModel.IsBusy = false;
-                }
+                _baseViewModel.DecrementBusyCounter();
             }
         }
     }

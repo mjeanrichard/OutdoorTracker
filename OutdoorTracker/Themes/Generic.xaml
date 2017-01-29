@@ -6,6 +6,16 @@
 
     <uwp:BoolToVisibilityConverter x:Name="boolToVis" />
 
+    <SolidColorBrush Color="{ThemeResource SystemAccentColor}" x:Key="SystemAccentColorBrush"/>
+    <SolidColorBrush Color="{ThemeResource SystemAccentColorLight1}" x:Key="SystemAccentColorLight1Brush"/>
+    <SolidColorBrush Color="{ThemeResource SystemAccentColorLight2}" x:Key="SystemAccentColorLight2Brush"/>
+    <SolidColorBrush Color="{ThemeResource SystemAccentColorLight3}" x:Key="SystemAccentColorLight3Brush"/>
+    <SolidColorBrush Color="{ThemeResource SystemAccentColorDark1}" x:Key="SystemAccentColorDark1Brush"/>
+    <SolidColorBrush Color="{ThemeResource SystemAccentColorDark2}" x:Key="SystemAccentColorDark2Brush"/>
+    <SolidColorBrush Color="{ThemeResource SystemAccentColorDark3}" x:Key="SystemAccentColorDark3Brush"/>
+    <SolidColorBrush Color="{ThemeResource SystemBaseMediumColor}" x:Key="SystemBaseMediumColorBrush"/>
+    <SolidColorBrush Color="{ThemeResource SystemBaseLowColor}" x:Key="SystemBaseLowColorBrush"/>
+    
     <Style TargetType="controls:HeaderControl">
         <Setter Property="Template">
             <Setter.Value>
@@ -77,7 +87,7 @@
             </Setter.Value>
         </Setter>
     </Style>
-    
+
     <Style TargetType="controls:ColorPickerControl">
         <Setter Property="Template">
             <Setter.Value>
@@ -87,16 +97,126 @@
                             <GridView.ItemTemplate>
                                 <DataTemplate>
                                     <Grid>
-                                        <Rectangle Fill="{Binding ColorBrush}" 
-                                                HorizontalAlignment="Stretch"
-                                                VerticalAlignment="Stretch"
-                                                Width="50" 
-                                                Height="50"
-                                                />
+                                        <Rectangle Fill="{Binding ColorBrush}"
+                                                   HorizontalAlignment="Stretch"
+                                                   VerticalAlignment="Stretch"
+                                                   Width="50"
+                                                   Height="50" />
                                     </Grid>
                                 </DataTemplate>
                             </GridView.ItemTemplate>
                         </GridView>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="ToggleSwitch" x:Key="IconToggleSwitch">
+        <Setter Property="Foreground" Value="{ThemeResource SystemControlForegroundBaseHighBrush}" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="HorizontalContentAlignment" Value="Left" />
+        <Setter Property="FontFamily" Value="{ThemeResource ContentControlThemeFontFamily}" />
+        <Setter Property="FontSize" Value="{ThemeResource ControlContentThemeFontSize}" />
+        <Setter Property="ManipulationMode" Value="System" />
+        <Setter Property="UseSystemFocusVisuals" Value="True" />
+        <Setter Property="MinWidth" Value="0" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ToggleSwitch">
+                    <Grid Background="{TemplateBinding Background}"
+                          BorderBrush="{TemplateBinding BorderBrush}"
+                          BorderThickness="{TemplateBinding BorderThickness}">
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualState x:Name="Normal" />
+                                <VisualState x:Name="PointerOver" />
+                                <VisualState x:Name="Pressed" />
+                                <VisualState x:Name="Disabled" />
+                            </VisualStateGroup>
+                            <VisualStateGroup x:Name="ToggleStates">
+                                <VisualState x:Name="Dragging" />
+                                <VisualState x:Name="Off" />
+                                <VisualState x:Name="On" />
+                            </VisualStateGroup>
+                            <VisualStateGroup x:Name="ContentStates">
+                                <VisualState x:Name="OffContent">
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="OffContentPresenter"
+                                                         Storyboard.TargetProperty="Opacity"
+                                                         To="1"
+                                                         Duration="0" />
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="IsHitTestVisible" Storyboard.TargetName="OffContentPresenter">
+                                            <DiscreteObjectKeyFrame KeyTime="0">
+                                                <DiscreteObjectKeyFrame.Value>
+                                                    <x:Boolean>True</x:Boolean>
+                                                </DiscreteObjectKeyFrame.Value>
+                                            </DiscreteObjectKeyFrame>
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="OnContent">
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="OnContentPresenter"
+                                                         Storyboard.TargetProperty="Opacity"
+                                                         To="1"
+                                                         Duration="0" />
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="IsHitTestVisible" Storyboard.TargetName="OnContentPresenter">
+                                            <DiscreteObjectKeyFrame KeyTime="0">
+                                                <DiscreteObjectKeyFrame.Value>
+                                                    <x:Boolean>True</x:Boolean>
+                                                </DiscreteObjectKeyFrame.Value>
+                                            </DiscreteObjectKeyFrame>
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <ContentPresenter x:Name="HeaderContentPresenter"
+                                          x:DeferLoadStrategy="Lazy"
+                                          Visibility="Collapsed"
+                                          Foreground="{ThemeResource SystemControlForegroundBaseHighBrush}"
+                                          Content="{TemplateBinding Header}"
+                                          ContentTemplate="{TemplateBinding HeaderTemplate}"
+                                          IsHitTestVisible="False"
+                                          AutomationProperties.AccessibilityView="Raw" />
+                        <ContentPresenter x:Name="OffContentPresenter"
+                                          Grid.Row="2"
+                                          Opacity="0"
+                                          Foreground="{TemplateBinding Foreground}"
+                                          IsHitTestVisible="False"
+                                          Content="{TemplateBinding OffContent}"
+                                          ContentTemplate="{TemplateBinding OffContentTemplate}"
+                                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                          AutomationProperties.AccessibilityView="Raw" />
+                        <ContentPresenter x:Name="OnContentPresenter"
+                                          Grid.Row="2"
+                                          Opacity="0"
+                                          Foreground="{TemplateBinding Foreground}"
+                                          IsHitTestVisible="False"
+                                          Content="{TemplateBinding OnContent}"
+                                          ContentTemplate="{TemplateBinding OnContentTemplate}"
+                                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                          AutomationProperties.AccessibilityView="Raw" />
+                        <Thumb x:Name="SwitchThumb" 
+                               AutomationProperties.AccessibilityView="Raw" 
+                               VerticalAlignment="Stretch"
+                               Grid.Row="1" Grid.RowSpan="3">
+                            <Thumb.Template>
+                                <ControlTemplate TargetType="Thumb">
+                                    <Rectangle Fill="Transparent" />
+                                </ControlTemplate>
+                            </Thumb.Template>
+                        </Thumb>
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>

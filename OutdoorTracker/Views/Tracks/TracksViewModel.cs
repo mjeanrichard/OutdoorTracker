@@ -45,10 +45,10 @@ namespace OutdoorTracker.Views.Tracks
         public TracksViewModel()
         {
             ImportGpxTrackCommand = new RelayCommand(async () => await ImportGpxTrack());
-            EditTrackCommand = new RelayCommand(EditTrack, () => (SelectedTracks != null) && (SelectedTracks.Count == 1));
-            DeleteTrackCommand = new RelayCommand(async () => await DeleteTrack(), () => (SelectedTracks != null) && (SelectedTracks.Count > 0));
+            EditTrackCommand = new RelayCommand(EditTrack, () => SelectedTracks != null && SelectedTracks.Count == 1);
+            DeleteTrackCommand = new RelayCommand(async () => await DeleteTrack(), () => SelectedTracks != null && SelectedTracks.Count > 0);
             StartTrackingCommand = new RelayCommand(async () => await StartTracking());
-            ExportTracksCommand = new RelayCommand(async () => await ExportTracks(), () => (SelectedTracks != null) && (SelectedTracks.Count > 0));
+            ExportTracksCommand = new RelayCommand(async () => await ExportTracks(), () => SelectedTracks != null && SelectedTracks.Count > 0);
             ToggleTrackVisibilityCommand = new ParameterCommand<Track>(async t => await ToggleTrackVisibility(t));
             _selectedTracks = new List<Track>();
         }
@@ -144,7 +144,7 @@ namespace OutdoorTracker.Views.Tracks
             {
                 return;
             }
-            
+
             BusyText = Messages.TracksPage.DeletingText;
             using (MarkBusy())
             {
@@ -217,7 +217,7 @@ namespace OutdoorTracker.Views.Tracks
 
         private void EditTrack()
         {
-            if ((SelectedTracks == null) || (SelectedTracks.Count != 1))
+            if (SelectedTracks == null || SelectedTracks.Count != 1)
             {
                 return;
             }

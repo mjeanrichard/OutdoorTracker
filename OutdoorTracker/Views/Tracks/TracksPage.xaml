@@ -8,13 +8,11 @@
     xmlns:tracksData="using:OutdoorTracker.Tracks"
     xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
     xmlns:core="using:Microsoft.Xaml.Interactions.Core"
-    xmlns:converters="using:OutdoorTracker.Converters"
-    xmlns:media="using:Microsoft.Xaml.Interactions.Media"
     xmlns:controls="using:OutdoorTracker.Controls"
     mc:Ignorable="d">
 
     <Page.Resources>
-        <!-- Narrow Layout -->
+        <!--Narrow Layout-->
         <ItemsPanelTemplate x:Key="NarrowPanel">
             <ItemsStackPanel Orientation="Vertical" HorizontalAlignment="Stretch" />
         </ItemsPanelTemplate>
@@ -29,13 +27,13 @@
             <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />
         </Style>
 
-        <!-- Wide Layout -->
+        <!--Wide Layout-->
         <ItemsPanelTemplate x:Key="WidePanel">
             <ItemsWrapGrid Orientation="Vertical" HorizontalAlignment="Stretch" />
         </ItemsPanelTemplate>
         <Style TargetType="GridViewItem" x:Key="WideItem">
             <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-            <Setter Property="Width" Value="720" />
+            <Setter Property="Width" Value="360" />
         </Style>
         <Style TargetType="GridView" x:Key="WideGridView">
             <Setter Property="ScrollViewer.HorizontalScrollMode" Value="Enabled" />
@@ -90,28 +88,47 @@
                 </GridView.ItemContainerStyle>
                 <GridView.ItemTemplate>
                     <DataTemplate x:DataType="tracksData:Track">
-                        <Grid Margin="5,5,10,5">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
-                            <!--<FlyoutBase.AttachedFlyout>
-							<MenuFlyout x:Name="tracksMenuFlyout">
-								<MenuFlyout.Items>
-									<MenuFlyoutItem x:Name="Edit" Text="Edit"/>
-									<MenuFlyoutItem x:Name="Remove" Text="Delete" Command="{Binding DataContext.DeleteTrackCommand, ElementName=tracksView}" />
-								</MenuFlyout.Items>
-							</MenuFlyout>
-						</FlyoutBase.AttachedFlyout>-->
-                            <TextBlock Grid.Column="0" TextWrapping="WrapWholeWords" Text="{x:Bind Name, Mode=OneTime}" />
-                            <ToggleSwitch x:Uid="Tracks_ShowOnMap" Grid.Column="1" IsOn="{x:Bind ShowOnMap, Mode=TwoWay}" Margin="0,0,-40,0">
-                                <interactivity:Interaction.Behaviors>
-                                    <core:EventTriggerBehavior EventName="Toggled">
-                                        <core:InvokeCommandAction Command="{Binding DataContext.ToggleTrackVisibilityCommand, ElementName=tracksView}" CommandParameter="{x:Bind Mode=OneTime}" />
-                                    </core:EventTriggerBehavior>
-                                </interactivity:Interaction.Behaviors>
-                            </ToggleSwitch>
-                        </Grid>
+                        <Border BorderBrush="{StaticResource SystemAccentColorDark2Brush}"
+                                Background="{StaticResource SystemBaseLowColorBrush}">
+                            <Grid Margin="1">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="30" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+                                <ToggleSwitch Grid.Column="0" Grid.Row="0" Grid.RowSpan="3"
+                                              VerticalAlignment="Stretch"
+                                              Width="24"
+                                              Margin="0,0,0,0"
+                                              Style="{StaticResource IconToggleSwitch}"
+                                              IsOn="{x:Bind ShowOnMap, Mode=TwoWay}">
+                                    <interactivity:Interaction.Behaviors>
+                                        <core:EventTriggerBehavior EventName="Toggled">
+                                            <core:InvokeCommandAction Command="{Binding DataContext.ToggleTrackVisibilityCommand, ElementName=tracksView}" CommandParameter="{x:Bind Mode=OneTime}" />
+                                        </core:EventTriggerBehavior>
+                                    </interactivity:Interaction.Behaviors>
+                                    <ToggleSwitch.OnContent>
+                                        <Canvas Width="24" Height="24"
+                                                VerticalAlignment="Center">
+                                            <Path Data="M12,9A3,3 0 0,1 15,12A3,3 0 0,1 12,15A3,3 0 0,1 9,12A3,3 0 0,1 12,9M12,4.5C17,4.5 21.27,7.61 23,12C21.27,16.39 17,19.5 12,19.5C7,19.5 2.73,16.39 1,12C2.73,7.61 7,4.5 12,4.5M3.18,12C4.83,15.36 8.24,17.5 12,17.5C15.76,17.5 19.17,15.36 20.82,12C19.17,8.64 15.76,6.5 12,6.5C8.24,6.5 4.83,8.64 3.18,12Z" Fill="{StaticResource SystemAccentColorDark1Brush}" />
+                                        </Canvas>
+                                    </ToggleSwitch.OnContent>
+                                    <ToggleSwitch.OffContent>
+                                        <Canvas Width="24" Height="24"
+                                                VerticalAlignment="Center">
+                                            <Path Data="M2,5.27L3.28,4L20,20.72L18.73,22L15.65,18.92C14.5,19.3 13.28,19.5 12,19.5C7,19.5 2.73,16.39 1,12C1.69,10.24 2.79,8.69 4.19,7.46L2,5.27M12,9A3,3 0 0,1 15,12C15,12.35 14.94,12.69 14.83,13L11,9.17C11.31,9.06 11.65,9 12,9M12,4.5C17,4.5 21.27,7.61 23,12C22.18,14.08 20.79,15.88 19,17.19L17.58,15.76C18.94,14.82 20.06,13.54 20.82,12C19.17,8.64 15.76,6.5 12,6.5C10.91,6.5 9.84,6.68 8.84,7L7.3,5.47C8.74,4.85 10.33,4.5 12,4.5M3.18,12C4.83,15.36 8.24,17.5 12,17.5C12.69,17.5 13.37,17.43 14,17.29L11.72,15C10.29,14.85 9.15,13.71 9,12.28L5.6,8.87C4.61,9.72 3.78,10.78 3.18,12Z" Fill="{StaticResource SystemBaseMediumColorBrush}" />
+                                        </Canvas>
+                                    </ToggleSwitch.OffContent>
+                                </ToggleSwitch>
+                                <TextBlock Grid.Column="1" Grid.Row="0" TextWrapping="NoWrap" Text="{x:Bind Name, Mode=OneTime}" />
+                                <TextBlock Grid.Column="1" Grid.Row="1" TextWrapping="NoWrap" Text="{x:Bind Name, Mode=OneTime}" />
+                                <TextBlock Grid.Column="1" Grid.Row="2" TextWrapping="NoWrap" Text="{x:Bind Name, Mode=OneTime}" />
+                            </Grid>
+                        </Border>
                     </DataTemplate>
                 </GridView.ItemTemplate>
             </GridView>
