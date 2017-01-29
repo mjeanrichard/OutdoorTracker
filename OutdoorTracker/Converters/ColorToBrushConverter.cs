@@ -1,5 +1,5 @@
 // 
-// Outdoor Tracker - Copyright(C) 2016 Meinard Jean-Richard
+// Outdoor Tracker - Copyright(C) 2017 Meinard Jean-Richard
 //  
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -15,17 +15,24 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 using System;
-using System.Globalization;
 
+using Windows.UI;
 using Windows.UI.Xaml.Data;
+using Windows.UI.Xaml.Media;
 
 namespace OutdoorTracker.Converters
 {
-    public class StringFormatConverter : IValueConverter
+    public class ColorToBrushConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            return string.Format(CultureInfo.CurrentCulture, (string)parameter, value);
+            Color? color = value as Color?;
+            if (color.HasValue)
+            {
+                return new SolidColorBrush(color.Value);
+            }
+
+            return new SolidColorBrush();
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)

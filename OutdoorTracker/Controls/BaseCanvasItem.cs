@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 using Windows.UI.Xaml;
 
 using Microsoft.Graphics.Canvas;
+using Microsoft.Toolkit.Uwp;
 
 using OutdoorTracker.Common;
 
@@ -47,7 +48,7 @@ namespace OutdoorTracker.Controls
         protected virtual async Task OnLayoutChanged()
         {
             InvalidateInternal();
-            await DispatcherHelper.InvokeOnUiAsync(() => LayoutChanged?.Invoke(this, EventArgs.Empty));
+            await DispatcherHelper.ExecuteOnUIThreadAsync(() => LayoutChanged?.Invoke(this, EventArgs.Empty));
         }
     }
 }

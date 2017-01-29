@@ -22,6 +22,7 @@ using System.Linq;
 using System.Threading.Tasks;
 
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Toolkit.Uwp;
 
 using OutdoorTracker.Common;
 using OutdoorTracker.Database;
@@ -236,7 +237,7 @@ namespace OutdoorTracker.Views.Map
         private async Task SetMapCenter(ILocation location)
         {
             _mapCenter = location;
-            await DispatcherHelper.InvokeOnUiAsync(() => OnPropertyChanged(nameof(MapCenter)));
+            await DispatcherHelper.ExecuteOnUIThreadAsync(() => OnPropertyChanged(nameof(MapCenter)));
         }
 
         protected override async Task InitializeInternalAsync()
@@ -259,7 +260,7 @@ namespace OutdoorTracker.Views.Map
             using (MarkBusy())
             {
                 List<Track> collection = await _readonlyUnitOfWork.Tracks.Where(t => t.ShowOnMap).Include(t => t.Points).ToListAsync().ConfigureAwait(false);
-                await DispatcherHelper.InvokeOnUiAsync(() =>
+                await DispatcherHelper.ExecuteOnUIThreadAsync(() =>
                 {
                     Tracks = new ObservableCollection<Track>(collection);
                     TrackRecorderUpdated();

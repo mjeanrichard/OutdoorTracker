@@ -27,6 +27,7 @@ using Windows.UI.Xaml.Navigation;
 
 using Microsoft.HockeyApp;
 using Microsoft.Practices.Unity;
+using Microsoft.Toolkit.Uwp;
 
 using OutdoorTracker.Common;
 using OutdoorTracker.Database;
@@ -77,7 +78,6 @@ namespace OutdoorTracker
                 DebugSettings.EnableFrameRateCounter = true;
             }
 #endif
-            DispatcherHelper.Init();
 
             SystemNavigationManager.GetForCurrentView().BackRequested += App_BackRequested;
             RootFrame = Window.Current.Content as Frame;
@@ -99,7 +99,7 @@ namespace OutdoorTracker
                 await DependencyContainer.Current.Resolve<DbInitializer>().InitDatabase();
             }
 
-            await DispatcherHelper.InvokeOnUiAsync(() => NavigateToFirstPage(e));
+            await DispatcherHelper.ExecuteOnUIThreadAsync(() => NavigateToFirstPage(e));
 
             await CheckTrackingSession();
         }

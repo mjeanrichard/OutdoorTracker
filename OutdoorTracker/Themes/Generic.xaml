@@ -2,10 +2,9 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:controls="using:OutdoorTracker.Controls"
-    xmlns:converters="using:OutdoorTracker.Converters">
+    xmlns:uwp="using:Microsoft.Toolkit.Uwp.UI.Converters">
 
-    <converters:BooleanToVisibilityConverter x:Name="boolToVis" />
-
+    <uwp:BoolToVisibilityConverter x:Name="boolToVis" />
 
     <Style TargetType="controls:HeaderControl">
         <Setter Property="Template">
@@ -73,6 +72,31 @@
                                 <TextBlock Text="{TemplateBinding BusyMessage}" HorizontalAlignment="Center" TextWrapping="WrapWholeWords" Foreground="LightGray" />
                             </StackPanel>
                         </Grid>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
+    <Style TargetType="controls:ColorPickerControl">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="controls:ColorPickerControl">
+                    <Grid>
+                        <GridView x:Name="PART_GridView" SelectionMode="Single" MaxWidth="360">
+                            <GridView.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <Rectangle Fill="{Binding ColorBrush}" 
+                                                HorizontalAlignment="Stretch"
+                                                VerticalAlignment="Stretch"
+                                                Width="50" 
+                                                Height="50"
+                                                />
+                                    </Grid>
+                                </DataTemplate>
+                            </GridView.ItemTemplate>
+                        </GridView>
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>

@@ -24,6 +24,7 @@ using Windows.UI.Popups;
 
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Toolkit.Uwp;
 
 using OutdoorTracker.Common;
 using OutdoorTracker.Database;
@@ -100,7 +101,7 @@ namespace OutdoorTracker.Services
 
                     Wgs84Location avgLocation = new Wgs84Location(lat, lng);
                     double distance = _lastLocation.DistanceTo(avgLocation);
-                    if (!_settingsManager.EnableTrackSmoothing || (distance > _settingsManager.TrackMinDistanceMeters))
+                    if (!_settingsManager.EnableTrackSmoothing || distance > _settingsManager.TrackMinDistanceMeters)
                     {
                         _sumLongitude = 0;
                         _sumLatitude = 0;
@@ -145,14 +146,14 @@ namespace OutdoorTracker.Services
                     unitOfWork.TrackPoints.Add(point);
                     await unitOfWork.SaveChangesAsync();
 
-                    await DispatcherHelper.InvokeOnUiAsync(() =>
+                    await DispatcherHelper.ExecuteOnUIThreadAsync(() =>
                     {
                         // Since this track object is used to diplay the track on the UI it must be updated here as well.
                         // To prevent concurrency issues it is done on the UI-Thread.
                         // Fixes Issue #30 (https://github.com/mjeanrichard/OutdoorTracker/issues/30)
                         recordingTrack.Points.Add(point);
                     });
-                    
+
                     OnTrackUpdated();
                 }
             }
@@ -194,7 +195,7 @@ namespace OutdoorTracker.Services
 
         public async Task CheckExistingSession()
         {
-            if (_settingsManager.CurrentTrackingId.HasValue && (_extendedExecutionSession == null))
+            if (_settingsManager.CurrentTrackingId.HasValue && _extendedExecutionSession == null)
             {
                 if (await AskToContinueTracking())
                 {

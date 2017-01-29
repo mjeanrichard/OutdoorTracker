@@ -20,6 +20,8 @@ using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 
+using Microsoft.Toolkit.Uwp;
+
 namespace OutdoorTracker.Common
 {
     public abstract class BaseViewModel : INotifyPropertyChanged
@@ -42,7 +44,10 @@ namespace OutdoorTracker.Common
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        protected abstract Task InitializeInternalAsync();
+        protected virtual Task InitializeInternalAsync()
+        {
+            return Task.CompletedTask;
+        }
 
         public async Task Initialize()
         {
@@ -50,11 +55,14 @@ namespace OutdoorTracker.Common
             {
                 return;
             }
-            using (MarkBusy())
+            await InitializeInternalAsync().ConfigureAwait(false);
+            DataLoaderTask = Task.Run(async () =>
             {
-                await InitializeInternalAsync().ConfigureAwait(false);
-                DataLoaderTask = Task.Run(LoadData);
-            }
+                using (MarkBusy())
+                {
+                    await LoadData();
+                }
+            });
             IsInitialized = true;
         }
 
@@ -65,7 +73,7 @@ namespace OutdoorTracker.Common
 
         protected async void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
-            await DispatcherHelper.InvokeOnUiAsync(() => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName)));
+            await DispatcherHelper.ExecuteOnUIThreadAsync(() => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName)));
         }
 
         public IDisposable MarkBusy()
@@ -74,6 +82,16 @@ namespace OutdoorTracker.Common
         }
 
         public virtual Task Leave()
+        {
+            return Task.CompletedTask;
+        }
+
+        public virtual Task Suspending()
+        {
+            return Task.CompletedTask;
+        }
+
+        public virtual Task Resuming()
         {
             return Task.CompletedTask;
         }
@@ -99,16 +117,6 @@ namespace OutdoorTracker.Common
                     _baseViewModel.IsBusy = false;
                 }
             }
-        }
-
-        public virtual Task Suspending()
-        {
-            return Task.CompletedTask;
-        }
-
-        public virtual Task Resuming()
-        {
-            return Task.CompletedTask;
         }
     }
 }

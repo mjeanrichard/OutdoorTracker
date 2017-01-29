@@ -22,6 +22,7 @@ using Windows.Devices.Geolocation;
 using Windows.Devices.Sensors;
 
 using Microsoft.HockeyApp;
+using Microsoft.Toolkit.Uwp;
 
 using OutdoorTracker.Common;
 using OutdoorTracker.Helpers;
@@ -78,7 +79,7 @@ namespace OutdoorTracker.Services
 
             OutdoorTrackerEvents.Log.LocationInitializing();
             GeolocationAccessStatus accessStatus = GeolocationAccessStatus.Unspecified;
-            await DispatcherHelper.InvokeOnUiAsync(async () =>
+            await DispatcherHelper.ExecuteOnUIThreadAsync(async () =>
             {
                 accessStatus = await Geolocator.RequestAccessAsync();
             });

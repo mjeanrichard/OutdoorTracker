@@ -11,12 +11,13 @@
     xmlns:map="using:OutdoorTracker.Views.Map"
     xmlns:converters="using:OutdoorTracker.Converters"
     xmlns:controls="using:OutdoorTracker.Controls"
+    xmlns:uwp="using:Microsoft.Toolkit.Uwp.UI.Converters"
     d:DataContext="{d:DesignInstance Type=map:MapViewModel, IsDesignTimeCreatable=True}"
     mc:Ignorable="d">
 
     <Page.Resources>
         <converters:LocationToStringConverter x:Name="locToString" />
-        <converters:StringFormatConverter x:Name="stringFormat" />
+        <uwp:StringFormatConverter x:Name="stringFormat" />
     </Page.Resources>
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">

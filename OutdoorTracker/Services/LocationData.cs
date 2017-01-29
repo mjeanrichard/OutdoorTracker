@@ -22,7 +22,8 @@ using System.Threading.Tasks;
 using Windows.Devices.Geolocation;
 using Windows.Devices.Sensors;
 
-using OutdoorTracker.Common;
+using Microsoft.Toolkit.Uwp;
+
 using OutdoorTracker.Views.Map;
 
 using UniversalMapControl.Interfaces;
@@ -86,7 +87,7 @@ namespace OutdoorTracker.Services
                 IsLocationValid = false;
                 LocationAccuracy = LocationAccuracy.None;
             }
-            await DispatcherHelper.InvokeOnUiAsync(() => SendPropertyChangeNotifications()).ConfigureAwait(false);
+            await DispatcherHelper.ExecuteOnUIThreadAsync(() => SendPropertyChangeNotifications()).ConfigureAwait(false);
         }
 
         public async Task UpdatePosition(Geoposition positionData)
@@ -133,7 +134,7 @@ namespace OutdoorTracker.Services
             {
                 IsAltitudeValid = false;
             }
-            await DispatcherHelper.InvokeOnUiAsync(() => SendPropertyChangeNotifications());
+            await DispatcherHelper.ExecuteOnUIThreadAsync(() => SendPropertyChangeNotifications());
         }
 
         public void UpdateCompass(CompassReading compassReading)

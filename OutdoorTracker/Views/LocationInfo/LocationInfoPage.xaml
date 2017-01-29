@@ -7,12 +7,13 @@
     xmlns:LocationInfo="using:OutdoorTracker.Views.LocationInfo"
     xmlns:controls="using:OutdoorTracker.Controls"
     xmlns:converters="using:OutdoorTracker.Converters"
+    xmlns:uwp="using:Microsoft.Toolkit.Uwp.UI.Converters"
     d:DataContext="{d:DesignInstance Type=LocationInfo:LocationInfoViewModel, IsDesignTimeCreatable=True}"
     mc:Ignorable="d">
 
     <Page.Resources>
         <converters:LocationToStringConverter x:Key="locToString" />
-        <converters:StringFormatConverter x:Key="stringFormat" />
+        <uwp:StringFormatConverter x:Key="stringFormat" />
     </Page.Resources>
 
     <Grid Style="{StaticResource PageGrid}">
