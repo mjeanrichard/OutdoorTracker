@@ -82,6 +82,9 @@ namespace OutdoorTracker.Database
             modelBuilder.Entity<DbVersion>().ToTable("Version");
 
             modelBuilder.Entity<Track>().ToTable("Tracks");
+            modelBuilder.Entity<Track>().Ignore(t => t.Color);
+            modelBuilder.Entity<Track>().Property(t => t.ColorValue).HasColumnName(nameof(Track.Color));
+
             modelBuilder.Entity<TrackPoint>().ToTable("TrackPoints");
 
             modelBuilder.Entity<MapConfiguration>().ToTable("MapConfigurations");

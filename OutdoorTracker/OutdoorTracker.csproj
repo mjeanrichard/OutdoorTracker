@@ -119,11 +119,12 @@
     <Compile Include="Common\BaseCommand.cs" />
     <Compile Include="Common\BaseViewModel.cs" />
     <Compile Include="Common\DependencyContainer.cs" />
-    <Compile Include="Common\DispatcherHelper.cs" />
     <Compile Include="Common\ErrorReporter.cs" />
     <Compile Include="Common\IAppPage.cs" />
     <Compile Include="Common\NavigationService.cs" />
+    <Compile Include="Controls\ColorPickerControl.cs" />
     <Compile Include="Controls\PageViewControl.cs" />
+    <Compile Include="Converters\ColorToBrushConverter.cs" />
     <Compile Include="Helpers\TrackEvents.cs" />
     <Compile Include="Logging\OutdoorTrackerEvents.cs" />
     <Compile Include="Common\ParameterCommand.cs" />
@@ -136,11 +137,9 @@
     <Compile Include="Controls\ICanvasItem.cs" />
     <Compile Include="Controls\CurrentLocation.cs" />
     <Compile Include="Controls\TracksLayer.cs" />
-    <Compile Include="Converters\BooleanToColorConverter.cs" />
-    <Compile Include="Converters\BooleanToVisibilityConverter.cs" />
+    <Compile Include="Converters\BooleanToBrushConverter.cs" />
     <Compile Include="Converters\LocationToStringConverter.cs" />
     <Compile Include="Converters\MapViewPortConverter.cs" />
-    <Compile Include="Converters\StringFormatConverter.cs" />
     <Compile Include="Database\DbInitializer.cs" />
     <Compile Include="Database\DbVersion.cs" />
     <Compile Include="Database\IReadonlyUnitOfWork.cs" />
@@ -155,9 +154,11 @@
     <Compile Include="Migrations\003_AddOpenStreetMap.cs" />
     <Compile Include="Database\IDbScript.cs" />
     <Compile Include="Migrations\004_TrackShowOnMap.cs" />
+    <Compile Include="Migrations\006_AddTrackWidth.cs" />
+    <Compile Include="Migrations\005_AddTrackColor.cs" />
     <Compile Include="Resources\en\Messages.cs">
       <AutoGen>True</AutoGen>
-      <DependentUpon>Messages.resw</DependentUpon>
+      <DependentUpon>Messages.tt</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="Services\LocationData.cs" />

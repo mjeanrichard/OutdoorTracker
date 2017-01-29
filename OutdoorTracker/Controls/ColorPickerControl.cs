@@ -15,6 +15,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 using System;
+using System.Linq;
 using System.Windows.Input;
 
 using Windows.UI;
@@ -112,32 +113,74 @@ namespace OutdoorTracker.Controls
         {
             if (_gridView != null)
             {
-                _gridView.ItemClick -= OnColorClicked;
+                _gridView.SelectionChanged -= OnSelectionChanged;
                 _gridView = null;
             }
             _gridView = GetTemplateChild(GridViewPartName) as GridView;
             if (_gridView != null)
             {
-                OnColorSelected();
                 _gridView.ItemsSource = AllColors;
-                _gridView.ItemClick += OnColorClicked;
+                ColorChanged();
+                _gridView.SelectionChanged += OnSelectionChanged;
             }
         }
 
-        private void OnColorClicked(object sender, ItemClickEventArgs e)
+        public static readonly DependencyProperty ColorProperty = DependencyProperty.Register(
+            "Color", typeof(Color), typeof(ColorPickerControl), new PropertyMetadata(Red, ColorChangedCallback));
+
+        private static void ColorChangedCallback(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
         {
-            ColorItem colorItem = e.ClickedItem as ColorItem;
+            ColorPickerControl colorPickerControl = dependencyObject as ColorPickerControl;
+            if (colorPickerControl != null)
+            {
+                colorPickerControl.ColorChanged();
+            }
+        }
+
+        private void ColorChanged()
+        {
+            if (_gridView == null)
+            {
+                return;
+            }
+            Color color = Color;
+            ColorItem existingColor = AllColors.FirstOrDefault(c => c.Color == color);
+            if (existingColor != null)
+            {
+                _gridView.SelectedItem = existingColor;
+            }
+        }
+
+        public Color Color
+        {
+            get { return (Color)GetValue(ColorProperty); }
+            set { SetValue(ColorProperty, value); }
+        }
+
+        private void OnSelectionChanged(object sender, SelectionChangedEventArgs selectionChangedEventArgs)
+        {
+            ColorItem colorItem = _gridView.SelectedItem as ColorItem;
             ICommand colorSelectedCommand = ColorSelectedCommand;
 
-            if (colorItem != null && colorSelectedCommand != null && colorSelectedCommand.CanExecute(colorItem.Color))
+            if (colorItem != null)
             {
-                colorSelectedCommand.Execute(colorItem.Color);
+                Color = colorItem.Color;
+                OnColorSelected(colorItem);
+                if (colorSelectedCommand != null && colorSelectedCommand.CanExecute(colorItem.Color))
+                {
+                    colorSelectedCommand.Execute(colorItem.Color);
+                }
             }
         }
 
-        public event EventHandler<EventArgs> ColorSelected; 
+        public event EventHandler<EventArgs> ColorSelected;
 
-        private class ColorItem
+        protected virtual void OnColorSelected(ColorItem colorItem)
+        {
+            ColorSelected?.Invoke(this, EventArgs.Empty);
+        }
+
+        protected class ColorItem
         {
             public ColorItem(string name, uint colorValue)
             {
@@ -156,11 +199,6 @@ namespace OutdoorTracker.Controls
             public string Name { get; }
 
             public Brush ColorBrush { get; }
-        }
-
-        protected virtual void OnColorSelected()
-        {
-            ColorSelected?.Invoke(this, EventArgs.Empty);
         }
     }
 }

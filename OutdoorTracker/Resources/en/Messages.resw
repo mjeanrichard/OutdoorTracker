@@ -286,4 +286,16 @@
   <data name="TracksPage_YesStopTracking" xml:space="preserve">
     <value>Yes, stop tracking</value>
   </data>
+  <data name="TrackWidth_Hairline" xml:space="preserve">
+    <value>Hairline</value>
+  </data>
+  <data name="TrackWidth_Medium" xml:space="preserve">
+    <value>Medium</value>
+  </data>
+  <data name="TrackWidth_Thick" xml:space="preserve">
+    <value>Thick</value>
+  </data>
+  <data name="TrackWidth_Thin" xml:space="preserve">
+    <value>Thin</value>
+  </data>
 </root>

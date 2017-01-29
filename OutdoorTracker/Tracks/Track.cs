@@ -15,10 +15,16 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
+
+using Windows.UI;
+
+using Microsoft.Toolkit.Uwp;
 
 namespace OutdoorTracker.Tracks
 {
-    public class Track
+    public class Track : INotifyPropertyChanged
     {
         public Track()
         {
@@ -29,5 +35,36 @@ namespace OutdoorTracker.Tracks
         public string Name { get; set; }
         public bool ShowOnMap { get; set; }
         public ObservableCollection<TrackPoint> Points { get; set; }
+        public uint ColorValue { get; set; }
+        public float Width { get; set; }
+
+        public Color Color
+        {
+            get
+            {
+                return Color.FromArgb(
+                    (byte)((ColorValue & 0xFF000000) >> 24),
+                    (byte)((ColorValue & 0x00FF0000) >> 16),
+                    (byte)((ColorValue & 0x0000FF00) >> 8),
+                    (byte)(ColorValue & 0x000000FF)
+                );
+            }
+            set
+            {
+                uint colorValue = (uint)value.ToInt();
+                if (colorValue != ColorValue)
+                {
+                    ColorValue = colorValue;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
 }

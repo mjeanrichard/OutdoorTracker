@@ -286,4 +286,16 @@
   <data name="TracksPage_YesStopTracking" xml:space="preserve">
     <value>Ja, Aufzeichnung beenden</value>
   </data>
+  <data name="TrackWidth_Hairline" xml:space="preserve">
+    <value>sehr dünn</value>
+  </data>
+  <data name="TrackWidth_Medium" xml:space="preserve">
+    <value>mittel</value>
+  </data>
+  <data name="TrackWidth_Thick" xml:space="preserve">
+    <value>dick</value>
+  </data>
+  <data name="TrackWidth_Thin" xml:space="preserve">
+    <value>dünn</value>
+  </data>
 </root>

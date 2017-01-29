@@ -14,6 +14,12 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+using System;
+
+using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls.Primitives;
+using Windows.UI.Xaml.Input;
+
 using OutdoorTracker.Common;
 
 namespace OutdoorTracker.Views.EditTrack
@@ -27,6 +33,17 @@ namespace OutdoorTracker.Views.EditTrack
         public EditTrackPage()
         {
             InitializeComponent();
+        }
+
+        private void ColorSelectorTapped(object sender, TappedRoutedEventArgs e)
+        {
+            FlyoutBase.ShowAttachedFlyout((FrameworkElement)sender);
+        }
+
+        private void ColorSelected(object sender, EventArgs e)
+        {
+            FlyoutBase flyout = FlyoutBase.GetAttachedFlyout(ColorButton);
+            flyout?.Hide();
         }
     }
 }

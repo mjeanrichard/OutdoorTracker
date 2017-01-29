@@ -498,6 +498,42 @@ namespace OutdoorTracker.Resources
 
         }
 
+        public static class TrackWidth
+        {
+            /// <summary>
+            ///      Looks up a Text similar to "Hairline"
+            /// </summary>
+            public static string Hairline
+            {
+                get { return ActiveResourceLoader.GetString("TrackWidth_Hairline"); }
+            }
+
+            /// <summary>
+            ///      Looks up a Text similar to "Medium"
+            /// </summary>
+            public static string Medium
+            {
+                get { return ActiveResourceLoader.GetString("TrackWidth_Medium"); }
+            }
+
+            /// <summary>
+            ///      Looks up a Text similar to "Thick"
+            /// </summary>
+            public static string Thick
+            {
+                get { return ActiveResourceLoader.GetString("TrackWidth_Thick"); }
+            }
+
+            /// <summary>
+            ///      Looks up a Text similar to "Thin"
+            /// </summary>
+            public static string Thin
+            {
+                get { return ActiveResourceLoader.GetString("TrackWidth_Thin"); }
+            }
+
+        }
+
     }
 }
 

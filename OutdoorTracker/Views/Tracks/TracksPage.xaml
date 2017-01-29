@@ -80,7 +80,7 @@
             <TextBlock x:Uid="Tracks_Title" Grid.Row="0" Style="{StaticResource PageHeader}" />
 
             <GridView x:Name="tracksView" Grid.Row="1" VerticalAlignment="Top" SelectionMode="Multiple"
-                      ItemsSource="{x:Bind ViewModel.Tracks}"
+                      ItemsSource="{x:Bind ViewModel.Tracks, Mode=OneWay}"
                       SelectionChanged="TracksView_OnSelectionChanged">
                 <GridView.ItemContainerStyle>
                     <Style TargetType="GridViewItem">

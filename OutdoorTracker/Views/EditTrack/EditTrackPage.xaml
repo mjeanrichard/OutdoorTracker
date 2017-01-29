@@ -5,23 +5,50 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:editTrack="using:OutdoorTracker.Views.EditTrack"
+    xmlns:controls="using:OutdoorTracker.Controls"
+    xmlns:converters="using:OutdoorTracker.Converters"
+    xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
     mc:Ignorable="d">
 
     <Page.Resources>
+        <converters:ColorToBrushConverter x:Name="ColorToBrushConverter" />
     </Page.Resources>
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition />
-        </Grid.RowDefinitions>
+    <controls:PageViewControl IsBusy="{x:Bind ViewModel.IsBusy, Mode=OneWay}">
+        <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
 
-        <TextBlock x:Uid="EditTrack_Title" Grid.Row="0" Style="{StaticResource PageHeader}" />
+            <TextBlock x:Uid="EditTrack_Title" Grid.Row="0" Style="{StaticResource PageHeader}" />
 
-        <StackPanel Grid.Row="1" Orientation="Vertical">
-            <TextBox x:Uid="EditTrack_NameField" Text="{x:Bind ViewModel.Track.Name, Mode=TwoWay}" />
-        </StackPanel>
-    </Grid>
+            <StackPanel Grid.Row="1" Orientation="Vertical">
+                <TextBox x:Uid="EditTrack_NameField" Text="{x:Bind ViewModel.Track.Name, Mode=TwoWay}" />
+                <controls:HeaderControl x:Uid="EditTrack_ColorField">
+                    <Button Name="ColorButton"
+                            Width="50" Height="50" 
+                            Tapped="ColorSelectorTapped" 
+                            Background="{x:Bind ViewModel.Track.Color, Mode=OneWay, Converter={StaticResource ColorToBrushConverter}}">
+                        <Grid />
+                        <FlyoutBase.AttachedFlyout>
+                            <Flyout>
+                                <controls:HeaderControl x:Uid="EditTrack_ColorSelector">
+                                    <controls:ColorPickerControl ColorSelected="ColorSelected" Color="{x:Bind ViewModel.Track.Color, Mode=TwoWay}" />
+                                </controls:HeaderControl>
+                            </Flyout>
+                        </FlyoutBase.AttachedFlyout>
+                    </Button>
+                </controls:HeaderControl>
+                <controls:HeaderControl Header="Line Width">
+                    <ComboBox SelectedValue="{x:Bind ViewModel.Track.Width, Mode=TwoWay}" 
+                              SelectedValuePath="Value"
+                              DisplayMemberPath="Key"
+                              ItemsSource="{x:Bind ViewModel.TrackWidths}" />
+                </controls:HeaderControl>
+            </StackPanel>
+        </Grid>
+    </controls:PageViewControl>
 
     <Page.BottomAppBar>
         <CommandBar>

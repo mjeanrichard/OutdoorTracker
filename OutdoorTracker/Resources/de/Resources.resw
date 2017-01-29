@@ -301,4 +301,13 @@
   <data name="Settings_UseHighAccuracyOnly.Header" xml:space="preserve">
     <value>Nur Ortungsdaten mit hoher Genauigkeit verwenden</value>
   </data>
+  <data name="EditTrack_ColorField.Header" xml:space="preserve">
+    <value>Pfad Farbe</value>
+  </data>
+  <data name="EditTrack_ColorSelector" xml:space="preserve">
+    <value>Wählen Sie eine Farbe</value>
+  </data>
+  <data name="EditTrack_WidthField.Header" xml:space="preserve">
+    <value>Pfad Breite</value>
+  </data>
 </root>

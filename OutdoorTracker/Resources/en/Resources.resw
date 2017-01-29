@@ -301,4 +301,13 @@
   <data name="Settings_UseHighAccuracyOnly.Header" xml:space="preserve">
     <value>Only use high accuracy location for tracking</value>
   </data>
+  <data name="EditTrack_ColorField.Header" xml:space="preserve">
+    <value>Track Color</value>
+  </data>
+  <data name="EditTrack_ColorSelector" xml:space="preserve">
+    <value>Select a Color</value>
+  </data>
+  <data name="EditTrack_WidthField.Header" xml:space="preserve">
+    <value>Track width</value>
+  </data>
 </root>

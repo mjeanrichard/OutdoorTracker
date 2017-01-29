@@ -14,6 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
@@ -54,7 +55,7 @@ namespace OutdoorTracker.Controls
 
         private volatile bool _isPathValid = false;
 
-        private List<CanvasGeometry> _trackPaths;
+        private List<TrackContainer> _trackPaths;
 
         private async void OnTracksChanged(ObservableCollection<Track> oldValue, ObservableCollection<Track> newValue)
         {
@@ -109,11 +110,11 @@ namespace OutdoorTracker.Controls
 
         private void BuildPathGeometry(CanvasDevice device, CanvasItemsLayer canvasItemsLayer)
         {
-            List<CanvasGeometry> oldList = _trackPaths;
-            _trackPaths = new List<CanvasGeometry>();
+            List<TrackContainer> oldList = _trackPaths;
+            _trackPaths = new List<TrackContainer>();
             if (oldList != null)
             {
-                foreach (CanvasGeometry trackPath in oldList)
+                foreach (TrackContainer trackPath in oldList)
                 {
                     trackPath.Dispose();
                 }
@@ -126,7 +127,7 @@ namespace OutdoorTracker.Controls
                 if (track.Points.Any())
                 {
                     CanvasGeometry trackPath = BuildPathFromTrack(projection, track, device, canvasItemsLayer);
-                    _trackPaths.Add(trackPath);
+                    _trackPaths.Add(new TrackContainer(trackPath, track));
                 }
             }
             _isPathValid = true;
@@ -159,16 +160,50 @@ namespace OutdoorTracker.Controls
             {
                 BuildPathGeometry(drawingSession.Device, canvasItemsLayer);
             }
-            //float scale = (float)(2 / parentMap.ViewPortProjection.GetZoomFactor(parentMap.ZoomLevel));
-            foreach (CanvasGeometry trackPath in _trackPaths)
+            foreach (TrackContainer trackPath in _trackPaths)
             {
-                drawingSession.DrawGeometry(trackPath, Colors.Red);
+                trackPath.Draw(drawingSession);
             }
         }
 
         public override void InvalidateInternal()
         {
             _isPathValid = false;
+        }
+
+        private class TrackContainer : IDisposable
+        {
+            private readonly Track _track;
+
+            public TrackContainer(CanvasGeometry canvasGeometry, Track track)
+            {
+                _track = track;
+                Geometry = canvasGeometry;
+            }
+
+            public CanvasGeometry Geometry { get; set; }
+
+            public void Dispose()
+            {
+                Dispose(true);
+                GC.SuppressFinalize(this);
+            }
+
+            protected virtual void Dispose(bool disposing)
+            {
+                if (disposing)
+                {
+                    if (Geometry != null)
+                    {
+                        Geometry.Dispose();
+                    }
+                }
+            }
+
+            public void Draw(CanvasDrawingSession drawingSession)
+            {
+                drawingSession.DrawGeometry(Geometry, _track.Color, _track.Width);
+            }
         }
     }
 }

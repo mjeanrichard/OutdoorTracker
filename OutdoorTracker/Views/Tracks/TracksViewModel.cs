@@ -237,7 +237,7 @@ namespace OutdoorTracker.Views.Tracks
             }
         }
 
-        protected override async Task InitializeInternalAsync()
+        protected override async Task LoadData()
         {
             Tracks = new ObservableCollection<Track>(await _unitOfWork.Tracks.ToListAsync());
         }

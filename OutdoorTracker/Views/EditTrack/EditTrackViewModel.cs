@@ -15,6 +15,7 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using Windows.UI.Xaml.Navigation;
@@ -23,6 +24,7 @@ using Microsoft.EntityFrameworkCore;
 
 using OutdoorTracker.Common;
 using OutdoorTracker.Database;
+using OutdoorTracker.Resources;
 using OutdoorTracker.Services;
 using OutdoorTracker.Tracks;
 
@@ -60,6 +62,29 @@ namespace OutdoorTracker.Views.EditTrack
 
         public bool IsNew => !_trackId.HasValue;
 
+        public IEnumerable<KeyValuePair<string, float>> TrackWidths
+        {
+            get
+            {
+                yield return new KeyValuePair<string, float>(Messages.TrackWidth.Hairline, 0.5f);
+                yield return new KeyValuePair<string, float>(Messages.TrackWidth.Thin, 1f);
+                yield return new KeyValuePair<string, float>(Messages.TrackWidth.Medium, 2f);
+                yield return new KeyValuePair<string, float>(Messages.TrackWidth.Thick, 3f);
+            }
+        }
+
+        public float? SelectedTrackWidth
+        {
+            get { return Track?.Width; }
+            set
+            {
+                if (value.HasValue && Track != null)
+                {
+                    Track.Width = value.Value;
+                }
+            }
+        }
+
         public Track Track
         {
             get { return _track; }
@@ -67,6 +92,7 @@ namespace OutdoorTracker.Views.EditTrack
             {
                 _track = value;
                 OnPropertyChanged();
+                OnPropertyChanged(nameof(SelectedTrackWidth));
             }
         }
 

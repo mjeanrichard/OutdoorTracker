@@ -22,14 +22,13 @@
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
+            <RowDefinition Height="5" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <ProgressBar Visibility="{x:Bind ViewModel.IsBusy, Converter={StaticResource boolToVis}, Mode=OneWay}" Height="5" IsIndeterminate="True" />
+        <ProgressBar Grid.Row="0" Visibility="{x:Bind ViewModel.IsBusy, Converter={StaticResource boolToVis}, Mode=OneWay}" Height="5" IsIndeterminate="True" />
 
-        <umc:Map x:Name="map" Grid.Row="2"
+        <umc:Map x:Name="map" Grid.Row="1"
                  Visibility="{x:Bind ViewModel.IsMapInitialized, Converter={StaticResource boolToVis}, Mode=OneWay}"
                  ZoomLevel="{x:Bind ViewModel.ZoomLevel, Mode=TwoWay}"
                  MapCenter="{x:Bind ViewModel.MapCenter, Mode=TwoWay}"
