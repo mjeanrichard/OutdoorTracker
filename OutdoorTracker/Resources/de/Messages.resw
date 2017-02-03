@@ -307,4 +307,22 @@
   <data name="TracksPage_RebuildText" xml:space="preserve">
     <value>Aktualisiere Pfade...</value>
   </data>
+  <data name="TracksPage_Length" xml:space="preserve">
+    <value>Länge: {0:0.0} km/h</value>
+  </data>
+  <data name="Track_Length_KmLong" xml:space="preserve">
+    <value>Länge: {0:0} km</value>
+    <comment>double lengthKm</comment>
+  </data>
+  <data name="Track_Length_KmSmall" xml:space="preserve">
+    <value>Länge: {0:0.0} km</value>
+    <comment>double lengthKm</comment>
+  </data>
+  <data name="Track_Length_Meters" xml:space="preserve">
+    <value>Länge: {0:0} m</value>
+    <comment>double lengthMeter</comment>
+  </data>
+  <data name="Track_Length_Zero" xml:space="preserve">
+    <value>Länge: -</value>
+  </data>
 </root>

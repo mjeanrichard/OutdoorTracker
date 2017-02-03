@@ -255,7 +255,11 @@ namespace OutdoorTracker.Views.Tracks
 
         public Track Track { get; private set; }
         public string Name => Track.Name;
-        public double Length => Track.FlatLength;
+
+        public string Length
+        {
+            get { return Track.LengthString; }
+        }
 
         public bool ShowOnMap
         {

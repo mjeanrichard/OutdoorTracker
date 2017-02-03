@@ -21,6 +21,7 @@ using System.Threading.Tasks;
 using Windows.UI.Xaml.Navigation;
 
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Toolkit.Uwp;
 
 using OutdoorTracker.Common;
 using OutdoorTracker.Database;
@@ -112,7 +113,7 @@ namespace OutdoorTracker.Views.EditTrack
         private async Task SaveTrack()
         {
             await _unitOfWork.SaveChangesAsync();
-            _navigationService.GoBack();
+            await DispatcherHelper.ExecuteOnUIThreadAsync(() => _navigationService.GoBack());
         }
 
         protected override async Task InitializeInternalAsync()

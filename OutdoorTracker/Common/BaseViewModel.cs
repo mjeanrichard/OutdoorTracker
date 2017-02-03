@@ -88,7 +88,7 @@ namespace OutdoorTracker.Common
         {
             using (MarkBusy(message))
             {
-                await Task.Run(async () => await action());
+                await Task.Run(async () => await action().ConfigureAwait(false)).ConfigureAwait(false);
             }
         }
 

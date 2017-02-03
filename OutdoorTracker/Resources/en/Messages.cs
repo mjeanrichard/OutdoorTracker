@@ -542,6 +542,42 @@ namespace OutdoorTracker.Resources
 
         }
 
+        public static class Track
+        {
+            /// <summary>
+            ///      Looks up a Text similar to "Length: {0:0} km"
+            /// </summary>
+            public static string Length_KmLong(double lengthKm)
+            {
+                return string.Format(CultureInfo.CurrentCulture, ActiveResourceLoader.GetString("Track_Length_KmLong"), lengthKm);
+            }
+
+            /// <summary>
+            ///      Looks up a Text similar to "Length: {0:0.0} km"
+            /// </summary>
+            public static string Length_KmSmall(double lengthKm)
+            {
+                return string.Format(CultureInfo.CurrentCulture, ActiveResourceLoader.GetString("Track_Length_KmSmall"), lengthKm);
+            }
+
+            /// <summary>
+            ///      Looks up a Text similar to "Length: {0:0} m"
+            /// </summary>
+            public static string Length_Meters(double lengthMeter)
+            {
+                return string.Format(CultureInfo.CurrentCulture, ActiveResourceLoader.GetString("Track_Length_Meters"), lengthMeter);
+            }
+
+            /// <summary>
+            ///      Looks up a Text similar to "-"
+            /// </summary>
+            public static string Length_Zero
+            {
+                get { return ActiveResourceLoader.GetString("Track_Length_Zero"); }
+            }
+
+        }
+
     }
 }
 

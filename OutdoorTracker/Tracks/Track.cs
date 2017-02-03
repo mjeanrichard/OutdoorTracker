@@ -22,6 +22,8 @@ using Windows.UI;
 
 using Microsoft.Toolkit.Uwp;
 
+using OutdoorTracker.Resources;
+
 namespace OutdoorTracker.Tracks
 {
     public class Track : INotifyPropertyChanged
@@ -72,6 +74,26 @@ namespace OutdoorTracker.Tracks
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        public string LengthString
+        {
+            get
+            {
+                if (FlatLength == 0)
+                {
+                    return Messages.Track.Length_Zero;
+                }
+                if (FlatLength < 1000)
+                {
+                    return Messages.Track.Length_Meters(FlatLength);
+                }
+                if (FlatLength < 10000)
+                {
+                    return Messages.Track.Length_KmSmall(FlatLength / 1000d);
+                }
+                return Messages.Track.Length_KmLong(FlatLength / 1000d);
+            }
         }
     }
 }
