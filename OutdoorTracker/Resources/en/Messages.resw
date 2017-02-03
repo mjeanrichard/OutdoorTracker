@@ -298,4 +298,7 @@
   <data name="TrackWidth_Thin" xml:space="preserve">
     <value>Thin</value>
   </data>
+  <data name="TracksPage_RebuildText" xml:space="preserve">
+    <value>Rebuilding Tracks...</value>
+  </data>
 </root>

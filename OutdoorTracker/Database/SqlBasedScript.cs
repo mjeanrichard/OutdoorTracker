@@ -18,12 +18,13 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace OutdoorTracker.Database
 {
     public abstract class SqlBasedScript : IDbScript
     {
-        public async Task Execute(IUnitOfWork context)
+        public virtual async Task Execute(IUnitOfWork context)
         {
             foreach (string sql in GetSql())
             {

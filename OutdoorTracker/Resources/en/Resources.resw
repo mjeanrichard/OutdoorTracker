@@ -310,4 +310,7 @@
   <data name="EditTrack_WidthField.Header" xml:space="preserve">
     <value>Track width</value>
   </data>
+  <data name="Tracks_RebuildTrackButton.Label" xml:space="preserve">
+    <value>Rebuild Track</value>
+  </data>
 </root>

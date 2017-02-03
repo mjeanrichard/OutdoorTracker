@@ -38,14 +38,13 @@ namespace OutdoorTracker.Views.Layers
         private readonly SettingsManager _settingsManager;
         private readonly MapDefinitionManager _mapDefinitionManager;
         private MapLayerModel _selectedLayer;
-        private string _busyText;
 
         public LayersViewModel()
         {
             Layers = new ObservableCollection<MapLayerModel>();
-            AddMapCommand = new RelayCommand(async () => await ImportMapDefinitionAsync().ConfigureAwait(false));
-            ClearAllCacheCommand = new RelayCommand(async () => await ClearCacheAsync().ConfigureAwait(false));
-            LoadLayerSizeCommand = new RelayCommand(async () => await LoadLayerSizesAsync().ConfigureAwait(false));
+            AddMapCommand = new AsyncCommand(ImportMapDefinitionAsync, Messages.LayersViewModel.ImportingMessage, this);
+            ClearAllCacheCommand = new AsyncCommand(ClearCacheAsync, this);
+            LoadLayerSizeCommand = new AsyncCommand(LoadLayerSizesAsync, this);
         }
 
         public LayersViewModel(SettingsManager settingsManager, MapDefinitionManager mapDefinitionManager)
@@ -71,16 +70,6 @@ namespace OutdoorTracker.Views.Layers
         public RelayCommand ClearAllCacheCommand { get; }
         public RelayCommand LoadLayerSizeCommand { get; }
 
-        public string BusyText
-        {
-            get { return _busyText; }
-            set
-            {
-                _busyText = value;
-                OnPropertyChanged();
-            }
-        }
-
         private async Task LoadLayerSizesAsync()
         {
             LoadLayerSizeCommand.EnabledOverride = false;
@@ -95,15 +84,12 @@ namespace OutdoorTracker.Views.Layers
 
         private async Task ClearCacheAsync()
         {
-            using (MarkBusy())
+            if (await AskDeleteCacheAsync())
             {
-                if (await AskDeleteCacheAsync())
+                IStorageFolder folder = await ApplicationData.Current.LocalCacheFolder.TryGetItemAsync("UMCCache") as IStorageFolder;
+                if (folder != null)
                 {
-                    IStorageFolder folder = await ApplicationData.Current.LocalCacheFolder.TryGetItemAsync("UMCCache") as IStorageFolder;
-                    if (folder != null)
-                    {
-                        await folder.DeleteAsync(StorageDeleteOption.PermanentDelete);
-                    }
+                    await folder.DeleteAsync(StorageDeleteOption.PermanentDelete);
                 }
             }
         }
@@ -131,28 +117,24 @@ namespace OutdoorTracker.Views.Layers
 
         public async Task ImportMapDefinitionAsync()
         {
-            BusyText = Messages.LayersViewModel.ImportingMessage;
-            using (MarkBusy())
+            try
             {
-                try
+                FileOpenPicker openPicker = new FileOpenPicker();
+                openPicker.ViewMode = PickerViewMode.List;
+                openPicker.SuggestedStartLocation = PickerLocationId.Desktop;
+                openPicker.FileTypeFilter.Add(".json");
+                StorageFile file = await openPicker.PickSingleFileAsync();
+                if (file != null)
                 {
-                    FileOpenPicker openPicker = new FileOpenPicker();
-                    openPicker.ViewMode = PickerViewMode.List;
-                    openPicker.SuggestedStartLocation = PickerLocationId.Desktop;
-                    openPicker.FileTypeFilter.Add(".json");
-                    StorageFile file = await openPicker.PickSingleFileAsync();
-                    if (file != null)
-                    {
-                        string json = await FileIO.ReadTextAsync(file);
-                        await _mapDefinitionManager.Import(json).ConfigureAwait(false);
-                        await InitializeInternalAsync().ConfigureAwait(false);
-                    }
+                    string json = await FileIO.ReadTextAsync(file);
+                    await _mapDefinitionManager.Import(json).ConfigureAwait(false);
+                    await InitializeInternalAsync().ConfigureAwait(false);
                 }
-                catch (Exception ex)
-                {
-                    OutdoorTrackerEvents.Log.MapDefinitionOpenFileFailed(ex);
-                    await DialogHelper.ShowErrorAndReport(Messages.MapDefinitionManager.ImportError, Messages.MapDefinitionManager.ImportErrorTitle, ex).ConfigureAwait(false);
-                }
+            }
+            catch (Exception ex)
+            {
+                OutdoorTrackerEvents.Log.MapDefinitionOpenFileFailed(ex);
+                await DialogHelper.ShowErrorAndReport(Messages.MapDefinitionManager.ImportError, Messages.MapDefinitionManager.ImportErrorTitle, ex).ConfigureAwait(false);
             }
         }
     }

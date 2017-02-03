@@ -47,11 +47,10 @@ namespace OutdoorTracker.Services
         private int _nextTrackPointNumber;
         private ExtendedExecutionSession _extendedExecutionSession;
 
-        private double _sumLatitude;
-        private double _sumLongitude;
-        private double? _sumAltitude;
-        private int _avgCount;
-        private int _avgAltCount;
+        private AverageDouble _avgLatitude;
+        private AverageDouble _avgLongitude;
+        private AverageDouble _avgAltitude;
+        private AverageDouble _avgSpeed;
         private ILocation _lastLocation;
 
         public TrackRecorder(UnitOfWorkFactoy unitOfWorkFactory, SettingsManager settingsManager, GeoLocationService geoLocationService)
@@ -86,42 +85,45 @@ namespace OutdoorTracker.Services
                 ILocation location = _geoLocationService.CurrentLocation.Location;
                 if (_lastLocation != null)
                 {
-                    _sumLatitude += location.Latitude;
-                    _sumLongitude += location.Longitude;
-                    _avgCount++;
+                    _avgLatitude.Add(location.Latitude);
+                    _avgLongitude.Add(location.Longitude);
+
                     if (_geoLocationService.CurrentLocation.IsAltitudeValid)
                     {
-                        _sumAltitude += _geoLocationService.CurrentLocation.Altitude;
-                        _avgAltCount++;
+                        _avgAltitude.Add(_geoLocationService.CurrentLocation.Altitude);
+                    }
+                    if (_geoLocationService.CurrentLocation.Speed.HasValue)
+                    {
+                        _avgSpeed.Add(_geoLocationService.CurrentLocation.Speed.Value);
                     }
 
-                    double lat = _sumLatitude / _avgCount;
-                    double lng = _sumLongitude / _avgCount;
-                    double? alt = _sumAltitude / _avgAltCount;
-
-                    Wgs84Location avgLocation = new Wgs84Location(lat, lng);
-                    double distance = _lastLocation.DistanceTo(avgLocation);
-                    if (!_settingsManager.EnableTrackSmoothing || distance > _settingsManager.TrackMinDistanceMeters)
+                    double? avgLat = _avgLatitude.Average;
+                    double? avgLong = _avgLongitude.Average;
+                    if (avgLat.HasValue && avgLong.HasValue)
                     {
-                        _sumLongitude = 0;
-                        _sumLatitude = 0;
-                        _sumAltitude = null;
-                        _avgCount = 0;
-                        _avgAltCount = 0;
-                        await UpdateTrack(lat, lng, alt);
-                        _lastLocation = avgLocation;
+                        Wgs84Location avgLocation = new Wgs84Location(avgLat.Value, avgLong.Value);
+                        double distance = _lastLocation.DistanceTo(avgLocation);
+                        if (!_settingsManager.EnableTrackSmoothing || distance > _settingsManager.TrackMinDistanceMeters)
+                        {
+                            await UpdateTrack(avgLat.Value, avgLong.Value, _avgAltitude.Average, _avgSpeed.Average);
+                            _avgLongitude.Reset();
+                            _avgLatitude.Reset();
+                            _avgAltitude.Reset();
+                            _avgSpeed.Reset();
+                            _lastLocation = avgLocation;
+                        }
                     }
                 }
                 else
                 {
                     double? alt = _geoLocationService.CurrentLocation.IsAltitudeValid ? _geoLocationService.CurrentLocation.Altitude : (double?)null;
-                    await UpdateTrack(location.Latitude, location.Longitude, alt);
+                    await UpdateTrack(location.Latitude, location.Longitude, alt, _geoLocationService.CurrentLocation.Speed);
                     _lastLocation = _geoLocationService.CurrentLocation.Location;
                 }
             }
         }
 
-        private async Task UpdateTrack(double latitude, double longitude, double? altitude)
+        private async Task UpdateTrack(double latitude, double longitude, double? altitude, double? speed)
         {
             Track recordingTrack = RecordingTrack;
             if (recordingTrack == null || !IsTracking)
@@ -139,10 +141,9 @@ namespace OutdoorTracker.Services
                     point.TrackId = recordingTrack.Id;
                     point.Latitude = latitude;
                     point.Longitude = longitude;
-                    if (altitude.HasValue)
-                    {
-                        point.Altitude = altitude.Value;
-                    }
+                    point.Speed = speed;
+                    point.Altitude = altitude;
+
                     unitOfWork.TrackPoints.Add(point);
                     await unitOfWork.SaveChangesAsync();
 
@@ -262,6 +263,36 @@ namespace OutdoorTracker.Services
                 // TODO: Send Toast?
                 ErrorReporter.Current.TrackException(e);
             }
+        }
+    }
+
+    public struct AverageDouble
+    {
+        private double _sum;
+        private int _count;
+
+        public void Add(double value)
+        {
+            _sum += value;
+            _count++;
+        }
+
+        public double? Average
+        {
+            get
+            {
+                if (_count == 0)
+                {
+                    return null;
+                }
+                return _sum / _count;
+            }
+        }
+
+        public void Reset()
+        {
+            _sum = 0;
+            _count = 0;
         }
     }
 }

@@ -17,12 +17,15 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
 using Windows.UI.Popups;
 
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Toolkit.Uwp;
 
 using OutdoorTracker.Common;
 using OutdoorTracker.Database;
@@ -35,37 +38,44 @@ namespace OutdoorTracker.Views.Tracks
     public class TracksViewModel : BaseViewModel
     {
         private readonly TrackRecorder _trackRecorder;
+        private readonly TrackFixer _trackFixer;
         private readonly TrackImporter _trackImporter;
         private readonly IUnitOfWork _unitOfWork;
         private readonly NavigationService _navigationService;
-        private ObservableCollection<Track> _tracks;
-        private IList<Track> _selectedTracks;
-        private string _busyText;
+        private ObservableCollection<TrackViewModel> _tracks;
+        private IList<TrackViewModel> _selectedTracks;
 
         public TracksViewModel()
         {
-            ImportGpxTrackCommand = new RelayCommand(async () => await ImportGpxTrack());
             EditTrackCommand = new RelayCommand(EditTrack, () => SelectedTracks != null && SelectedTracks.Count == 1);
-            DeleteTrackCommand = new RelayCommand(async () => await DeleteTrack(), () => SelectedTracks != null && SelectedTracks.Count > 0);
-            StartTrackingCommand = new RelayCommand(async () => await StartTracking());
-            ExportTracksCommand = new RelayCommand(async () => await ExportTracks(), () => SelectedTracks != null && SelectedTracks.Count > 0);
-            ToggleTrackVisibilityCommand = new ParameterCommand<Track>(async t => await ToggleTrackVisibility(t));
-            _selectedTracks = new List<Track>();
+
+            Func<bool> hasSelectedTracks = () => SelectedTracks != null && SelectedTracks.Count > 0;
+            RebuildTrackCommand = new AsyncCommand(RebuildTracks, Messages.TracksPage.RebuildText, hasSelectedTracks, this);
+            DeleteTrackCommand = new AsyncCommand(DeleteTrack, Messages.TracksPage.DeletingText, hasSelectedTracks, this);
+            ExportTracksCommand = new AsyncCommand(ExportTracks, Messages.TracksPage.ExportingText, hasSelectedTracks, this);
+
+            StartTrackingCommand = new AsyncCommand(StartTracking, this);
+            ImportGpxTrackCommand = new AsyncCommand(ImportGpxTrack, Messages.TracksPage.ImportingText, this);
+
+            ToggleTrackVisibilityCommand = new ParameterCommand<TrackViewModel>(async t => await ToggleTrackVisibility(t));
+
+            _selectedTracks = new List<TrackViewModel>();
         }
 
-        public TracksViewModel(TrackImporter trackImporter, IUnitOfWork unitOfWork, NavigationService navigationService, TrackRecorder trackRecorder)
+        public TracksViewModel(TrackImporter trackImporter, IUnitOfWork unitOfWork, NavigationService navigationService, TrackRecorder trackRecorder, TrackFixer trackFixer)
             : this()
         {
             _trackRecorder = trackRecorder;
+            _trackFixer = trackFixer;
             _trackImporter = trackImporter;
             _unitOfWork = unitOfWork;
             _navigationService = navigationService;
         }
 
 
-        public ParameterCommand<Track> ToggleTrackVisibilityCommand { get; set; }
+        public ParameterCommand<TrackViewModel> ToggleTrackVisibilityCommand { get; set; }
 
-        public ObservableCollection<Track> Tracks
+        public ObservableCollection<TrackViewModel> Tracks
         {
             get { return _tracks; }
             private set
@@ -79,9 +89,10 @@ namespace OutdoorTracker.Views.Tracks
         public RelayCommand StartTrackingCommand { get; }
         public RelayCommand ImportGpxTrackCommand { get; }
         public RelayCommand EditTrackCommand { get; }
+        public RelayCommand RebuildTrackCommand { get; }
         public RelayCommand DeleteTrackCommand { get; }
 
-        public IList<Track> SelectedTracks
+        public IList<TrackViewModel> SelectedTracks
         {
             get { return _selectedTracks; }
             set
@@ -90,28 +101,15 @@ namespace OutdoorTracker.Views.Tracks
                 EditTrackCommand.RaiseCanExecuteChanged();
                 DeleteTrackCommand.RaiseCanExecuteChanged();
                 ExportTracksCommand.RaiseCanExecuteChanged();
-            }
-        }
-
-        public string BusyText
-        {
-            get { return _busyText; }
-            set
-            {
-                _busyText = value;
-                OnPropertyChanged();
+                RebuildTrackCommand.RaiseCanExecuteChanged();
             }
         }
 
         private async Task ExportTracks()
         {
-            using (MarkBusy())
+            if (SelectedTracks.Any())
             {
-                BusyText = "Exporting selected tracks...";
-                if (SelectedTracks.Any())
-                {
-                    await _trackImporter.ExportTracks(SelectedTracks.Select(t => t.Id).ToArray());
-                }
+                await _trackImporter.ExportTracks(SelectedTracks.Select(t => t.Track.Id).ToArray());
             }
         }
 
@@ -128,61 +126,69 @@ namespace OutdoorTracker.Views.Tracks
         }
 
 
-        private async Task ToggleTrackVisibility(Track track)
+        private async Task ToggleTrackVisibility(TrackViewModel track)
         {
             if (track != null)
             {
-                track.ShowOnMap = !track.ShowOnMap;
+                track.Track.ShowOnMap = !track.ShowOnMap;
                 await _unitOfWork.SaveChangesAsync();
             }
         }
 
         private async Task DeleteTrack()
         {
-            IList<Track> selectedTracks = SelectedTracks;
+            IList<TrackViewModel> selectedTracks = SelectedTracks;
             if (selectedTracks.Count == 0)
             {
                 return;
             }
 
-            BusyText = Messages.TracksPage.DeletingText;
-            using (MarkBusy())
+            string message;
+            string title;
+            if (selectedTracks.Count == 1)
             {
-                string message;
-                string title;
-                if (selectedTracks.Count == 1)
+                message = Messages.TracksPage.DeleteSingleMessage(selectedTracks[0].Name);
+                title = Messages.TracksPage.DeleteSingleTitle;
+            }
+            else
+            {
+                message = Messages.TracksPage.DeleteMessage;
+                title = Messages.TracksPage.DeleteTitle;
+            }
+            if (await AskDelete(message, title))
+            {
+                await Task.Run(async () =>
                 {
-                    message = Messages.TracksPage.DeleteSingleMessage(selectedTracks[0].Name);
-                    title = Messages.TracksPage.DeleteSingleTitle;
-                }
-                else
-                {
-                    message = Messages.TracksPage.DeleteMessage;
-                    title = Messages.TracksPage.DeleteTitle;
-                }
-                if (await AskDelete(message, title))
-                {
-                    await Task.Run(async () =>
+                    using (MarkBusy())
                     {
-                        using (MarkBusy())
+                        foreach (TrackViewModel selectedTrack in selectedTracks)
                         {
-                            foreach (Track selectedTrack in selectedTracks)
+                            int trackId = selectedTrack.Track.Id;
+                            if (_trackRecorder.IsTracking && _trackRecorder.RecordingTrack.Id == trackId)
                             {
-                                if (_trackRecorder.IsTracking && _trackRecorder.RecordingTrack.Id == selectedTrack.Id)
-                                {
-                                    _trackRecorder.StopTracking();
-                                }
-                                _unitOfWork.TrackPoints.RemoveRange(await _unitOfWork.TrackPoints.Where(p => p.TrackId == selectedTrack.Id).ToArrayAsync());
-                                _unitOfWork.Tracks.Remove(await _unitOfWork.Tracks.SingleAsync(t => t.Id == selectedTrack.Id));
-                                await _unitOfWork.SaveChangesAsync();
+                                _trackRecorder.StopTracking();
                             }
+                            _unitOfWork.TrackPoints.RemoveRange(await _unitOfWork.TrackPoints.Where(p => p.TrackId == trackId).ToArrayAsync());
+                            _unitOfWork.Tracks.Remove(await _unitOfWork.Tracks.SingleAsync(t => t.Id == trackId));
+                            await _unitOfWork.SaveChangesAsync();
                         }
-                    });
-                    foreach (Track selectedTrack in selectedTracks)
-                    {
-                        Tracks.Remove(selectedTrack);
                     }
+                });
+                foreach (TrackViewModel selectedTrack in selectedTracks)
+                {
+                    Tracks.Remove(selectedTrack);
                 }
+            }
+        }
+
+        private async Task RebuildTracks()
+        {
+            IList<TrackViewModel> trackViewModels = SelectedTracks.ToArray();
+            foreach (TrackViewModel track in trackViewModels)
+            {
+                await _trackFixer.UpdateTrack(track.Track, _unitOfWork).ConfigureAwait(false);
+                await _unitOfWork.SaveChangesAsync().ConfigureAwait(false);
+                track.Refresh();
             }
         }
 
@@ -221,25 +227,56 @@ namespace OutdoorTracker.Views.Tracks
             {
                 return;
             }
-            _navigationService.NavigateToEditTrack(SelectedTracks[0].Id);
+            _navigationService.NavigateToEditTrack(SelectedTracks[0].Track.Id);
         }
 
         private async Task ImportGpxTrack()
         {
-            using (MarkBusy())
+            IEnumerable<Track> importedTracks = await _trackImporter.ImportTracks();
+            foreach (Track importedTrack in importedTracks)
             {
-                BusyText = "Importing tracks...";
-                IEnumerable<Track> importedTracks = await _trackImporter.ImportTracks();
-                foreach (Track importedTrack in importedTracks)
-                {
-                    Tracks.Add(importedTrack);
-                }
+                Tracks.Add(new TrackViewModel(importedTrack));
             }
         }
 
         protected override async Task LoadData()
         {
-            Tracks = new ObservableCollection<Track>(await _unitOfWork.Tracks.ToListAsync());
+            List<Track> tracks = await _unitOfWork.Tracks.ToListAsync();
+            Tracks = new ObservableCollection<TrackViewModel>(tracks.Select(t => new TrackViewModel(t)));
+        }
+    }
+
+    public class TrackViewModel : INotifyPropertyChanged
+    {
+        public TrackViewModel(Track track)
+        {
+            Track = track;
+        }
+
+        public Track Track { get; private set; }
+        public string Name => Track.Name;
+        public double Length => Track.FlatLength;
+
+        public bool ShowOnMap
+        {
+            get { return Track.ShowOnMap; }
+            set
+            {
+                Track.ShowOnMap = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public void Refresh()
+        {
+            DispatcherHelper.ExecuteOnUIThreadAsync(() => OnPropertyChanged(nameof(Length)));
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

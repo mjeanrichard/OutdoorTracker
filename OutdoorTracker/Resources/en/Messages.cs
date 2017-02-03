@@ -496,6 +496,14 @@ namespace OutdoorTracker.Resources
                 get { return ActiveResourceLoader.GetString("TracksPage_YesStopTracking"); }
             }
 
+            /// <summary>
+            ///      Looks up a Text similar to "Rebuilding Tracks..."
+            /// </summary>
+            public static string RebuildText
+            {
+                get { return ActiveResourceLoader.GetString("TracksPage_RebuildText"); }
+            }
+
         }
 
         public static class TrackWidth

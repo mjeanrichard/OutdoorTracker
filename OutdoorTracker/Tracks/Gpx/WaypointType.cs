@@ -14,6 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+using System;
 using System.Xml.Serialization;
 
 using Windows.Foundation;
@@ -47,8 +48,23 @@ namespace OutdoorTracker.Tracks.Gpx
         [XmlAttribute("lon")]
         public double Longitude { get; set; }
 
-        [XmlAttribute("ele")]
-        public double Elevation { get; set; }
+        [XmlElement("ele", IsNullable = true)]
+        public double? Elevation { get; set; }
+
+        //[XmlElement("ele", IsNullable = true)]
+        //public double ElevationSerializable
+        //{
+        //    get { return Elevation.GetValueOrDefault(); }
+        //    set { Elevation = value; }
+        //}
+
+        [XmlElement("time")]
+        public DateTime Time { get; set; }
+
+        //public bool ShouldSerializeElevationSerializable()
+        //{
+        //    return Elevation.HasValue;
+        //}
 
         public Point ToPoint()
         {

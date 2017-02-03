@@ -16,13 +16,10 @@
 
 using System.Linq;
 
-using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Input;
 
 using OutdoorTracker.Common;
-using OutdoorTracker.Tracks;
 
 namespace OutdoorTracker.Views.Tracks
 {
@@ -39,7 +36,7 @@ namespace OutdoorTracker.Views.Tracks
 
         private void TracksView_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            ViewModel.SelectedTracks = tracksView.SelectedItems.Cast<Track>().ToList();
+            ViewModel.SelectedTracks = tracksView.SelectedItems.Cast<TrackViewModel>().ToList();
         }
 
         private void DeleteTapped(object sender, TappedRoutedEventArgs e)

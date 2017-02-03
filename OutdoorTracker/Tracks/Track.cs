@@ -29,6 +29,8 @@ namespace OutdoorTracker.Tracks
         public Track()
         {
             Points = new ObservableCollection<TrackPoint>();
+            Width = 1;
+            Color = Colors.Red;
         }
 
         public int Id { get; set; }
@@ -37,6 +39,11 @@ namespace OutdoorTracker.Tracks
         public ObservableCollection<TrackPoint> Points { get; set; }
         public uint ColorValue { get; set; }
         public float Width { get; set; }
+        public double FlatLength { get; set; }
+        public double MaxLatitude { get; set; }
+        public double MinLatitude { get; set; }
+        public double MaxLongitude { get; set; }
+        public double MinLongitude { get; set; }
 
         public Color Color
         {

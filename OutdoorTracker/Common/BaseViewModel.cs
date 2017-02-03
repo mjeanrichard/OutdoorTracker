@@ -27,12 +27,23 @@ namespace OutdoorTracker.Common
     public abstract class BaseViewModel : INotifyPropertyChanged
     {
         private int _busyCounter;
+        private string _busyText;
 
         protected bool IsInitialized { get; set; }
 
         protected Task DataLoaderTask { get; private set; }
 
         public bool IsBusy => _busyCounter != 0;
+
+        public string BusyText
+        {
+            get { return _busyText; }
+            set
+            {
+                _busyText = value;
+                OnPropertyChanged();
+            }
+        }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -65,12 +76,20 @@ namespace OutdoorTracker.Common
 
         protected async void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
-            await DispatcherHelper.ExecuteOnUIThreadAsync(() => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName)));
+            await DispatcherHelper.ExecuteOnUIThreadAsync(() => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName))).ConfigureAwait(false);
         }
 
-        public IDisposable MarkBusy()
+        public IDisposable MarkBusy(string message = null)
         {
-            return new BusyState(this);
+            return new BusyState(this, message);
+        }
+
+        public async Task RunBusy(Func<Task> action, string message)
+        {
+            using (MarkBusy(message))
+            {
+                await Task.Run(async () => await action());
+            }
         }
 
         public virtual Task Leave()
@@ -103,16 +122,24 @@ namespace OutdoorTracker.Common
         private class BusyState : IDisposable
         {
             private readonly BaseViewModel _baseViewModel;
+            private readonly string _oldMessage;
 
-            public BusyState(BaseViewModel baseViewModel)
+            public BusyState(BaseViewModel baseViewModel, string message = null)
             {
                 _baseViewModel = baseViewModel;
+
+                _oldMessage = baseViewModel.BusyText;
+                if (message != null)
+                {
+                    _baseViewModel.BusyText = message;
+                }
                 _baseViewModel.IncrementBusyCounter();
             }
 
             public void Dispose()
             {
                 _baseViewModel.DecrementBusyCounter();
+                _baseViewModel.BusyText = _oldMessage;
             }
         }
     }

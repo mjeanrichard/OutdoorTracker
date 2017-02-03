@@ -310,4 +310,7 @@
   <data name="EditTrack_WidthField.Header" xml:space="preserve">
     <value>Pfad Breite</value>
   </data>
+  <data name="Tracks_RebuildTrackButton.Label" xml:space="preserve">
+    <value>Pfad aktualisieren</value>
+  </data>
 </root>

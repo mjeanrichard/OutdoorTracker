@@ -116,6 +116,7 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Common\AppPage.cs" />
+    <Compile Include="Common\AsyncCommand.cs" />
     <Compile Include="Common\BaseCommand.cs" />
     <Compile Include="Common\BaseViewModel.cs" />
     <Compile Include="Common\DependencyContainer.cs" />
@@ -154,8 +155,11 @@
     <Compile Include="Migrations\003_AddOpenStreetMap.cs" />
     <Compile Include="Database\IDbScript.cs" />
     <Compile Include="Migrations\004_TrackShowOnMap.cs" />
+    <Compile Include="Migrations\007_AddTrackSpeed.cs" />
     <Compile Include="Migrations\006_AddTrackWidth.cs" />
     <Compile Include="Migrations\005_AddTrackColor.cs" />
+    <Compile Include="Migrations\008_AddTracksFlatLength.cs" />
+    <Compile Include="Tracks\TrackFixer.cs" />
     <Compile Include="Resources\en\Messages.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Messages.tt</DependentUpon>

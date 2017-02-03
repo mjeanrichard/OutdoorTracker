@@ -298,4 +298,13 @@
   <data name="TrackWidth_Thin" xml:space="preserve">
     <value>dünn</value>
   </data>
+  <data name="TracksPage_ExportText" xml:space="preserve">
+    <value>Exportiere Pfade...</value>
+  </data>
+  <data name="TracksPage_ImportText" xml:space="preserve">
+    <value>Importiere Pfade...</value>
+  </data>
+  <data name="TracksPage_RebuildText" xml:space="preserve">
+    <value>Aktualisiere Pfade...</value>
+  </data>
 </root>

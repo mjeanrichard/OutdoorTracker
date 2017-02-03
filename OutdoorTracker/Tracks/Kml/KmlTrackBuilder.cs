@@ -117,7 +117,15 @@ namespace OutdoorTracker.Tracks.Kml
                 StringBuilder lineStringBuilder = new StringBuilder();
                 foreach (TrackPoint trackPoint in trackPoints)
                 {
-                    lineStringBuilder.AppendFormat(CultureInfo.InvariantCulture, "{0},{1} ", trackPoint.Longitude, trackPoint.Latitude);
+                    lineStringBuilder.AppendFormat(CultureInfo.InvariantCulture, "{0},{1}", trackPoint.Longitude, trackPoint.Latitude);
+                    if (trackPoint.Altitude.HasValue)
+                    {
+                        lineStringBuilder.AppendFormat(CultureInfo.InvariantCulture, ",{0} ", trackPoint.Altitude.Value);
+                    }
+                    else
+                    {
+                        lineStringBuilder.Append(" ");
+                    }
                 }
                 placemark.LineString.Coordinates = lineStringBuilder.ToString();
             }

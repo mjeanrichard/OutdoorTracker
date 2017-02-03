@@ -78,7 +78,7 @@
             <TextBlock x:Uid="Tracks_Title" Grid.Row="0" Style="{StaticResource PageHeader}" />
 
             <GridView x:Name="tracksView" Grid.Row="1" VerticalAlignment="Top" SelectionMode="Multiple"
-                      ItemsSource="{x:Bind ViewModel.Tracks, Mode=OneWay}"
+                      ItemsSource="{x:Bind ViewModel.Tracks, Mode=OneWay}" 
                       SelectionChanged="TracksView_OnSelectionChanged">
                 <GridView.ItemContainerStyle>
                     <Style TargetType="GridViewItem">
@@ -87,7 +87,7 @@
                     </Style>
                 </GridView.ItemContainerStyle>
                 <GridView.ItemTemplate>
-                    <DataTemplate x:DataType="tracksData:Track">
+                    <DataTemplate x:DataType="tracks:TrackViewModel">
                         <Border BorderBrush="{StaticResource SystemAccentColorDark2Brush}"
                                 Background="{StaticResource SystemBaseLowColorBrush}">
                             <Grid Margin="1">
@@ -124,9 +124,9 @@
                                         </Canvas>
                                     </ToggleSwitch.OffContent>
                                 </ToggleSwitch>
-                                <TextBlock Grid.Column="1" Grid.Row="0" TextWrapping="NoWrap" Text="{x:Bind Name, Mode=OneTime}" />
-                                <TextBlock Grid.Column="1" Grid.Row="1" TextWrapping="NoWrap" Text="{x:Bind Name, Mode=OneTime}" />
-                                <TextBlock Grid.Column="1" Grid.Row="2" TextWrapping="NoWrap" Text="{x:Bind Name, Mode=OneTime}" />
+                                <TextBlock Grid.Column="1" Grid.Row="0" TextWrapping="NoWrap" Text="{x:Bind Name, Mode=OneWay}" />
+                                <TextBlock Grid.Column="1" Grid.Row="1" TextWrapping="NoWrap" Text="{x:Bind Length, Mode=OneWay}" />
+                                <TextBlock Grid.Column="1" Grid.Row="2" TextWrapping="NoWrap" Text="{x:Bind Name, Mode=OneWay}" />
                             </Grid>
                         </Border>
                     </DataTemplate>
@@ -142,6 +142,7 @@
             <AppBarButton x:Uid="Tracks_ExportButton" Command="{x:Bind ViewModel.ExportTracksCommand, Mode=OneTime}" Icon="SaveLocal" />
             <AppBarButton x:Uid="Tracks_EditButton" Command="{x:Bind ViewModel.EditTrackCommand, Mode=OneTime}" Icon="Edit" />
             <AppBarButton x:Uid="Tracks_DeleteButton" IsEnabled="{x:Bind ViewModel.DeleteTrackCommand.IsEnabled, Mode=OneWay}" Tapped="DeleteTapped" Icon="Delete" />
+            <AppBarButton x:Uid="Tracks_RebuildTrackButton" Command="{x:Bind ViewModel.RebuildTrackCommand, Mode=OneTime}" Icon="Refresh" />
         </CommandBar>
     </Page.BottomAppBar>
 </tracks:TracksPageBase>

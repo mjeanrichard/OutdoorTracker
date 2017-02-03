@@ -50,8 +50,8 @@ namespace OutdoorTracker.Views.EditTrack
             _trackRecorder = trackRecorder;
 
             CancelCommand = new RelayCommand(() => _navigationService.GoBack());
-            SaveCommand = new RelayCommand(async () => await SaveTrack());
-            CreateCommand = new RelayCommand(async () => await CreateNewTrack());
+            SaveCommand = new AsyncCommand(SaveTrack, this);
+            CreateCommand = new AsyncCommand(CreateNewTrack, this);
 
             _trackId = parameter.Parameter as int?;
         }

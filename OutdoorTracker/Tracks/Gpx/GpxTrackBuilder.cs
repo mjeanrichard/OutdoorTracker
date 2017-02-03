@@ -114,6 +114,7 @@ namespace OutdoorTracker.Tracks.Gpx
                     waypoint.Latitude = trackPoint.Latitude;
                     waypoint.Longitude = trackPoint.Longitude;
                     waypoint.Elevation = trackPoint.Altitude;
+                    waypoint.Time = trackPoint.Time;
                     segment.Points.Add(waypoint);
                 }
             }
