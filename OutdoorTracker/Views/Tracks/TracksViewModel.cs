@@ -47,7 +47,7 @@ namespace OutdoorTracker.Views.Tracks
 
         public TracksViewModel()
         {
-            EditTrackCommand = new RelayCommand(EditTrack, () => SelectedTracks != null && SelectedTracks.Count == 1);
+            EditTrackCommand = new AsyncCommand(EditTrack, () => SelectedTracks != null && SelectedTracks.Count == 1, this);
 
             Func<bool> hasSelectedTracks = () => SelectedTracks != null && SelectedTracks.Count > 0;
             RebuildTrackCommand = new AsyncCommand(RebuildTracks, Messages.TracksPage.RebuildText, hasSelectedTracks, this);
@@ -122,7 +122,7 @@ namespace OutdoorTracker.Views.Tracks
                     return;
                 }
             }
-            _navigationService.NavigateToNewTrack();
+            await _navigationService.NavigateToNewTrack();
         }
 
 
@@ -221,13 +221,13 @@ namespace OutdoorTracker.Views.Tracks
         }
 
 
-        private void EditTrack()
+        private async Task EditTrack()
         {
             if (SelectedTracks == null || SelectedTracks.Count != 1)
             {
                 return;
             }
-            _navigationService.NavigateToEditTrack(SelectedTracks[0].Track.Id);
+            await _navigationService.NavigateToEditTrack(SelectedTracks[0].Track.Id);
         }
 
         private async Task ImportGpxTrack()

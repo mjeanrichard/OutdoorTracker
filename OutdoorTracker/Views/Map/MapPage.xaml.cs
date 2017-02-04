@@ -19,6 +19,7 @@ using System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Input;
+using Windows.UI.Xaml.Navigation;
 
 using OutdoorTracker.Common;
 
@@ -35,6 +36,7 @@ namespace OutdoorTracker.Views.Map
         public MapPage()
         {
             InitializeComponent();
+            NavigationCacheMode = NavigationCacheMode.Enabled;
             map.Visibility = Visibility.Collapsed;
             map.ManipulationMode = ManipulationModes.Rotate | ManipulationModes.Scale | ManipulationModes.TranslateX | ManipulationModes.TranslateY | ManipulationModes.TranslateInertia;
         }

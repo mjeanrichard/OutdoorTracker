@@ -50,7 +50,7 @@ namespace OutdoorTracker.Views.EditTrack
             _navigationService = navigationService;
             _trackRecorder = trackRecorder;
 
-            CancelCommand = new RelayCommand(() => _navigationService.GoBack());
+            CancelCommand = new AsyncCommand(_navigationService.GoBack, this);
             SaveCommand = new AsyncCommand(SaveTrack, this);
             CreateCommand = new AsyncCommand(CreateNewTrack, this);
 
@@ -106,14 +106,13 @@ namespace OutdoorTracker.Views.EditTrack
             _unitOfWork.Tracks.Add(Track);
             await _unitOfWork.SaveChangesAsync();
             await _trackRecorder.StartTracking(Track);
-            _navigationService.NavigateToMap();
-            _navigationService.RemoveLastFrame();
+            await _navigationService.NavigateBackToMap();
         }
 
         private async Task SaveTrack()
         {
             await _unitOfWork.SaveChangesAsync();
-            await DispatcherHelper.ExecuteOnUIThreadAsync(() => _navigationService.GoBack());
+            await _navigationService.GoBack();
         }
 
         protected override async Task InitializeInternalAsync()
@@ -124,7 +123,7 @@ namespace OutdoorTracker.Views.EditTrack
                 Track track = await _unitOfWork.Tracks.SingleOrDefaultAsync(t => t.Id == trackId);
                 if (track == null)
                 {
-                    _navigationService.GoBack();
+                    await _navigationService.GoBack();
                 }
                 Track = track;
             }

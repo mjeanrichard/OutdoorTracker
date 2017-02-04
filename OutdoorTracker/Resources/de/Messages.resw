@@ -298,17 +298,8 @@
   <data name="TrackWidth_Thin" xml:space="preserve">
     <value>dünn</value>
   </data>
-  <data name="TracksPage_ExportText" xml:space="preserve">
-    <value>Exportiere Pfade...</value>
-  </data>
-  <data name="TracksPage_ImportText" xml:space="preserve">
-    <value>Importiere Pfade...</value>
-  </data>
   <data name="TracksPage_RebuildText" xml:space="preserve">
     <value>Aktualisiere Pfade...</value>
-  </data>
-  <data name="TracksPage_Length" xml:space="preserve">
-    <value>Länge: {0:0.0} km/h</value>
   </data>
   <data name="Track_Length_KmLong" xml:space="preserve">
     <value>Länge: {0:0} km</value>

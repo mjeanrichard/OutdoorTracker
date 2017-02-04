@@ -39,7 +39,6 @@ namespace OutdoorTracker.Views.Map
     public class MapViewModel : BaseViewModel
     {
         private readonly SettingsManager _settingsManager;
-        private readonly NavigationService _navigationService;
         private readonly MapDefinitionManager _mapDefinitionManager;
         private readonly GeoLocationService _geoLocationService;
         private readonly TrackRecorder _trackRecorder;
@@ -60,21 +59,22 @@ namespace OutdoorTracker.Views.Map
             : this()
         {
             _settingsManager = settingsManager;
-            _navigationService = navigationService;
             _mapDefinitionManager = mapDefinitionManager;
             _geoLocationService = geoLocationService;
             _trackRecorder = trackRecorder;
             _readonlyUnitOfWork = readonlyUnitOfWork;
             _trackRecorder.TrackUpdated += (s, e) => TrackRecorderUpdated();
 
-            GotoGpsCommand = new RelayCommand(async () => await GotoCurrentLocation(), () => LocationModel.LocationAccuracy != LocationAccuracy.None);
+            ShowTracksCommand = new AsyncCommand(navigationService.NavigateToTracks, this);
+            ShowSettingsCommand = new AsyncCommand(navigationService.NavigateToSettings, this);
+            ShowLayersCommand = new AsyncCommand(navigationService.NavigateToLayers, this);
+            ShowLocationInfoCommand = new AsyncCommand(navigationService.NavigateToLocationInfo, this);
+
+            GotoGpsCommand = new AsyncCommand(GotoCurrentLocation, () => LocationModel.LocationAccuracy != LocationAccuracy.None, this);
             StopTrackingCommand = new RelayCommand(StopTracking);
-            ShowTracksCommand = new RelayCommand(() => _navigationService.NavigateToTracks());
-            ShowSettingsCommand = new RelayCommand(() => _navigationService.NavigateToSettings());
-            ShowLayersCommand = new RelayCommand(() => _navigationService.NavigateToLayers());
-            ShowLocationInfoCommand = new RelayCommand(() => _navigationService.NavigateToLocationInfo());
             CompassCommand = new RelayCommand(() => ToggleCompass(HeadingMode.Compass));
             NorthUpCommand = new RelayCommand(() => ToggleCompass(HeadingMode.NorthUp));
+
             LocationModel = _geoLocationService.CurrentLocation;
             LocationModel.PropertyChanged += LocationModelPropertyChanged;
 

@@ -14,12 +14,17 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-using System.Linq;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
+using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Navigation;
+
+using Microsoft.Toolkit.Uwp;
 
 using OutdoorTracker.Views.EditTrack;
 using OutdoorTracker.Views.Layers;
 using OutdoorTracker.Views.LocationInfo;
-using OutdoorTracker.Views.Map;
 using OutdoorTracker.Views.Settings;
 using OutdoorTracker.Views.Tracks;
 
@@ -34,52 +39,62 @@ namespace OutdoorTracker.Common
             _app = app;
         }
 
-        public void RemoveLastFrame()
+        public async Task NavigateToSettings()
         {
-            if (_app.RootFrame.CanGoBack && _app.RootFrame.BackStackDepth > 0)
+            await NavigateTo<SettingsPage>();
+        }
+
+        public async Task NavigateToLayers()
+        {
+            await NavigateTo<LayersPage>();
+        }
+
+        public async Task NavigateToTracks()
+        {
+            await NavigateTo<TracksPage>();
+        }
+
+        public async Task GoBack()
+        {
+            await DispatcherHelper.ExecuteOnUIThreadAsync(() => _app.RootFrame.GoBack());
+        }
+
+        public async Task NavigateToLocationInfo()
+        {
+            await NavigateTo<LocationInfoPage>();
+        }
+
+        public async Task NavigateToEditTrack(int trackId)
+        {
+            await NavigateTo<EditTrackPage>(trackId);
+        }
+
+        public async Task NavigateToNewTrack()
+        {
+            await NavigateTo<EditTrackPage>();
+        }
+
+        public async Task NavigateBackToMap()
+        {
+            await DispatcherHelper.ExecuteOnUIThreadAsync(() =>
             {
-                _app.RootFrame.BackStack.Remove(_app.RootFrame.BackStack.LastOrDefault());
-            }
+                IList<PageStackEntry> backStack = _app.RootFrame.BackStack;
+                for (int i = backStack.Count - 1; i > 0; i--)
+                {
+                    _app.RootFrame.BackStack.RemoveAt(i);
+                }
+                _app.RootFrame.GoBack();
+            });
         }
 
-        public void NavigateToSettings()
+        private async Task NavigateTo<TPage>() where TPage : Page
         {
-            _app.RootFrame.Navigate(typeof(SettingsPage));
+            await DispatcherHelper.ExecuteOnUIThreadAsync(() => _app.RootFrame.Navigate(typeof(TPage)));
         }
 
-        public void NavigateToLayers()
+        private async Task NavigateTo<TPage>(object parameter) where TPage : Page
         {
-            _app.RootFrame.Navigate(typeof(LayersPage));
-        }
-
-        public void NavigateToTracks()
-        {
-            _app.RootFrame.Navigate(typeof(TracksPage));
-        }
-
-        public void GoBack()
-        {
-            _app.RootFrame.GoBack();
-        }
-
-        public void NavigateToLocationInfo()
-        {
-            _app.RootFrame.Navigate(typeof(LocationInfoPage));
-        }
-
-        public void NavigateToEditTrack(int trackId)
-        {
-            _app.RootFrame.Navigate(typeof(EditTrackPage), trackId);
-        }
-
-        public void NavigateToNewTrack()
-        {
-            _app.RootFrame.Navigate(typeof(EditTrackPage));
-        }
-
-        public void NavigateToMap()
-        {
-            _app.RootFrame.Navigate(typeof(MapPage));
+            await DispatcherHelper.ExecuteOnUIThreadAsync(() => _app.RootFrame.Navigate(typeof(TPage), parameter));
         }
     }
 }
