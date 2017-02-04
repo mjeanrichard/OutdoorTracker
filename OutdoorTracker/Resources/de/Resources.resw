@@ -313,4 +313,7 @@
   <data name="Tracks_RebuildTrackButton.Label" xml:space="preserve">
     <value>Pfad aktualisieren</value>
   </data>
+  <data name="Tracks_MulitSelectButton.Label" xml:space="preserve">
+    <value>Mehrere Pfade selektieren</value>
+  </data>
 </root>

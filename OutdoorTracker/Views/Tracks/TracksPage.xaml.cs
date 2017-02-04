@@ -16,6 +16,7 @@
 
 using System.Linq;
 
+using Windows.UI.Core;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
 
@@ -34,6 +35,16 @@ namespace OutdoorTracker.Views.Tracks
             InitializeComponent();
         }
 
+        protected override void BackRequested(object sender, BackRequestedEventArgs e)
+        {
+            if (tracksView.SelectionMode == ListViewSelectionMode.Multiple)
+            {
+                tracksView.SelectionMode = ListViewSelectionMode.Single;
+                e.Handled = true;
+            }
+            base.BackRequested(sender, e);
+        }
+
         private void TracksView_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             ViewModel.SelectedTracks = tracksView.SelectedItems.Cast<TrackViewModel>().ToList();
@@ -42,6 +53,18 @@ namespace OutdoorTracker.Views.Tracks
         private void DeleteTapped(object sender, TappedRoutedEventArgs e)
         {
             ViewModel.DeleteTrackCommand.Execute();
+        }
+
+        private void SwitchMultiSelect(object sender, TappedRoutedEventArgs e)
+        {
+            if (tracksView.SelectionMode == ListViewSelectionMode.Single)
+            {
+                tracksView.SelectionMode = ListViewSelectionMode.Multiple;
+            }
+            else
+            {
+                tracksView.SelectionMode = ListViewSelectionMode.Single;
+            }
         }
     }
 }

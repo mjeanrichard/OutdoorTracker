@@ -79,7 +79,6 @@ namespace OutdoorTracker
             }
 #endif
 
-            SystemNavigationManager.GetForCurrentView().BackRequested += App_BackRequested;
             RootFrame = Window.Current.Content as Frame;
 
             // Do not repeat app initialization when the Window already has content,
@@ -158,23 +157,6 @@ namespace OutdoorTracker
             if (baseViewModel != null)
             {
                 await baseViewModel.Resuming();
-            }
-        }
-
-        private void App_BackRequested(object sender, BackRequestedEventArgs e)
-        {
-            Frame rootFrame = Window.Current.Content as Frame;
-            if (rootFrame == null)
-            {
-                return;
-            }
-
-            // Navigate back if possible, and if the event has not 
-            // already been handled .
-            if (rootFrame.CanGoBack && (e.Handled == false))
-            {
-                e.Handled = true;
-                rootFrame.GoBack();
             }
         }
     }

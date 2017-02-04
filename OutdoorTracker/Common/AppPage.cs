@@ -42,6 +42,9 @@ namespace OutdoorTracker.Common
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
+            SystemNavigationManager.GetForCurrentView().BackRequested -= BackRequested;
+            SystemNavigationManager.GetForCurrentView().BackRequested += BackRequested;
+
             _pageContainer = DependencyContainer.Current.CreateChildContainer();
             ViewModel = _pageContainer.Resolve<TModel>(new TypedParameterOverride<NavigationEventArgs>(e));
 
@@ -66,7 +69,26 @@ namespace OutdoorTracker.Common
         protected override async void OnNavigatedFrom(NavigationEventArgs e)
         {
             await ViewModel.Leave();
+            SystemNavigationManager.GetForCurrentView().BackRequested -= BackRequested;
             _pageContainer.Dispose();
         }
+
+        protected virtual void BackRequested(object sender, BackRequestedEventArgs e)
+        {
+            Frame rootFrame = Window.Current.Content as Frame;
+            if (rootFrame == null)
+            {
+                return;
+            }
+
+            // Navigate back if possible, and if the event has not 
+            // already been handled .
+            if (rootFrame.CanGoBack && !e.Handled)
+            {
+                e.Handled = true;
+                rootFrame.GoBack();
+            }
+        }
+
     }
 }

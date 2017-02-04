@@ -313,4 +313,7 @@
   <data name="Tracks_RebuildTrackButton.Label" xml:space="preserve">
     <value>Rebuild Track</value>
   </data>
+  <data name="Tracks_MulitSelectButton.Label" xml:space="preserve">
+    <value>Select multiple tracks</value>
+  </data>
 </root>

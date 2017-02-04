@@ -6,16 +6,16 @@
 
     <uwp:BoolToVisibilityConverter x:Name="boolToVis" />
 
-    <SolidColorBrush Color="{ThemeResource SystemAccentColor}" x:Key="SystemAccentColorBrush"/>
-    <SolidColorBrush Color="{ThemeResource SystemAccentColorLight1}" x:Key="SystemAccentColorLight1Brush"/>
-    <SolidColorBrush Color="{ThemeResource SystemAccentColorLight2}" x:Key="SystemAccentColorLight2Brush"/>
-    <SolidColorBrush Color="{ThemeResource SystemAccentColorLight3}" x:Key="SystemAccentColorLight3Brush"/>
-    <SolidColorBrush Color="{ThemeResource SystemAccentColorDark1}" x:Key="SystemAccentColorDark1Brush"/>
-    <SolidColorBrush Color="{ThemeResource SystemAccentColorDark2}" x:Key="SystemAccentColorDark2Brush"/>
-    <SolidColorBrush Color="{ThemeResource SystemAccentColorDark3}" x:Key="SystemAccentColorDark3Brush"/>
-    <SolidColorBrush Color="{ThemeResource SystemBaseMediumColor}" x:Key="SystemBaseMediumColorBrush"/>
-    <SolidColorBrush Color="{ThemeResource SystemBaseLowColor}" x:Key="SystemBaseLowColorBrush"/>
-    
+    <SolidColorBrush Color="{ThemeResource SystemAccentColor}" x:Key="SystemAccentColorBrush" />
+    <SolidColorBrush Color="{ThemeResource SystemAccentColorLight1}" x:Key="SystemAccentColorLight1Brush" />
+    <SolidColorBrush Color="{ThemeResource SystemAccentColorLight2}" x:Key="SystemAccentColorLight2Brush" />
+    <SolidColorBrush Color="{ThemeResource SystemAccentColorLight3}" x:Key="SystemAccentColorLight3Brush" />
+    <SolidColorBrush Color="{ThemeResource SystemAccentColorDark1}" x:Key="SystemAccentColorDark1Brush" />
+    <SolidColorBrush Color="{ThemeResource SystemAccentColorDark2}" x:Key="SystemAccentColorDark2Brush" />
+    <SolidColorBrush Color="{ThemeResource SystemAccentColorDark3}" x:Key="SystemAccentColorDark3Brush" />
+    <SolidColorBrush Color="{ThemeResource SystemBaseMediumColor}" x:Key="SystemBaseMediumColorBrush" />
+    <SolidColorBrush Color="{ThemeResource SystemBaseLowColor}" x:Key="SystemBaseLowColorBrush" />
+
     <Style TargetType="controls:HeaderControl">
         <Setter Property="Template">
             <Setter.Value>
@@ -112,6 +112,7 @@
         </Setter>
     </Style>
 
+    <!-- IconToggleSwitch -->
     <Style TargetType="ToggleSwitch" x:Key="IconToggleSwitch">
         <Setter Property="Foreground" Value="{ThemeResource SystemControlForegroundBaseHighBrush}" />
         <Setter Property="HorizontalAlignment" Value="Left" />
@@ -207,8 +208,8 @@
                                           HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                           VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                                           AutomationProperties.AccessibilityView="Raw" />
-                        <Thumb x:Name="SwitchThumb" 
-                               AutomationProperties.AccessibilityView="Raw" 
+                        <Thumb x:Name="SwitchThumb"
+                               AutomationProperties.AccessibilityView="Raw"
                                VerticalAlignment="Stretch"
                                Grid.Row="1" Grid.RowSpan="3">
                             <Thumb.Template>
@@ -222,4 +223,33 @@
             </Setter.Value>
         </Setter>
     </Style>
+
+    <!-- Checking GridView -->
+    <ControlTemplate TargetType="GridViewItem" x:Key="CustomGridViewTemplate">
+        <ListViewItemPresenter
+            ContentTransitions="{TemplateBinding ContentTransitions}"
+            SelectionCheckMarkVisualEnabled="True"
+            CheckBrush="{ThemeResource SystemControlForegroundBaseMediumHighBrush}"
+            CheckBoxBrush="{ThemeResource SystemControlBackgroundChromeMediumBrush}"
+            DragBackground="{ThemeResource ListViewItemDragBackgroundThemeBrush}"
+            DragForeground="{ThemeResource ListViewItemDragForegroundThemeBrush}"
+            FocusBorderBrush="{ThemeResource SystemControlForegroundAltHighBrush}"
+            FocusSecondaryBorderBrush="{ThemeResource SystemControlForegroundBaseHighBrush}"
+            PlaceholderBackground="{ThemeResource ListViewItemPlaceholderBackgroundThemeBrush}"
+            PointerOverBackground="{ThemeResource SystemControlHighlightListLowBrush}"
+            PointerOverForeground="{ThemeResource SystemControlForegroundBaseHighBrush}"
+            SelectedBackground="{ThemeResource SystemControlHighlightAccentBrush}"
+            SelectedForeground="{ThemeResource SystemControlForegroundBaseHighBrush}"
+            SelectedPointerOverBackground="{ThemeResource SystemControlHighlightListAccentMediumBrush}"
+            PressedBackground="{ThemeResource SystemControlHighlightListMediumBrush}"
+            SelectedPressedBackground="{ThemeResource SystemControlHighlightListAccentHighBrush}"
+            DisabledOpacity="{ThemeResource ListViewItemDisabledThemeOpacity}"
+            DragOpacity="{ThemeResource ListViewItemDragThemeOpacity}"
+            ReorderHintOffset="{ThemeResource GridViewItemReorderHintThemeOffset}"
+            HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+            VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+            ContentMargin="{TemplateBinding Padding}"
+            CheckMode="Inline" />
+    </ControlTemplate>
+
 </ResourceDictionary>
