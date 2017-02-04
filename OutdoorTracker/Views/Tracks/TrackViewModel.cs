@@ -15,7 +15,6 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 using System.ComponentModel;
-using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
@@ -24,6 +23,7 @@ using Microsoft.Toolkit.Uwp;
 
 using OutdoorTracker.Common;
 using OutdoorTracker.Database;
+using OutdoorTracker.Resources;
 using OutdoorTracker.Tracks;
 
 namespace OutdoorTracker.Views.Tracks
@@ -42,7 +42,10 @@ namespace OutdoorTracker.Views.Tracks
         public AsyncCommand ToggleTrackVisibilityCommand { get; set; }
 
         public Track Track { get; }
+
         public string Name => Track.Name;
+
+        public string Date => Messages.TracksPage.TrackDate(Track.Date);
 
         public string Length
         {

@@ -14,6 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
@@ -33,6 +34,7 @@ namespace OutdoorTracker.Tracks
             Points = new ObservableCollection<TrackPoint>();
             Width = 1;
             Color = Colors.Red;
+            Date = DateTime.Now;
         }
 
         public int Id { get; set; }
@@ -46,6 +48,7 @@ namespace OutdoorTracker.Tracks
         public double MinLatitude { get; set; }
         public double MaxLongitude { get; set; }
         public double MinLongitude { get; set; }
+        public DateTime Date { get; set; }
 
         public Color Color
         {

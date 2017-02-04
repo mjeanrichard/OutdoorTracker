@@ -15,6 +15,8 @@ using System.Runtime.CompilerServices;
 
 using Windows.ApplicationModel.Resources;
 
+using OutdoorTracker.Helpers;
+
 
 namespace OutdoorTracker.Resources
 {
@@ -217,7 +219,7 @@ namespace OutdoorTracker.Resources
             /// </summary>
             public static string SizeText(ulong size)
             {
-                return string.Format(CultureInfo.CurrentCulture, ActiveResourceLoader.GetString("LayersViewModel_SizeText"), size);
+                return string.Format(CultureHelper.CurrentCulture, ActiveResourceLoader.GetString("LayersViewModel_SizeText"), size);
             }
 
             /// <summary>
@@ -277,7 +279,7 @@ namespace OutdoorTracker.Resources
             /// </summary>
             public static string LayerExists(string name)
             {
-                return string.Format(CultureInfo.CurrentCulture, ActiveResourceLoader.GetString("MapDefinitionManager_LayerExists"), name);
+                return string.Format(CultureHelper.CurrentCulture, ActiveResourceLoader.GetString("MapDefinitionManager_LayerExists"), name);
             }
 
             /// <summary>
@@ -301,7 +303,7 @@ namespace OutdoorTracker.Resources
             /// </summary>
             public static string UnknownConfig(string config)
             {
-                return string.Format(CultureInfo.CurrentCulture, ActiveResourceLoader.GetString("MapDefinitionManager_UnknownConfig"), config);
+                return string.Format(CultureHelper.CurrentCulture, ActiveResourceLoader.GetString("MapDefinitionManager_UnknownConfig"), config);
             }
 
             /// <summary>
@@ -309,7 +311,7 @@ namespace OutdoorTracker.Resources
             /// </summary>
             public static string UnknownProjection(string projection)
             {
-                return string.Format(CultureInfo.CurrentCulture, ActiveResourceLoader.GetString("MapDefinitionManager_UnknownProjection"), projection);
+                return string.Format(CultureHelper.CurrentCulture, ActiveResourceLoader.GetString("MapDefinitionManager_UnknownProjection"), projection);
             }
 
         }
@@ -321,7 +323,7 @@ namespace OutdoorTracker.Resources
             /// </summary>
             public static string ImportFailedTitle(string format)
             {
-                return string.Format(CultureInfo.CurrentCulture, ActiveResourceLoader.GetString("TrackBuilder_ImportFailedTitle"), format);
+                return string.Format(CultureHelper.CurrentCulture, ActiveResourceLoader.GetString("TrackBuilder_ImportFailedTitle"), format);
             }
 
         }
@@ -381,7 +383,7 @@ namespace OutdoorTracker.Resources
             /// </summary>
             public static string UnknownType(string elementName)
             {
-                return string.Format(CultureInfo.CurrentCulture, ActiveResourceLoader.GetString("TrackImporter_UnknownType"), elementName);
+                return string.Format(CultureHelper.CurrentCulture, ActiveResourceLoader.GetString("TrackImporter_UnknownType"), elementName);
             }
 
             /// <summary>
@@ -429,7 +431,7 @@ namespace OutdoorTracker.Resources
             /// </summary>
             public static string DeleteSingleMessage(string trackName)
             {
-                return string.Format(CultureInfo.CurrentCulture, ActiveResourceLoader.GetString("TracksPage_DeleteSingleMessage"), trackName);
+                return string.Format(CultureHelper.CurrentCulture, ActiveResourceLoader.GetString("TracksPage_DeleteSingleMessage"), trackName);
             }
 
             /// <summary>
@@ -504,6 +506,14 @@ namespace OutdoorTracker.Resources
                 get { return ActiveResourceLoader.GetString("TracksPage_RebuildText"); }
             }
 
+            /// <summary>
+            ///      Looks up a Text similar to "Date: {0:g}"
+            /// </summary>
+            public static string TrackDate(DateTime date)
+            {
+                return string.Format(CultureHelper.CurrentCulture, ActiveResourceLoader.GetString("TracksPage_TrackDate"), date);
+            }
+
         }
 
         public static class TrackWidth
@@ -549,7 +559,7 @@ namespace OutdoorTracker.Resources
             /// </summary>
             public static string Length_KmLong(double lengthKm)
             {
-                return string.Format(CultureInfo.CurrentCulture, ActiveResourceLoader.GetString("Track_Length_KmLong"), lengthKm);
+                return string.Format(CultureHelper.CurrentCulture, ActiveResourceLoader.GetString("Track_Length_KmLong"), lengthKm);
             }
 
             /// <summary>
@@ -557,7 +567,7 @@ namespace OutdoorTracker.Resources
             /// </summary>
             public static string Length_KmSmall(double lengthKm)
             {
-                return string.Format(CultureInfo.CurrentCulture, ActiveResourceLoader.GetString("Track_Length_KmSmall"), lengthKm);
+                return string.Format(CultureHelper.CurrentCulture, ActiveResourceLoader.GetString("Track_Length_KmSmall"), lengthKm);
             }
 
             /// <summary>
@@ -565,11 +575,11 @@ namespace OutdoorTracker.Resources
             /// </summary>
             public static string Length_Meters(double lengthMeter)
             {
-                return string.Format(CultureInfo.CurrentCulture, ActiveResourceLoader.GetString("Track_Length_Meters"), lengthMeter);
+                return string.Format(CultureHelper.CurrentCulture, ActiveResourceLoader.GetString("Track_Length_Meters"), lengthMeter);
             }
 
             /// <summary>
-            ///      Looks up a Text similar to "-"
+            ///      Looks up a Text similar to "Length: -"
             /// </summary>
             public static string Length_Zero
             {

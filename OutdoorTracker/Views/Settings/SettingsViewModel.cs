@@ -21,6 +21,7 @@ using Windows.ApplicationModel;
 using Windows.Globalization;
 
 using OutdoorTracker.Common;
+using OutdoorTracker.Helpers;
 using OutdoorTracker.Services;
 
 namespace OutdoorTracker.Views.Settings
@@ -33,7 +34,7 @@ namespace OutdoorTracker.Views.Settings
         {
             Package package = Package.Current;
             PackageVersion packageVersion = package.Id.Version;
-            Version = string.Format("{0}.{1}.{2}.{3}", packageVersion.Major, packageVersion.Minor, packageVersion.Build, packageVersion.Revision);
+            Version = string.Format(CultureInfo.InvariantCulture, "{0}.{1}.{2}.{3}", packageVersion.Major, packageVersion.Minor, packageVersion.Build, packageVersion.Revision);
         }
 
         public SettingsViewModel(SettingsManager settingsManager)
@@ -89,7 +90,7 @@ namespace OutdoorTracker.Views.Settings
             set
             {
                 int intValue;
-                if (int.TryParse(value, NumberStyles.AllowTrailingWhite | NumberStyles.AllowTrailingWhite, CultureInfo.CurrentCulture, out intValue))
+                if (int.TryParse(value, NumberStyles.AllowTrailingWhite | NumberStyles.AllowTrailingWhite, CultureHelper.CurrentCulture, out intValue))
                 {
                     _settingsManager.TrackMinDistanceMeters = intValue;
                 }
@@ -105,6 +106,7 @@ namespace OutdoorTracker.Views.Settings
                 if (ApplicationLanguages.PrimaryLanguageOverride != value)
                 {
                     ApplicationLanguages.PrimaryLanguageOverride = value;
+                    CultureHelper.Reload();
                     OnPropertyChanged();
                 }
             }

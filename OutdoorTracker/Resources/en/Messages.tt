@@ -24,6 +24,8 @@ using System.Runtime.CompilerServices;
 
 using Windows.ApplicationModel.Resources;
 
+using OutdoorTracker.Helpers;
+
 <#
     string filename = Path.GetFileNameWithoutExtension(Host.TemplateFile);
 #>
@@ -88,7 +90,7 @@ namespace <#= System.Runtime.Remoting.Messaging.CallContext.LogicalGetData("Name
             /// </summary>
             public static string <#= methodName #>(<#= comment #>)
             {
-                return string.Format(CultureInfo.CurrentCulture, ActiveResourceLoader.GetString("<#= resName #>"), <#= string.Join(", ", comment.Split(',').Select(e => e.Trim().Split(' ')[1])) #>);
+                return string.Format(CultureHelper.CurrentCulture, ActiveResourceLoader.GetString("<#= resName #>"), <#= string.Join(", ", comment.Split(',').Select(e => e.Trim().Split(' ')[1])) #>);
             }
 
 <#

@@ -9,7 +9,7 @@ namespace OutdoorTracker.Migrations
     {
         protected override IEnumerable<string> GetSql()
         {
-            yield return @"ALTER TABLE Tracks ADD Color INTEGER NOT NULL DEFAULT 0;";
+            yield return @"ALTER TABLE Tracks ADD Color INTEGER NOT NULL DEFAULT 4294901760;";
         }
     }
 }

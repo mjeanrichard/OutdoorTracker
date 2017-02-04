@@ -91,6 +91,7 @@
 
             <GridView x:Name="tracksView" Grid.Row="1" VerticalAlignment="Top" SelectionMode="Single"
                       ItemsSource="{x:Bind ViewModel.Tracks, Mode=OneWay}"
+                      DoubleTapped="TrackDoubleTapped" IsDoubleTapEnabled="True"
                       SelectionChanged="TracksView_OnSelectionChanged">
                 <GridView.ItemTemplate>
                     <DataTemplate x:DataType="tracks:TrackViewModel">
@@ -129,7 +130,10 @@
                                 </ToggleSwitch.OffContent>
                             </ToggleSwitch>
                             <TextBlock Grid.Column="1" Grid.Row="0" TextWrapping="NoWrap" Text="{x:Bind Name, Mode=OneWay}" />
-                            <TextBlock Grid.Column="1" Grid.Row="1" TextWrapping="NoWrap" Text="{x:Bind Length, Mode=OneWay}" />
+                            <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Horizontal">
+                                <TextBlock TextWrapping="NoWrap" Text="{x:Bind Date, Mode=OneWay}" />
+                                <TextBlock TextWrapping="NoWrap" Text="{x:Bind Length, Mode=OneWay}" Margin="10,0,0,0" />
+                            </StackPanel>
                             <Line Grid.Column="2" Grid.RowSpan="2"
                                   Margin="5"
                                   X1="0" X2="20"

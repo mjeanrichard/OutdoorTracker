@@ -316,4 +316,7 @@
   <data name="Track_Length_Zero" xml:space="preserve">
     <value>Länge: -</value>
   </data>
+  <data name="TracksPage_TrackDate" xml:space="preserve">
+    <value>{0:g}</value>
+  </data>
 </root>

@@ -66,5 +66,13 @@ namespace OutdoorTracker.Views.Tracks
                 tracksView.SelectionMode = ListViewSelectionMode.Single;
             }
         }
+
+        private void TrackDoubleTapped(object sender, DoubleTappedRoutedEventArgs e)
+        {
+            if (tracksView.SelectionMode == ListViewSelectionMode.Single && ViewModel.EditTrackCommand.IsEnabled)
+            {
+                ViewModel.EditTrackCommand.Execute();
+            }
+        }
     }
 }

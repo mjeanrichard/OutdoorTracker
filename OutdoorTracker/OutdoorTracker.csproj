@@ -126,6 +126,7 @@
     <Compile Include="Controls\ColorPickerControl.cs" />
     <Compile Include="Controls\PageViewControl.cs" />
     <Compile Include="Converters\ColorToBrushConverter.cs" />
+    <Compile Include="Helpers\CultureHelper.cs" />
     <Compile Include="Helpers\TrackEvents.cs" />
     <Compile Include="Logging\OutdoorTrackerEvents.cs" />
     <Compile Include="Common\ParameterCommand.cs" />
@@ -159,6 +160,7 @@
     <Compile Include="Migrations\006_AddTrackWidth.cs" />
     <Compile Include="Migrations\005_AddTrackColor.cs" />
     <Compile Include="Migrations\008_AddTracksFlatLength.cs" />
+    <Compile Include="Migrations\009_AddTrackDate.cs" />
     <Compile Include="Tracks\TrackFixer.cs" />
     <Compile Include="Resources\en\Messages.cs">
       <AutoGen>True</AutoGen>

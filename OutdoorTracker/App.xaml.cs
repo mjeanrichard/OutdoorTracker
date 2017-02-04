@@ -20,12 +20,10 @@ using System.Threading.Tasks;
 
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
-using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 
-using Microsoft.HockeyApp;
 using Microsoft.Practices.Unity;
 using Microsoft.Toolkit.Uwp;
 
@@ -93,7 +91,7 @@ namespace OutdoorTracker
                 Messages.Init();
             }
 
-            if ((e.PreviousExecutionState != ApplicationExecutionState.Suspended) && (e.PreviousExecutionState != ApplicationExecutionState.Running))
+            if (e.PreviousExecutionState != ApplicationExecutionState.Suspended && e.PreviousExecutionState != ApplicationExecutionState.Running)
             {
                 await DependencyContainer.Current.Resolve<DbInitializer>().InitDatabase();
             }

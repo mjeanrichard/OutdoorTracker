@@ -14,6 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -51,6 +52,11 @@ namespace OutdoorTracker.Tracks
 
         public async Task UpdateTrack(Track track, IUnitOfWork unitOfWork)
         {
+            double maxLatitude = 0;
+            double minLatitude = double.MaxValue;
+            double maxLongitude = 0;
+            double minLongitude = double.MaxValue;
+
             double totalDistance = 0;
             Wgs84Location previousLocation = null;
 
@@ -60,14 +66,26 @@ namespace OutdoorTracker.Tracks
                 TrackPoint trackPoint = trackPoints[index];
 
                 Wgs84Location currentLocation = trackPoint.Location;
-                if (previousLocation == null)
+
+                maxLatitude = Math.Max(maxLatitude, currentLocation.Latitude);
+                maxLongitude = Math.Max(maxLongitude, currentLocation.Longitude);
+                minLatitude = Math.Min(minLatitude, currentLocation.Latitude);
+                minLongitude = Math.Min(minLongitude, currentLocation.Longitude);
+
+                if (previousLocation != null)
                 {
-                    previousLocation = currentLocation;
-                    continue;
+                    totalDistance += previousLocation.DistanceTo(currentLocation);
                 }
-                totalDistance += previousLocation.DistanceTo(currentLocation);
                 previousLocation = currentLocation;
             }
+            if (trackPoints.Length > 0)
+            {
+                track.Date = trackPoints[0].Time;
+            }
+            track.MaxLatitude = maxLatitude;
+            track.MaxLongitude = maxLongitude;
+            track.MinLatitude = minLatitude;
+            track.MinLongitude = minLongitude;
             track.FlatLength = totalDistance;
         }
     }
