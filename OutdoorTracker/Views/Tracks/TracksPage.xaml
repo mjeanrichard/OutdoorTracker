@@ -109,10 +109,10 @@
                                           Width="24"
                                           Margin="2"
                                           Style="{StaticResource IconToggleSwitch}"
-                                          IsOn="{x:Bind ShowOnMap, Mode=TwoWay}">
+                                          IsOn="{x:Bind ShowOnMap, Mode=OneTime}">
                                 <interactivity:Interaction.Behaviors>
                                     <core:EventTriggerBehavior EventName="Toggled">
-                                        <core:InvokeCommandAction Command="{Binding DataContext.ToggleTrackVisibilityCommand, ElementName=tracksView}" CommandParameter="{x:Bind Mode=OneTime}" />
+                                        <core:InvokeCommandAction Command="{x:Bind ToggleTrackVisibilityCommand, Mode=OneTime}" />
                                     </core:EventTriggerBehavior>
                                 </interactivity:Interaction.Behaviors>
                                 <ToggleSwitch.OnContent>

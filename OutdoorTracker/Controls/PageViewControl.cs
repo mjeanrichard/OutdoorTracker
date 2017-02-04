@@ -16,9 +16,11 @@
 
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Controls.Primitives;
 
 namespace OutdoorTracker.Controls
 {
+    [TemplatePart(Name = PopupGridPartName, Type = typeof(Grid))]
     public sealed class PageViewControl : ContentControl
     {
         public static readonly DependencyProperty BusyMessageProperty = DependencyProperty.Register(
@@ -39,9 +41,35 @@ namespace OutdoorTracker.Controls
             set { SetValue(IsBusyProperty, value); }
         }
 
+        private const string PopupGridPartName = "PART_PopupGrid";
+
+        private Grid _popupGrid;
+
         public PageViewControl()
         {
             DefaultStyleKey = typeof(PageViewControl);
+        }
+
+        protected override void OnApplyTemplate()
+        {
+            base.OnApplyTemplate();
+            _popupGrid = GetTemplateChild(PopupGridPartName) as Grid;
+            if (_popupGrid != null)
+            {
+                _popupGrid.SizeChanged += PopupSizeChanged;
+                SetPopupSize();
+            }
+        }
+
+        private void PopupSizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            SetPopupSize();
+        }
+
+        private void SetPopupSize()
+        {
+            _popupGrid.Height = Window.Current.Bounds.Height;
+            _popupGrid.Width = Window.Current.Bounds.Width;
         }
     }
 }

@@ -71,17 +71,19 @@
                 <ControlTemplate TargetType="controls:PageViewControl">
                     <Grid>
                         <ContentPresenter Margin="12" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" />
-                        <Grid Visibility="{Binding IsBusy, Converter={StaticResource boolToVis}}">
-                            <Grid.Background>
-                                <SolidColorBrush Color="Black" Opacity="0.75" />
-                            </Grid.Background>
-                            <StackPanel VerticalAlignment="Center"
-                                        HorizontalAlignment="Center">
+                        <Popup IsOpen="{Binding IsBusy}" IsLightDismissEnabled="False">
+                            <Grid x:Name="PART_PopupGrid">
+                                <Grid.Background>
+                                    <SolidColorBrush Color="Black" Opacity="0.75" />
+                                </Grid.Background>
+                                <StackPanel VerticalAlignment="Center"
+                                            HorizontalAlignment="Center">
 
-                                <ProgressRing IsActive="{TemplateBinding IsBusy}" Height="60" Width="60" />
-                                <TextBlock Text="{TemplateBinding BusyMessage}" HorizontalAlignment="Center" TextWrapping="WrapWholeWords" Foreground="LightGray" />
-                            </StackPanel>
-                        </Grid>
+                                    <ProgressRing IsActive="{TemplateBinding IsBusy}" Height="60" Width="60" />
+                                    <TextBlock Text="{TemplateBinding BusyMessage}" HorizontalAlignment="Center" TextWrapping="WrapWholeWords" Foreground="{ThemeResource SystemControlHighlightAccentBrush}" />
+                                </StackPanel>
+                            </Grid>
+                        </Popup>
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>

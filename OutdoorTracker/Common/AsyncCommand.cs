@@ -50,7 +50,14 @@ namespace OutdoorTracker.Common
 
         public override async void Execute(object parameter = null)
         {
-            await _viewModel.RunBusy(_action, _busyMessage);
+            if (_viewModel != null)
+            {
+                await _viewModel.RunBusy(_action, _busyMessage);
+            }
+            else
+            {
+                await Task.Run(async () => await _action().ConfigureAwait(false)).ConfigureAwait(false);
+            }
         }
     }
 }

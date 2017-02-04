@@ -17,15 +17,12 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
 using Windows.UI.Popups;
 
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Toolkit.Uwp;
 
 using OutdoorTracker.Common;
 using OutdoorTracker.Database;
@@ -39,6 +36,7 @@ namespace OutdoorTracker.Views.Tracks
     {
         private readonly TrackRecorder _trackRecorder;
         private readonly TrackFixer _trackFixer;
+        private readonly UnitOfWorkFactoy _unitOfWorkFactoy;
         private readonly TrackImporter _trackImporter;
         private readonly IUnitOfWork _unitOfWork;
         private readonly NavigationService _navigationService;
@@ -50,30 +48,28 @@ namespace OutdoorTracker.Views.Tracks
             EditTrackCommand = new AsyncCommand(EditTrack, () => SelectedTracks != null && SelectedTracks.Count == 1, this);
 
             Func<bool> hasSelectedTracks = () => SelectedTracks != null && SelectedTracks.Count > 0;
-            RebuildTrackCommand = new AsyncCommand(RebuildTracks, Messages.TracksPage.RebuildText, hasSelectedTracks, this);
+            RebuildTrackCommand = new AsyncCommand(RebuildTracks, Messages.TracksPage.RebuildText, this);
             DeleteTrackCommand = new AsyncCommand(DeleteTrack, Messages.TracksPage.DeletingText, hasSelectedTracks, this);
             ExportTracksCommand = new AsyncCommand(ExportTracks, Messages.TracksPage.ExportingText, hasSelectedTracks, this);
 
             StartTrackingCommand = new AsyncCommand(StartTracking, this);
             ImportGpxTrackCommand = new AsyncCommand(ImportGpxTrack, Messages.TracksPage.ImportingText, this);
 
-            ToggleTrackVisibilityCommand = new ParameterCommand<TrackViewModel>(async t => await ToggleTrackVisibility(t));
-
             _selectedTracks = new List<TrackViewModel>();
         }
 
-        public TracksViewModel(TrackImporter trackImporter, IUnitOfWork unitOfWork, NavigationService navigationService, TrackRecorder trackRecorder, TrackFixer trackFixer)
+        public TracksViewModel(TrackImporter trackImporter, IUnitOfWork unitOfWork, NavigationService navigationService, TrackRecorder trackRecorder, TrackFixer trackFixer, UnitOfWorkFactoy unitOfWorkFactoy)
             : this()
         {
             _trackRecorder = trackRecorder;
             _trackFixer = trackFixer;
+            _unitOfWorkFactoy = unitOfWorkFactoy;
             _trackImporter = trackImporter;
             _unitOfWork = unitOfWork;
             _navigationService = navigationService;
         }
 
 
-        public ParameterCommand<TrackViewModel> ToggleTrackVisibilityCommand { get; set; }
 
         public ObservableCollection<TrackViewModel> Tracks
         {
@@ -125,16 +121,6 @@ namespace OutdoorTracker.Views.Tracks
             await _navigationService.NavigateToNewTrack();
         }
 
-
-        private async Task ToggleTrackVisibility(TrackViewModel track)
-        {
-            if (track != null)
-            {
-                track.Track.ShowOnMap = !track.ShowOnMap;
-                await _unitOfWork.SaveChangesAsync();
-            }
-        }
-
         private async Task DeleteTrack()
         {
             IList<TrackViewModel> selectedTracks = SelectedTracks;
@@ -183,7 +169,15 @@ namespace OutdoorTracker.Views.Tracks
 
         private async Task RebuildTracks()
         {
-            IList<TrackViewModel> trackViewModels = SelectedTracks.ToArray();
+            IList<TrackViewModel> trackViewModels;
+            if (SelectedTracks != null && SelectedTracks.Any())
+            {
+                trackViewModels = SelectedTracks.ToArray();
+            }
+            else
+            {
+                trackViewModels = Tracks.ToArray();
+            }
             foreach (TrackViewModel track in trackViewModels)
             {
                 await _trackFixer.UpdateTrack(track.Track, _unitOfWork).ConfigureAwait(false);
@@ -235,52 +229,14 @@ namespace OutdoorTracker.Views.Tracks
             IEnumerable<Track> importedTracks = await _trackImporter.ImportTracks();
             foreach (Track importedTrack in importedTracks)
             {
-                Tracks.Add(new TrackViewModel(importedTrack));
+                Tracks.Add(new TrackViewModel(importedTrack, _unitOfWorkFactoy));
             }
         }
 
         protected override async Task LoadData()
         {
             List<Track> tracks = await _unitOfWork.Tracks.ToListAsync();
-            Tracks = new ObservableCollection<TrackViewModel>(tracks.Select(t => new TrackViewModel(t)));
-        }
-    }
-
-    public class TrackViewModel : INotifyPropertyChanged
-    {
-        public TrackViewModel(Track track)
-        {
-            Track = track;
-        }
-
-        public Track Track { get; private set; }
-        public string Name => Track.Name;
-
-        public string Length
-        {
-            get { return Track.LengthString; }
-        }
-
-        public bool ShowOnMap
-        {
-            get { return Track.ShowOnMap; }
-            set
-            {
-                Track.ShowOnMap = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public void Refresh()
-        {
-            DispatcherHelper.ExecuteOnUIThreadAsync(() => OnPropertyChanged(nameof(Length)));
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            Tracks = new ObservableCollection<TrackViewModel>(tracks.Select(t => new TrackViewModel(t, _unitOfWorkFactoy)));
         }
     }
 }
