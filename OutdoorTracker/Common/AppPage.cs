@@ -42,12 +42,6 @@ namespace OutdoorTracker.Common
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
-            SystemNavigationManager.GetForCurrentView().BackRequested -= BackRequested;
-            SystemNavigationManager.GetForCurrentView().BackRequested += BackRequested;
-
-            _pageContainer = DependencyContainer.Current.CreateChildContainer();
-            ViewModel = _pageContainer.Resolve<TModel>(new TypedParameterOverride<NavigationEventArgs>(e));
-
             Frame rootFrame = Window.Current.Content as Frame;
             if ((rootFrame != null) && rootFrame.CanGoBack)
             {
@@ -57,6 +51,19 @@ namespace OutdoorTracker.Common
             {
                 SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = AppViewBackButtonVisibility.Collapsed;
             }
+
+            if (e.NavigationMode == NavigationMode.Back || e.NavigationMode == NavigationMode.Refresh)
+            {
+                await ViewModel.Refresh();
+                return;
+            }
+
+            SystemNavigationManager.GetForCurrentView().BackRequested -= BackRequested;
+            SystemNavigationManager.GetForCurrentView().BackRequested += BackRequested;
+
+            _pageContainer = DependencyContainer.Current.CreateChildContainer();
+            ViewModel = _pageContainer.Resolve<TModel>(new TypedParameterOverride<NavigationEventArgs>(e));
+
 
             await ViewModel.Initialize();
             InitializeCompleted();

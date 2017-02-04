@@ -59,14 +59,13 @@ namespace OutdoorTracker.Common
                 return;
             }
             await InitializeInternalAsync().ConfigureAwait(false);
-            DataLoaderTask = Task.Run(async () =>
-            {
-                using (MarkBusy())
-                {
-                    await LoadData();
-                }
-            });
+            DataLoaderTask = Task.Run(async () => await RunBusy(LoadData, string.Empty));
             IsInitialized = true;
+        }
+
+        public virtual Task Refresh()
+        {
+            return Task.CompletedTask;
         }
 
         protected virtual Task LoadData()

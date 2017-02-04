@@ -88,7 +88,7 @@ namespace OutdoorTracker.Views.Map
 
         public bool ShowCompassCommand
         {
-            get { return LocationModel.HasCompass && (_headingMode == HeadingMode.NorthUp); }
+            get { return LocationModel.HasCompass && _headingMode == HeadingMode.NorthUp; }
         }
 
         public LocationData LocationModel { get; private set; }
@@ -149,7 +149,7 @@ namespace OutdoorTracker.Views.Map
 
         public bool ShowAccuracyCircle
         {
-            get { return _settingsManager.ShowAccuracy && ShowCurrentPosition && (LocationModel.LocationAccuracy == LocationAccuracy.High); }
+            get { return _settingsManager.ShowAccuracy && ShowCurrentPosition && LocationModel.LocationAccuracy == LocationAccuracy.High; }
         }
 
         public bool IsMapInitialized { get; private set; }
@@ -200,7 +200,7 @@ namespace OutdoorTracker.Views.Map
 
         private void LocationModelPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if ((e.PropertyName == nameof(LocationData.LocationAccuracy)) || (e.PropertyName == nameof(LocationData.Accuracy)))
+            if (e.PropertyName == nameof(LocationData.LocationAccuracy) || e.PropertyName == nameof(LocationData.Accuracy))
             {
                 GotoGpsCommand.RaiseCanExecuteChanged();
                 OnPropertyChanged(nameof(ShowAccuracyCircle));
@@ -252,21 +252,7 @@ namespace OutdoorTracker.Views.Map
 
         protected override async Task LoadData()
         {
-            await LoadTracks().ConfigureAwait(false);
-        }
-
-        private async Task LoadTracks()
-        {
-            using (MarkBusy())
-            {
-                List<Track> collection = await _readonlyUnitOfWork.Tracks.Where(t => t.ShowOnMap).Include(t => t.Points).ToListAsync().ConfigureAwait(false);
-                await DispatcherHelper.ExecuteOnUIThreadAsync(() =>
-                {
-                    Tracks = new ObservableCollection<Track>(collection);
-                    TrackRecorderUpdated();
-                    OnPropertyChanged(nameof(Tracks));
-                });
-            }
+            await RefreshTracks();
         }
 
         private async Task ConfigureMap()
@@ -304,6 +290,35 @@ namespace OutdoorTracker.Views.Map
                 double cartesianScaleFactor = MapConfiguration.Projection.CartesianScaleFactor(MapCenter);
                 _settingsManager.SetLastPosition(MapCenter, zoomFactor * cartesianScaleFactor, Heading);
             }
+        }
+
+        public override Task Refresh()
+        {
+            Task.Run(async () => await RunBusy(RefreshTracks, string.Empty));
+            return Task.CompletedTask;
+        }
+
+        private async Task RefreshTracks()
+        {
+            List<Track> newTracks = await _readonlyUnitOfWork.Tracks.Where(t => t.ShowOnMap).ToListAsync();
+            foreach (Track track in Tracks.ToArray())
+            {
+                int tracksRemoved = newTracks.RemoveAll(t => t.Id == track.Id);
+                if (tracksRemoved == 0)
+                {
+                    // Track is not shown anymore.
+                    Tracks.Remove(track);
+                }
+            }
+
+            // Load new Tracks
+            foreach (Track track in newTracks)
+            {
+                await _readonlyUnitOfWork.LoadTrackPointsAsync(track);
+                Tracks.Add(track);
+            }
+            TrackRecorderUpdated();
+            OnPropertyChanged(nameof(Tracks));
         }
     }
 }

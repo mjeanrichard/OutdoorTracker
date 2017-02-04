@@ -14,11 +14,14 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 using OutdoorTracker.Layers;
 using OutdoorTracker.Logging;
@@ -26,7 +29,7 @@ using OutdoorTracker.Tracks;
 
 namespace OutdoorTracker.Database
 {
-    public class OutdoorTrackerContext : DbContext, IUnitOfWork, IReadonlyUnitOfWork
+    public class OutdoorTrackerContext : DbContext, IUnitOfWork
     {
         private static int _lastId = 0;
 
@@ -41,25 +44,13 @@ namespace OutdoorTracker.Database
         public DbSet<Track> Tracks { get; protected set; }
 
         public DbSet<DbVersion> DbVersions { get; protected set; }
-
-        IQueryable<TrackPoint> IReadonlyUnitOfWork.TrackPoints
-        {
-            get { return TrackPoints.AsNoTracking(); }
-        }
-
-        IQueryable<MapConfiguration> IReadonlyUnitOfWork.MapConfigurations
-        {
-            get { return MapConfigurations.AsNoTracking(); }
-        }
-
-        IQueryable<Track> IReadonlyUnitOfWork.Tracks
-        {
-            get { return Tracks.AsNoTracking(); }
-        }
-
         public DbSet<TrackPoint> TrackPoints { get; protected set; }
-
         public DbSet<MapConfiguration> MapConfigurations { get; protected set; }
+
+        public virtual async Task LoadTrackPointsAsync(Track track)
+        {
+            await Entry(track).Collection(t => t.Points).Query().OrderBy(t => t.Number).LoadAsync();
+        }
 
         public override void Dispose()
         {
@@ -92,10 +83,33 @@ namespace OutdoorTracker.Database
         }
     }
 
-    public class ReadOnlyOutdoorTrackerContext : OutdoorTrackerContext
+    public class ReadOnlyOutdoorTrackerContext : OutdoorTrackerContext, IReadonlyUnitOfWork
     {
         public ReadOnlyOutdoorTrackerContext() : base(true, false)
         {
+            ChangeTracker.AutoDetectChangesEnabled = false;
+        }
+
+        IQueryable<TrackPoint> IReadonlyUnitOfWork.TrackPoints
+        {
+            get { return TrackPoints.AsNoTracking(); }
+        }
+
+        IQueryable<MapConfiguration> IReadonlyUnitOfWork.MapConfigurations
+        {
+            get { return MapConfigurations.AsNoTracking(); }
+        }
+
+        IQueryable<Track> IReadonlyUnitOfWork.Tracks
+        {
+            get { return Tracks.AsNoTracking(); }
+        }
+
+        public async override Task LoadTrackPointsAsync(Track track)
+        {
+            Attach(track);
+            await base.LoadTrackPointsAsync(track);
+            Entry(track).State = EntityState.Detached;
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

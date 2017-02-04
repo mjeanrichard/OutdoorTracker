@@ -16,6 +16,7 @@
 
 using System;
 using System.Diagnostics;
+using System.Globalization;
 using System.Threading.Tasks;
 
 using Windows.ApplicationModel;
@@ -29,6 +30,7 @@ using Microsoft.Toolkit.Uwp;
 
 using OutdoorTracker.Common;
 using OutdoorTracker.Database;
+using OutdoorTracker.Helpers;
 using OutdoorTracker.Logging;
 using OutdoorTracker.Resources;
 using OutdoorTracker.Services;
@@ -78,6 +80,9 @@ namespace OutdoorTracker
 #endif
 
             RootFrame = Window.Current.Content as Frame;
+
+            // TypeInit Code for CultureHelper must be executed on a UI Thread! 
+            CultureHelper.Reload();
 
             // Do not repeat app initialization when the Window already has content,
             // just ensure that the window is active

@@ -35,5 +35,6 @@ namespace OutdoorTracker.Database
         DatabaseFacade Database { get; }
 
         Task SaveChangesAsync();
+        Task LoadTrackPointsAsync(Track track);
     }
 }
