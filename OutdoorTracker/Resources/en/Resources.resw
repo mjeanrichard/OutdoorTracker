@@ -316,4 +316,7 @@
   <data name="Tracks_MulitSelectButton.Label" xml:space="preserve">
     <value>Select multiple tracks</value>
   </data>
+  <data name="Tracks_GotoTrackButton.Label" xml:space="preserve">
+    <value>Goto Track</value>
+  </data>
 </root>

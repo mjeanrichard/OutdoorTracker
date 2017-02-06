@@ -1,5 +1,5 @@
-﻿// 
-// Outdoor Tracker - Copyright(C) 2016 Meinard Jean-Richard
+// 
+// Outdoor Tracker - Copyright(C) 2017 Meinard Jean-Richard
 //  
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -14,16 +14,12 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+using OutdoorTracker.Tracks;
+
 namespace OutdoorTracker.Helpers
 {
-    public enum TrackEvents
+    public static class EventDispatcher
     {
-        NoCompass,
-        GeoLocationDenied,
-        LocationStateUnspecified,
-        ExtendedExecutionDenied,
-        UnknownTrackElement,
-        UnknownTrackNamespace,
-        DatabaseMissing
+        public static Track GotoTrack { get; set; }
     }
 }

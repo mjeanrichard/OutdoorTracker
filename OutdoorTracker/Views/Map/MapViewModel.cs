@@ -95,10 +95,10 @@ namespace OutdoorTracker.Views.Map
         public MapConfiguration MapConfiguration { get; private set; }
 
         public RelayCommand GotoGpsCommand { get; private set; }
-        public RelayCommand ShowLayersCommand { get; private set; }
-        public RelayCommand ShowSettingsCommand { get; private set; }
-        public RelayCommand ShowLocationInfoCommand { get; private set; }
-        public RelayCommand ShowTracksCommand { get; private set; }
+        public AsyncCommand ShowLayersCommand { get; private set; }
+        public AsyncCommand ShowSettingsCommand { get; private set; }
+        public AsyncCommand ShowLocationInfoCommand { get; private set; }
+        public AsyncCommand ShowTracksCommand { get; private set; }
         public RelayCommand StopTrackingCommand { get; private set; }
         public RelayCommand NorthUpCommand { get; private set; }
         public RelayCommand CompassCommand { get; private set; }
@@ -122,8 +122,14 @@ namespace OutdoorTracker.Views.Map
             get { return _zoomLevel; }
             set
             {
-                _zoomLevel = value;
-                OnPropertyChanged();
+                if (value != _zoomLevel)
+                {
+                    if (value > 0 && value < 100)
+                    {
+                        _zoomLevel = value;
+                    }
+                    OnPropertyChanged();
+                }
             }
         }
 

@@ -316,4 +316,7 @@
   <data name="Tracks_MulitSelectButton.Label" xml:space="preserve">
     <value>Mehrere Pfade selektieren</value>
   </data>
+  <data name="Tracks_GotoTrackButton.Label" xml:space="preserve">
+    <value>Gehe zu Pfad</value>
+  </data>
 </root>

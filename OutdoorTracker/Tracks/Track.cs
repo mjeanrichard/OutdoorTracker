@@ -25,6 +25,9 @@ using Microsoft.Toolkit.Uwp;
 
 using OutdoorTracker.Resources;
 
+using UniversalMapControl.Interfaces;
+using UniversalMapControl.Projections;
+
 namespace OutdoorTracker.Tracks
 {
     public class Track : INotifyPropertyChanged
@@ -72,13 +75,6 @@ namespace OutdoorTracker.Tracks
             }
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
         public string LengthString
         {
             get
@@ -97,6 +93,23 @@ namespace OutdoorTracker.Tracks
                 }
                 return Messages.Track.Length_KmLong(FlatLength / 1000d);
             }
+        }
+
+        public ILocation MinLocation
+        {
+            get { return new Wgs84Location(MinLatitude, MinLongitude); }
+        }
+
+        public ILocation MaxLocation
+        {
+            get { return new Wgs84Location(MaxLatitude, MaxLongitude); }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

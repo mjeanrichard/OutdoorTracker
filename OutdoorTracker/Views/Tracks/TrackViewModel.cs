@@ -58,7 +58,7 @@ namespace OutdoorTracker.Views.Tracks
         }
 
 
-        private async Task ToggleTrackVisibility()
+        public async Task ToggleTrackVisibility()
         {
             using (IUnitOfWork unitOfWork = _unitOfWorkFactoy.Create())
             {

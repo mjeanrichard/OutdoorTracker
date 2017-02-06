@@ -26,6 +26,7 @@ using Microsoft.EntityFrameworkCore;
 
 using OutdoorTracker.Common;
 using OutdoorTracker.Database;
+using OutdoorTracker.Helpers;
 using OutdoorTracker.Resources;
 using OutdoorTracker.Services;
 using OutdoorTracker.Tracks;
@@ -45,7 +46,9 @@ namespace OutdoorTracker.Views.Tracks
 
         public TracksViewModel()
         {
-            EditTrackCommand = new AsyncCommand(EditTrack, () => SelectedTracks != null && SelectedTracks.Count == 1, this);
+            Func<bool> singleTrackSelected = () => SelectedTracks != null && SelectedTracks.Count == 1;
+            EditTrackCommand = new AsyncCommand(EditTrack, singleTrackSelected, this);
+            GotoTrackCommand = new AsyncCommand(GotoTrack, singleTrackSelected, this);
 
             Func<bool> hasSelectedTracks = () => SelectedTracks != null && SelectedTracks.Count > 0;
             RebuildTrackCommand = new AsyncCommand(RebuildTracks, Messages.TracksPage.RebuildText, this);
@@ -81,7 +84,8 @@ namespace OutdoorTracker.Views.Tracks
             }
         }
 
-        public RelayCommand ExportTracksCommand { get; set; }
+        public AsyncCommand GotoTrackCommand { get; }
+        public RelayCommand ExportTracksCommand { get; }
         public RelayCommand StartTrackingCommand { get; }
         public RelayCommand ImportGpxTrackCommand { get; }
         public RelayCommand EditTrackCommand { get; }
@@ -98,7 +102,23 @@ namespace OutdoorTracker.Views.Tracks
                 DeleteTrackCommand.RaiseCanExecuteChanged();
                 ExportTracksCommand.RaiseCanExecuteChanged();
                 RebuildTrackCommand.RaiseCanExecuteChanged();
+                GotoTrackCommand.RaiseCanExecuteChanged();
             }
+        }
+
+        private async Task GotoTrack()
+        {
+            if (SelectedTracks == null || SelectedTracks.Count != 1)
+            {
+                return;
+            }
+            Track track = SelectedTracks[0].Track;
+            if (!track.ShowOnMap)
+            {
+                await SelectedTracks[0].ToggleTrackVisibility();
+            }
+            EventDispatcher.GotoTrack = track;
+            await _navigationService.NavigateBackToMap();
         }
 
         private async Task ExportTracks()

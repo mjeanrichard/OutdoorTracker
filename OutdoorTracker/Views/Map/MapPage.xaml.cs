@@ -1,5 +1,5 @@
 ﻿// 
-// Outdoor Tracker - Copyright(C) 2016 Meinard Jean-Richard
+// Outdoor Tracker - Copyright(C) 2017 Meinard Jean-Richard
 //  
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -14,14 +14,14 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-using System;
-
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Navigation;
 
 using OutdoorTracker.Common;
+using OutdoorTracker.Helpers;
+using OutdoorTracker.Tracks;
 
 using UniversalMapControl.Behaviors;
 
@@ -36,9 +36,21 @@ namespace OutdoorTracker.Views.Map
         public MapPage()
         {
             InitializeComponent();
-            NavigationCacheMode = NavigationCacheMode.Enabled;
+            NavigationCacheMode = NavigationCacheMode.Required;
             map.Visibility = Visibility.Collapsed;
             map.ManipulationMode = ManipulationModes.Rotate | ManipulationModes.Scale | ManipulationModes.TranslateX | ManipulationModes.TranslateY | ManipulationModes.TranslateInertia;
+
+            Loaded += OnLoaded;
+        }
+
+        private void OnLoaded(object sender, RoutedEventArgs e)
+        {
+            Track gotoTrack = EventDispatcher.GotoTrack;
+            EventDispatcher.GotoTrack = null;
+            if (gotoTrack != null)
+            {
+                map.ZoomToRect(gotoTrack.MinLocation, gotoTrack.MaxLocation, -0.1);
+            }
         }
 
         protected override void InitializeCompleted()

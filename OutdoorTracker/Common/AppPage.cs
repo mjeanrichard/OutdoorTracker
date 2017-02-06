@@ -28,6 +28,13 @@ namespace OutdoorTracker.Common
         private TModel _viewModel;
         private IUnityContainer _pageContainer;
 
+        protected AppPage()
+        {
+            Unloaded += OnUnLoaded;
+        }
+
+        public bool IsInitialized { get; private set; }
+
         public TModel ViewModel
         {
             get { return _viewModel; }
@@ -40,10 +47,14 @@ namespace OutdoorTracker.Common
 
         BaseViewModel IAppPage.ViewModel => ViewModel;
 
+        private void OnUnLoaded(object sender, RoutedEventArgs e)
+        {
+        }
+
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             Frame rootFrame = Window.Current.Content as Frame;
-            if ((rootFrame != null) && rootFrame.CanGoBack)
+            if (rootFrame != null && rootFrame.CanGoBack)
             {
                 SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = AppViewBackButtonVisibility.Visible;
             }
@@ -52,21 +63,21 @@ namespace OutdoorTracker.Common
                 SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = AppViewBackButtonVisibility.Collapsed;
             }
 
-            if (e.NavigationMode == NavigationMode.Back || e.NavigationMode == NavigationMode.Refresh)
+            SystemNavigationManager.GetForCurrentView().BackRequested -= BackRequested;
+            SystemNavigationManager.GetForCurrentView().BackRequested += BackRequested;
+
+            if (IsInitialized)
             {
                 await ViewModel.Refresh();
                 return;
             }
 
-            SystemNavigationManager.GetForCurrentView().BackRequested -= BackRequested;
-            SystemNavigationManager.GetForCurrentView().BackRequested += BackRequested;
-
             _pageContainer = DependencyContainer.Current.CreateChildContainer();
             ViewModel = _pageContainer.Resolve<TModel>(new TypedParameterOverride<NavigationEventArgs>(e));
 
-
             await ViewModel.Initialize();
             InitializeCompleted();
+            IsInitialized = true;
         }
 
         protected virtual void InitializeCompleted()
@@ -96,6 +107,5 @@ namespace OutdoorTracker.Common
                 rootFrame.GoBack();
             }
         }
-
     }
 }
