@@ -298,31 +298,32 @@ namespace OutdoorTracker.Views.Map
             }
         }
 
-        public override Task Refresh()
+        public override async Task Refresh()
         {
+            MapConfiguration = await _mapDefinitionManager.GetCurrentConfiguration().ConfigureAwait(false);
+            OnPropertyChanged(nameof(MapConfiguration));
+
+#pragma warning disable 4014 // Run Async!
             Task.Run(async () => await RunBusy(RefreshTracks, string.Empty));
-            return Task.CompletedTask;
+#pragma warning restore 4014
         }
 
         private async Task RefreshTracks()
         {
             List<Track> newTracks = await _readonlyUnitOfWork.Tracks.Where(t => t.ShowOnMap).ToListAsync();
-            foreach (Track track in Tracks.ToArray())
+            foreach (Track newTrack in newTracks)
             {
-                int tracksRemoved = newTracks.RemoveAll(t => t.Id == track.Id);
-                if (tracksRemoved == 0)
+                Track oldTrack = Tracks.FirstOrDefault(t => t.Id == newTrack.Id);
+                if (oldTrack != null)
                 {
-                    // Track is not shown anymore.
-                    Tracks.Remove(track);
+                    newTrack.Points = oldTrack.Points;
+                }
+                else
+                {
+                    await _readonlyUnitOfWork.LoadTrackPointsAsync(newTrack);
                 }
             }
-
-            // Load new Tracks
-            foreach (Track track in newTracks)
-            {
-                await _readonlyUnitOfWork.LoadTrackPointsAsync(track);
-                Tracks.Add(track);
-            }
+            Tracks = new ObservableCollection<Track>(newTracks);
             TrackRecorderUpdated();
             OnPropertyChanged(nameof(Tracks));
         }

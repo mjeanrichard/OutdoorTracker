@@ -23,6 +23,7 @@ using System.Threading.Tasks;
 using Windows.UI.Popups;
 
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Toolkit.Uwp;
 
 using OutdoorTracker.Common;
 using OutdoorTracker.Database;
@@ -180,10 +181,13 @@ namespace OutdoorTracker.Views.Tracks
                         }
                     }
                 });
-                foreach (TrackViewModel selectedTrack in selectedTracks)
+                await DispatcherHelper.ExecuteOnUIThreadAsync(() =>
                 {
-                    Tracks.Remove(selectedTrack);
-                }
+                    foreach (TrackViewModel selectedTrack in selectedTracks)
+                    {
+                        Tracks.Remove(selectedTrack);
+                    }
+                });
             }
         }
 

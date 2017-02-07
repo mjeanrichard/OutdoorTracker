@@ -14,6 +14,8 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+using System.ComponentModel;
+
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Input;
@@ -43,6 +45,20 @@ namespace OutdoorTracker.Views.Map
             Loaded += OnLoaded;
         }
 
+        protected override void InitializeCompleted()
+        {
+            ViewModel.PropertyChanged += ViewModelPropertyChanged;
+        }
+
+        private void ViewModelPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(ViewModel.MapConfiguration))
+            {
+                map.ViewPortProjection = ViewModel.MapConfiguration.Projection;
+                tileLayer.LayerConfiguration = ViewModel.MapConfiguration.LayerConfig;
+            }
+        }
+
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
             Track gotoTrack = EventDispatcher.GotoTrack;
@@ -51,12 +67,6 @@ namespace OutdoorTracker.Views.Map
             {
                 map.ZoomToRect(gotoTrack.MinLocation, gotoTrack.MaxLocation, -0.1);
             }
-        }
-
-        protected override void InitializeCompleted()
-        {
-            map.ViewPortProjection = ViewModel.MapConfiguration.Projection;
-            tileLayer.LayerConfiguration = ViewModel.MapConfiguration.LayerConfig;
         }
 
         private void TouchMapBehavior_OnUpdate(object sender, TouchMapEventArgs e)

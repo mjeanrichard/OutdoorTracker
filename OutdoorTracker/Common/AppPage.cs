@@ -28,11 +28,6 @@ namespace OutdoorTracker.Common
         private TModel _viewModel;
         private IUnityContainer _pageContainer;
 
-        protected AppPage()
-        {
-            Unloaded += OnUnLoaded;
-        }
-
         public bool IsInitialized { get; private set; }
 
         public TModel ViewModel
@@ -46,10 +41,6 @@ namespace OutdoorTracker.Common
         }
 
         BaseViewModel IAppPage.ViewModel => ViewModel;
-
-        private void OnUnLoaded(object sender, RoutedEventArgs e)
-        {
-        }
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
