@@ -61,6 +61,12 @@ You can find other examples in the Layers folder of the Project.
 
 ## Release Notes
 ### [Milestone 1.1](../../milestone/2?closed=1)
+#### Version 1.1.11 (public store)
+- Fixed App Crash
+
+#### Version 1.1.10 (public store)
+- Fixed location info
+
 #### Version 1.1.9 (public store)
 - Fixed unavailable location data
 
