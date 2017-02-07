@@ -60,6 +60,16 @@ Examples:
 You can find other examples in the Layers folder of the Project.
 
 ## Release Notes
+### [Milestone 1.2](../../milestone/2?closed=1)
+#### Version 1.2 (not released yet)
+- Issue #24: Only use high accuracy location for tracking by default. ([#24](../../issues/24))
+- Issue #21: Support more Version of GPX an KML. ([#21](../../issues/21))
+- Issue #30: Fixed concurrency Issue while tracking. ([#30](../../issues/30))
+- Issue  #6: Added a Color Picker to the Track Edit Page. ([#6](../../issues/6))
+- Multiple UI improvements
+- Fixed lots of Bugs
+
+
 ### [Milestone 1.1](../../milestone/2?closed=1)
 #### Version 1.1.11 (public store)
 - Fixed App Crash
